@@ -1,0 +1,17 @@
+[Unit]
+Description=node_exporter for prometheus
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=postgres
+Group=postgres
+WorkingDirectory=/opt/node_exporter
+EnvironmentFile=/opt/node_exporter/node_exporter.env
+ExecStart=/usr/local/bin/node_exporter \
+    --web.listen-address=127.0.0.1:9167 \
+    --web.telemetry-path=/metrics
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

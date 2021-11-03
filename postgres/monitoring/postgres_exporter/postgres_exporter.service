@@ -1,0 +1,18 @@
+[Unit]
+Description=Prometheus exporter for Postgresql
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=postgres
+Group=postgres
+WorkingDirectory=/opt/postgres_exporter
+EnvironmentFile=/opt/postgres_exporter/postgres_exporter.env
+ExecStart=/usr/local/bin/postgres_exporter \
+    --web.listen-address=127.0.0.1:9187 \
+    --web.telemetry-path=/metrics \
+    --extend.query-path=/opt/postgres_exporter/queries.yml
+Restart=on-failure 
+
+[Install]
+WantedBy=multi-user.target

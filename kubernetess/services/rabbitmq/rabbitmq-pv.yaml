@@ -1,0 +1,29 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: rabbitmq-pv-volume
+  labels:
+    type: local
+    app: rabbitmq
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/tmp/volumes/rabbitmq"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: rabbitmq-pv-claim
+  labels:
+    app: rabbitmq
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
