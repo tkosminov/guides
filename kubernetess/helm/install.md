@@ -33,10 +33,22 @@ apt-get update
 apt-get install helm
 ```
 
-### Настрйока helm
+## Настрйока
+
+### Сервисный аккаунт
 
 ```bash
 kubectl apply -f tiller.yaml
 
 helm init --service-account tiller
 ```
+
+### Базовые репозитории чартов
+
+```bash
+helm repo add stable https://charts.helm.sh/stable
+```
+
+```bash
+helm repo add bitnami https://charts.bitnami.com/bitnami
+``

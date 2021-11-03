@@ -10,7 +10,10 @@ Ubuntu 20.04+
 2. [kubectl](kubectl/install.md)
 3. [cluster](cluster/install.md)
 4. [helm](helm/install.md)
-5. [addons](addons/install.md)
+5. addons
+   1. [ingress](addons/ingress/install.md)
+   2. [cert-manager](addons/cert-manager/install.md)
+   3. [dashboard](addons/dashboard/install.md)
 6. services
    1. [postgres](services/postgresql/install.md)
    2. [pgbouncer](services/pgbouncer/install.md)
