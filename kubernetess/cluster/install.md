@@ -47,14 +47,20 @@ kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl versio
 
 #### Создание сервисного аккаунта
 
+Шаблоны находятся в папке `cluster/roles`
+
+Переходим в папку с шаблоном и выполняем:
+
 ```bash
-kubectl create serviceaccount cluster-admin-sa
+kubectl apply -f ${ROLE_FILE}
+```
 
-kubectl create clusterrolebinding cluster-admin-sa --clusterrole=cluster-admin --serviceaccount=default:cluster-admin-sa
+Если нужно получить токен для доступа через дэшборд или апи:
 
+```cubectl
 kubectl get secrets
 
-kubectl describe secret cluster-admin-sa-token-${random}
+kubectl describe secret ${ROLE_SERVICE_ACCOUNT}-token-${RANDOM_HASH}
 ```
 
 #### Если нужно получить доступ к поду снаружи

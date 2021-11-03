@@ -1,0 +1,38 @@
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: owner-cr
+rules:
+  - apiGroups: ["*"]
+    resources: ["*"]
+    verbs: ["*"]
+  - nonResourceURLs: ["*"]
+    verbs: ["*"]
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: owner-sa
+  namespace: default
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: owner-crb
+  namespace: default
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: owner-cr
+subjects:
+  - kind: ServiceAccount
+    name: owner-sa
+    namespace: default
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: owner-sa-secret
+  annotations:
+    kubernetes.io/service-account.name: owner-sa
+type: kubernetes.io/service-account-token

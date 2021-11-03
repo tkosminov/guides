@@ -1,0 +1,47 @@
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: maintainer-cr
+rules:
+  - apiGroups: ["*"]
+    resources:
+      - namespaces
+      - pods
+      - pods/log
+      - pods/exec
+      - pods/status
+      - deployments
+      - deployments/scale
+      - deployments/status
+      - replicasets
+      - replicasets/scale
+      - replicasets/status
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: maintainer-sa
+  namespace: default
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: maintainer-crb
+  namespace: default
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: maintainer-cr
+subjects:
+  - kind: ServiceAccount
+    name: maintainer-sa
+    namespace: default
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: maintainer-sa-secret
+  annotations:
+    kubernetes.io/service-account.name: maintainer-sa
+type: kubernetes.io/service-account-token

@@ -1,0 +1,40 @@
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: developer-cr
+rules:
+  - apiGroups: ["*"]
+    resources:
+      - namespaces
+      - pods
+      - pods/log
+      - pods/status
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: developer-sa
+  namespace: default
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: developer-crb
+  namespace: default
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: developer-cr
+subjects:
+  - kind: ServiceAccount
+    name: developer-sa
+    namespace: default
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: developer-sa-secret
+  annotations:
+    kubernetes.io/service-account.name: developer-sa
+type: kubernetes.io/service-account-token
