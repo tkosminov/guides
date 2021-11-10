@@ -17,9 +17,6 @@ helm install postgresql bitnami/postgresql --set global.postgresql.postgresqlPas
                                            --set global.postgresql.postgresqlUsername=postgres \
                                            --set image.tag=13.4.0-debian-10-r79 \
                                            --set persistence.existingClaim=postgresql-pv-claim \
-                                           --set securityContext.enabled=true \
-                                           --set securityContext.fsGroup=2000 \
-                                           --set securityContext.runAsUser=1000 \
                                            --set volumePermissions.enabled=true
 ```
 

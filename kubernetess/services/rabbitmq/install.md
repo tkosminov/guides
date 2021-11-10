@@ -17,10 +17,7 @@ helm install rabbitmq bitnami/rabbitmq --set auth.username=admin \
                                        --set auth.password=admin \
                                        --set persistence.enabled=true \
                                        --set persistence.existingClaim=rabbitmq-pv-claim \
-                                       --set volumePermissions.enabled=true \
-                                       --set securityContext.enabled=true \
-                                       --set securityContext.fsGroup=2000 \
-                                       --set securityContext.runAsUser=1000
+                                       --set volumePermissions.enabled=true
 ```
 
 ### Host

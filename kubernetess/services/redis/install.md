@@ -18,9 +18,6 @@ helm install redis bitnami/redis --set global.redis.password=redis \
                                  --set master.persistence.enabled=true \
                                  --set master.persistence.existingClaim=redis-pv-claim \
                                  --set volumePermissions.enabled=true \
-                                 --set securityContext.enabled=true \
-                                 --set securityContext.fsGroup=2000 \
-                                 --set securityContext.runAsUser=1000 \
                                  --set replica.replicaCount=0
 ```
 
