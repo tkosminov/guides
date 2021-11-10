@@ -42,6 +42,7 @@ image:
 service:
   type: ClusterIP
   port: 6432
+  nodePort: 32432
 
 ## Labels to add to the pod metadata
 ##
