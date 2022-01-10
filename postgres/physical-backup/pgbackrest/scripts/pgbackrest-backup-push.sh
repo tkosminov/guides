@@ -5,6 +5,10 @@ echo "Physical Push Start"
 token=''
 chat=''
 
+# создаем станзу для бэкапов
+# если она уже существует, то ничего не произойдет
+su - postgres -c "pgbackrest --log-level-console=info --stanza=main stanza-create"
+
 # создаем и загружаем бэкап в облако
 su - postgres -c "pgbackrest --log-level-console=info --stanza=main backup"
 
