@@ -58,6 +58,7 @@ CREATE EXTENSION pg_stat_statements;
 
 скопировать `postgres/conf/custom.conf` в `/etc/postgresql/13/main/conf.d`
 скопировать `postgres/conf/statements.conf` в `/etc/postgresql/13/main/conf.d`
+скопировать `postgres/conf/timezone.conf` в `/etc/postgresql/13/main/conf.d`
 
 ### Дефолтный шаблон постгрес
 
