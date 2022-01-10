@@ -21,6 +21,9 @@ service pgbouncer stop
 # останавливаем кластер постгреса
 pg_ctlcluster 13 main stop
 
+# удаляем текущую папку с базами
+su - postgres -c 'find /var/lib/postgresql/13/main -mindepth 1 -delete'
+
 # скачиваем бэкап из облака
 su - postgres -c 'pgbackrest --stanza=main --log-level-console=info --delta --recovery-option=recovery_target=immediate --target-action=promote --type=immediate restore'
 

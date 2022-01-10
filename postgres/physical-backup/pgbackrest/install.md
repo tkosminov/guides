@@ -3,7 +3,7 @@
 ## Установка
 
 ```bash
-apt install build-essential libssl-dev libxml2-dev libperl-dev zlib1g-dev libpq-dev libbz2-dev perl
+apt install build-essential libssl-dev libxml2-dev libperl-dev zlib1g-dev libpq-dev libbz2-dev liblz4-dev libzstd-dev perl
 ```
 
 ```bash
@@ -94,6 +94,7 @@ su - postgres -c "pgbackrest --stanza=main --log-level-console=info --delta --re
 
 * Скопировать скрипт для создания бэкапа `physical-backup/pgbackrest/scripts/pgbackrest-backup-push.sh` в `/var/lib/postgresql/pgbackrest-backup-push.sh`
 * Скопировать скрипт восстановления из последнего бэкапа `physical-backup/pgbackrest/scripts/pgbackrest-backup-fetch.sh` в `/var/lib/postgresql/pgbackrest-backup-fetch.sh`
+* Скопировать скрипт для удаления бэкапа `physical-backup/pgbackrest/scripts/pgbackrest-backup-delete.sh` в `/var/lib/postgresql/pgbackrest-backup-delete.sh`
 
 #### Права
 
@@ -101,6 +102,7 @@ su - postgres -c "pgbackrest --stanza=main --log-level-console=info --delta --re
   ```bash
   chmod +x /var/lib/postgresql/pgbackrest-backup-push.sh
   chmod +x /var/lib/postgresql/pgbackrest-backup-fetch.sh
+  chmod +x /var/lib/postgresql/pgbackrest-backup-delete.sh
   ```
 
 #### Запуск
