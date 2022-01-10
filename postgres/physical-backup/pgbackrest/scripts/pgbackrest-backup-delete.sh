@@ -6,8 +6,31 @@ echo "Use this script with caution — it will permanently remove all backups an
 token=''
 chat=''
 
-# создаем и загружаем бэкап в облако
-su - postgres -c "pgbackrest --stanza=main stanza-delete"
+# останавливаем сервисы мониторинга и пулер (чтобы не спамили ошибки в логи, пока постгрес выключен)
+service prometheus stop
+service postgres_exporter stop
+service pgbouncer_exporter stop
+service pgbouncer stop
+# service odyssey stop
+
+# останавливаем кластер постгреса
+pg_ctlcluster 13 main stop
+
+# останавливаем станзу
+su - postgres -c "pgbackrest --log-level-console=info --stanza=main stop"
+
+# удаляем станзу
+su - postgres -c "pgbackrest --log-level-console=info --stanza=main stanza-delete"
+
+# запускам постгрес
+pg_ctlcluster 13 main start
+
+# запускаем сервисы мониторинга и пулер
+# service odyssey start
+service pgbouncer start
+service pgbouncer_exporter start
+service postgres_exporter start
+service prometheus start
 
 curl -X POST \
     -H 'Content-Type: application/json' \
