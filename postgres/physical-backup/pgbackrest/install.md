@@ -95,6 +95,7 @@ su - postgres -c "pgbackrest --stanza=main --log-level-console=info --delta --re
 * Скопировать скрипт для создания бэкапа `physical-backup/pgbackrest/scripts/pgbackrest-backup-push.sh` в `/var/lib/postgresql/pgbackrest-backup-push.sh`
 * Скопировать скрипт восстановления из последнего бэкапа `physical-backup/pgbackrest/scripts/pgbackrest-backup-fetch.sh` в `/var/lib/postgresql/pgbackrest-backup-fetch.sh`
 * Скопировать скрипт для удаления бэкапа `physical-backup/pgbackrest/scripts/pgbackrest-backup-delete.sh` в `/var/lib/postgresql/pgbackrest-backup-delete.sh`
+* Скопировать скрипт для еженедельного удаления бэкапа `physical-backup/pgbackrest/scripts/pgbackrest-backup-weekly-delete.sh` в `/var/lib/postgresql/pgbackrest-backup-weekly-delete.sh`
 
 #### Права
 
@@ -103,6 +104,7 @@ su - postgres -c "pgbackrest --stanza=main --log-level-console=info --delta --re
   chmod +x /var/lib/postgresql/pgbackrest-backup-push.sh
   chmod +x /var/lib/postgresql/pgbackrest-backup-fetch.sh
   chmod +x /var/lib/postgresql/pgbackrest-backup-delete.sh
+  chmod +x /var/lib/postgresql/pgbackrest-backup-weekly-delete.sh
   ```
 
 #### Запуск

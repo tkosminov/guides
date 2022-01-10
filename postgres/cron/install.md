@@ -26,32 +26,34 @@ touch /var/spool/cron/crontabs/root
 | месяц       | 1–12 или ЯНВ–ДЕК    |
 | день недели | 0–6 или ПНД–ВСК     |
 
-### Логический бэкап
+## pgbackrest
 
-* Еженедельный логический бэкап (в 4 утра в воскресенье)
+* Ежедневный физический бэкап (в 21 вечера по UTC, кроме воскресенья)
   ```bash
-  echo "0 4 * * 6 /var/lib/postgresql/logical-backup.sh >> /var/log/postgresql/cron.log 2>&1" >> /var/spool/cron/crontabs/root
+  echo "0 21 * * 0-5 /var/lib/postgresql/pgbackrest-backup-push.sh >> /var/log/postgresql/cron.log 2>&1" >> /var/spool/cron/crontabs/root
   ```
 
-### Физический бэкап (wal-g)
-
-* Ежедневный физический бэкап в 11 вечера
+* Удаляем старые физические бэкапы из облака и создаем новый логический и физический бэкап (в 21 вечера в воскресенье по UTC)
   ```bash
-  echo "0 23 * * * /var/lib/postgresql/walg-backup-push.sh >> /var/log/postgresql/cron.log 2>&1" >> /var/spool/cron/crontabs/root
-  ```
-* Удаляем старые физические бэкапы из облака (в 4 утра каждый день)
-  ```bash
-  echo "0 4 * * * /var/lib/postgresql/walg-backup-delete.sh >> /var/log/postgresql/cron.log 2>&1" >> /var/spool/cron/crontabs/root
+  echo "0 21 * * 6 /var/lib/postgresql/pgbackrest-backup-weekly-delete.sh >> /var/log/postgresql/cron.log 2>&1" >> /var/spool/cron/crontabs/root
   ```
 
-### Физический бэкап (pgbackrest)
+## wal-g
 
-* Ежедневный физический бэкап в 11 вечера
+* Еженедельный логический бэкап (в 9 вечера в воскресенье по UTC)
   ```bash
-  echo "0 23 * * * /var/lib/postgresql/pgbackrest-backup-push.sh >> /var/log/postgresql/cron.log 2>&1" >> /var/spool/cron/crontabs/root
+  echo "0 21 * * 6 /var/lib/postgresql/logical-backup.sh >> /var/log/postgresql/cron.log 2>&1" >> /var/spool/cron/crontabs/root
+  ```
+* Ежедневный физический бэкап (в 21 вечера по UTC)
+  ```bash
+  echo "0 21 * * * /var/lib/postgresql/walg-backup-push.sh >> /var/log/postgresql/cron.log 2>&1" >> /var/spool/cron/crontabs/root
+  ```
+* Удаляем старые физические бэкапы из облака (в 21 вечера в воскресенье по UTC)
+  ```bash
+  echo "0 21 * * 6 /var/lib/postgresql/walg-backup-delete.sh >> /var/log/postgresql/cron.log 2>&1" >> /var/spool/cron/crontabs/root
   ```
 
-### Права
+## Права
 
 ```bash
 chown root: /var/spool/cron/crontabs/root
