@@ -1,0 +1,102 @@
+# [PostgreSQL](https://github.com/postgres/postgres)
+
+## Установка
+
+### PostgreSQL
+
+```bash
+apt update
+apt -y install vim bash-completion wget
+```
+
+```bash
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
+
+echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" | tee  /etc/apt/sources.list.d/pgdg.list
+```
+
+```bash
+apt update
+apt -y install postgresql-13 postgresql-client-13
+```
+
+## Настройка пользователей
+
+### Postgres user
+
+```bash
+psql -U postgres
+```
+
+```psql
+ALTER USER postgres PASSWORD 'postgres';
+```
+
+### Юзер для pgbouncer метрики
+
+```psql
+CREATE USER stats WITH ENCRYPTED PASSWORD 'stats';
+```
+
+### Extension для сбора аналитики
+
+```psql
+SELECT * FROM pg_available_extensions 
+WHERE name = 'pg_stat_statements' AND 
+  installed_version IS NOT NULL;
+```
+
+Если результат запроса - пустая таблица, то надо исполнить:
+
+```psql
+CREATE EXTENSION pg_stat_statements;
+```
+
+## Настройка конфигов
+
+### Конфиг
+
+Рассчитать настройки используя [pgtune](https://pgtune.leopard.in.ua/#/) и вставить в файл `03-postgresql/conf/custom.conf`
+
+1. Конфиг для ресурсов. Скопировать `03-postgresql/conf/custom.conf` в `/etc/postgresql/13/main/conf.d`
+2. Конфиг для аналитики. Скопировать `03-postgresql/conf/statements.conf` в `/etc/postgresql/13/main/conf.d`
+3. Конфиг для таймзоны. Скопировать `03-postgresql/conf/time.conf` в `/etc/postgresql/13/main/conf.d`
+
+### Шаблон БД
+
+*Надо удостовериться что создаваемые БД будут в кодировке `UTF-8`, для этого достаточно зайти в постгрес и посмотреть список БД и их кодировки*
+
+```bash
+su - postgres
+
+psql -U postgres
+```
+
+```psql
+\l
+```
+
+*Если у БД с названиями `template0` и `template1` кодировка `UTF-8`, то все ок, а если нет, то надо её изменить следующим образом*
+
+```sql
+update pg_database set datallowconn = TRUE where datname = 'template0';
+update pg_database set datistemplate = FALSE where datname = 'template1';
+
+drop database template1;
+create database template1 with template = template0 encoding = 'UTF8' lc_ctype = 'en_US.UTF-8' lc_collate = 'en_US.UTF-8';
+
+update pg_database set datistemplate = TRUE where datname = 'template1';
+update pg_database set datallowconn = FALSE where datname = 'template0';
+```
+
+### Таймзона
+
+*В конфигах для постгреса указано, что таймзона должна быть `UTC`, но это может оверрайдиться таймзоной системы и её возможно так же нужно изменить на `UTC`, после чего перезапустить сервер*
+
+```bash
+cp /usr/share/zoneinfo/UTC /etc/localtime
+```
+
+```bash
+reboot
+```
