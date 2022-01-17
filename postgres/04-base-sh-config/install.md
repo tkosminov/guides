@@ -8,7 +8,7 @@
 
 *Если необходимо шифровать логические бэкапы, то необходимо дать значения переменной `BACKUP_PASS_PHRASE`, а переменные `BACKUP_ENCRYPT` и `BACKUP_DECRYPT` установить в `true` (установите в `false` если шифрование не требуется, тогда пасс-фраза будет игнорироваться)*
 
-Скопировать скрипт `004-base-sh-config/scripts/base-config.sh` в `/var/lib/postgresql/base-config.sh`
+Скопировать скрипт `00-base-sh-config/scripts/base-config.sh` в `/var/lib/postgresql/base-config.sh`
 
 *Скриптам необходимо выдать права на запуск*
 
