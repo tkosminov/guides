@@ -104,8 +104,10 @@ async function deleteOldBackups() {
    * Т.е. за текущий месяц бэкапов еще нету, т.к. месяц только началася
    */
 
-  const current_month = new Date().getMonth() + 1
-  const current_year = new Date().getFullYear()
+  const current_month = new Date().getMonth() + 1;
+  const current_year = new Date().getFullYear();
+
+  console.log('current_year', current_year, 'current_month', current_month);
 
   /**
    * За предыдущий месяц надо оставить все бэкапы, которые создавались
@@ -120,13 +122,22 @@ async function deleteOldBackups() {
     prev_year = current_year - 1;
   }
 
+  console.log('prev_year', prev_year, 'prev_month', prev_month);
+
   /**
    * А вот в месяце, который был до предыдущего необходимо удалить
    * все бэкапы, кроме последнего
    */
 
-  const work_month = prev_month - 1;
-  const work_year = prev_year;
+  let work_month = prev_month - 1;
+  let work_year = prev_year;
+
+  if (work_month === 0) {
+    work_month = 12;
+    work_year = work_year - 1;
+  }
+
+  console.log('work_year', work_year, 'work_month', work_month);
 
   const work_backups = keys.filter((key) => {
     /**
@@ -156,6 +167,8 @@ async function deleteOldBackups() {
 
     return;
   }
+
+  console.log('work_backups_to_delete', work_backups_to_delete)
 
   /**
    * За раз можно удалять не больше 1000 элементов.
