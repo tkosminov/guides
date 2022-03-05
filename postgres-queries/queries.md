@@ -217,14 +217,14 @@ SELECT pg_cancel_backend(procpid);
 SELECT pg_terminate_backend(procpid);
 ```
 
-## Отменить все соединения для баз(ы) данных
+## Разорвать все соединения для баз(ы) данных
 
 ```sql
 SELECT
   pg_terminate_backend(pg_stat_activity.pid)
 FROM pg_stat_activity
 WHERE pid != pg_backend_pid()
-  -- AND pg_stat_activity.datname = 'table_name';
+  -- AND pg_stat_activity.datname = 'database_name';
 ```
 
 ## Убрать advisory lock
