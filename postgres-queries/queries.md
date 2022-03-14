@@ -241,3 +241,9 @@ WHERE locktype = 'advisory';
 
 SELECT pg_advisory_unlock(<PID>); /* Если не помогает, то разорвите соединение */
 ```
+
+## Аптайм сервера
+
+```sql
+SELECT date_trunc('second', CURRENT_TIMESTAMP - pg_postmaster_start_time()) as uptime;
+```
