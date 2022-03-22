@@ -1,7 +1,7 @@
 #!/bin/bash
 
 read -r -p "Вы точно хотите восстановиться из физического бэкапа? <y/N> " response
-if [ "$response" =~ ^([yY][eE][sS]|[yY])$ ]; then
+if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
   echo "Physical Restore Start"
 else
   exit 0
