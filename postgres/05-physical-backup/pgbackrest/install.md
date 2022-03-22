@@ -3,21 +3,31 @@
 ## Установка
 
 ```bash
-apt install build-essential libssl-dev libxml2-dev libperl-dev zlib1g-dev libpq-dev libbz2-dev liblz4-dev libzstd-dev perl git
+apt install build-essential libssl-dev libxml2-dev libperl-dev zlib1g-dev libpq-dev libbz2-dev liblz4-dev libzstd-dev libyaml-dev perl git
 ```
 
-*Скачиваем прогу с гита и билдим её в бинарник, кладем бинарник в `/usr/local/bin` и удаляем исходники*
+*Скачиваем прогу с гита и проверяем билдится ли она*
 
 ```bash
 mkdir -p /tmp/pgbackrest
 
-cd /tmp/pgbackrest && curl -L https://github.com/pgbackrest/pgbackrest/archive/release/2.34.tar.gz | tar xzf -
+cd /tmp/pgbackrest && curl -L https://github.com/pgbackrest/pgbackrest/archive/release/2.38.tar.gz | tar xzf -
 
-cd /tmp/pgbackrest/pgbackrest-release-2.34/src && ./configure
+cd /tmp/pgbackrest/pgbackrest-release-2.38/src && ./configure
+```
 
-make -s -C /tmp/pgbackrest/pgbackrest-release-2.34/src
+*Если при выполнении команды `./configure` сыпятся ошибки на отсутствие `libxml`, то надо залинковать его*
 
-cp /tmp/pgbackrest/pgbackrest-release-2.34/src/pgbackrest /usr/local/bin
+```bash
+ln -s /usr/include/libxml2/libxml /usr/include/libxml
+```
+
+*Билдим бинарник и кладем его в `/usr/local/bin`, затем удаляем исходники*
+
+```bash
+make -s -C /tmp/pgbackrest/pgbackrest-release-2.38/src
+
+cp /tmp/pgbackrest/pgbackrest-release-2.38/src/pgbackrest /usr/local/bin
 
 chmod 755 /usr/local/bin/pgbackrest
 
