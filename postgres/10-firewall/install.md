@@ -13,7 +13,7 @@ apt install ufw
 #### Включить логи
 
 ```bash
-ufw logging on
+sudo ufw logging on
 ```
 
 #### Уровень логов (опционально)
@@ -29,23 +29,33 @@ ufw logging high
 ### Запретить все входящие соединения
 
 ```bash
-ufw default deny incoming
+sudo ufw default deny incoming
 ```
 
 ### Разрешаем определенным IP доступ по ssh
 
 ```bash
-ufw allow from ${IP} to any port 22
+sudo ufw allow from ${IP} to any port 22
 ```
 
 ### Запретить определенным IP доступ по ssh
 
 ```bash
-ufw deny from ${IP} to any port 22
+sudo ufw deny from ${IP} to any port 22
 ```
 
 ## Запуск
 
 ```bash
-ufw enable
+sudo ufw enable
+```
+
+### Удаление правил
+
+```bash
+sudo ufw status numbered
+```
+
+```bash
+sudo ufw delete ${NUMBER}
 ```
