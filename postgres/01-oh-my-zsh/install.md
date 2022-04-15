@@ -25,3 +25,9 @@ sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.
 ```conf
 ZSH_THEME="agnoster"
 ```
+
+в файле `.zshrc` для `%username%` пользователя меняем тему, чтобы сразу определить пользователя под которым зашли
+
+```conf
+ZSH_THEME="maran"
+```
