@@ -45,6 +45,21 @@ kubectl taint nodes --all node-role.kubernetes.io/master-
 kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
 ```
 
+#### Настройка сети для подов (flannel dns)
+
+```bash
+kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
+```
+
+#### Замена dns
+
+* Установить новый dns
+* Удалить старый dns
+* перезапустить `kubelet` на каждой node:
+  ```bash
+  systemctl restart kubelet
+  ```
+
 #### Создание сервисного аккаунта
 
 Шаблоны находятся в папке `cluster/roles`
