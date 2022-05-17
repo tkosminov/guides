@@ -11,7 +11,7 @@ EnvironmentFile=/opt/postgres_exporter/postgres_exporter.env
 ExecStart=/usr/local/bin/postgres_exporter \
     --web.listen-address=127.0.0.1:9187 \
     --web.telemetry-path=/metrics \
-    --extend.query-path=/opt/postgres_exporter/queries.yml
+    --extend.query-path=/opt/postgres_exporter/queries.yaml
 Restart=on-failure 
 
 [Install]

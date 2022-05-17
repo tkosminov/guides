@@ -1,20 +1,48 @@
+# PostgreSQL 13
+
 pg_replication:
-    query: "SELECT EXTRACT(EPOCH FROM (now() - pg_last_xact_replay_timestamp())) as lag"
-    master: true
-    metrics:
+  query: "SELECT CASE WHEN NOT pg_is_in_recovery() THEN 0 ELSE GREATEST (0, EXTRACT(EPOCH FROM (now() - pg_last_xact_replay_timestamp()))) END AS lag"
+  master: true
+  metrics:
     - lag:
         usage: "GAUGE"
         description: "Replication lag behind master in seconds"
+
 pg_postmaster:
-    query: "SELECT pg_postmaster_start_time as start_time_seconds from pg_postmaster_start_time()"
-    master: true
-    metrics:
+  query: "SELECT pg_postmaster_start_time as start_time_seconds FROM pg_postmaster_start_time()"
+  master: true
+  metrics:
     - start_time_seconds:
         usage: "GAUGE"
         description: "Time at which postmaster started"
+
 pg_stat_user_tables:
-    query: "SELECT current_database() datname, schemaname, relname, seq_scan, seq_tup_read, idx_scan, idx_tup_fetch, n_tup_ins, n_tup_upd, n_tup_del, n_tup_hot_upd, n_live_tup, n_dead_tup, n_mod_since_analyze, COALESCE(last_vacuum, '1970-01-01Z'), COALESCE(last_vacuum, '1970-01-01Z') as last_vacuum, COALESCE(last_autovacuum, '1970-01-01Z') as last_autovacuum, COALESCE(last_analyze, '1970-01-01Z') as last_analyze, COALESCE(last_autoanalyze, '1970-01-01Z') as last_autoanalyze, vacuum_count, autovacuum_count, analyze_count, autoanalyze_count FROM pg_stat_user_tables"
-    metrics:
+  query: |
+    SELECT
+      current_database() datname,
+      schemaname,
+      relname,
+      seq_scan,
+      seq_tup_read,
+      idx_scan,
+      idx_tup_fetch,
+      n_tup_ins,
+      n_tup_upd,
+      n_tup_del,
+      n_tup_hot_upd,
+      n_live_tup,
+      n_dead_tup,
+      n_mod_since_analyze,
+      COALESCE(last_vacuum, '1970-01-01Z') as last_vacuum,
+      COALESCE(last_autovacuum, '1970-01-01Z') as last_autovacuum,
+      COALESCE(last_analyze, '1970-01-01Z') as last_analyze,
+      COALESCE(last_autoanalyze, '1970-01-01Z') as last_autoanalyze,
+      vacuum_count,
+      autovacuum_count,
+      analyze_count,
+      autoanalyze_count
+    FROM pg_stat_user_tables
+  metrics:
     - datname:
         usage: "LABEL"
         description: "Name of current database"
@@ -81,9 +109,23 @@ pg_stat_user_tables:
     - autoanalyze_count:
         usage: "COUNTER"
         description: "Number of times this table has been analyzed by the autovacuum daemon"
+
 pg_statio_user_tables:
-    query: "SELECT current_database() datname, schemaname, relname, heap_blks_read, heap_blks_hit, idx_blks_read, idx_blks_hit, toast_blks_read, toast_blks_hit, tidx_blks_read, tidx_blks_hit FROM pg_statio_user_tables"
-    metrics:
+  query: |
+    SELECT
+      current_database() datname,
+      schemaname,
+      relname,
+      heap_blks_read,
+      heap_blks_hit,
+      idx_blks_read,
+      idx_blks_hit,
+      toast_blks_read,
+      toast_blks_hit,
+      tidx_blks_read,
+      tidx_blks_hit
+    FROM pg_statio_user_tables
+  metrics:
     - datname:
         usage: "LABEL"
         description: "Name of current database"
@@ -117,21 +159,39 @@ pg_statio_user_tables:
     - tidx_blks_hit:
         usage: "COUNTER"
         description: "Number of buffer hits in this table's TOAST table indexes (if any)"
-pg_database:
-    query: "SELECT pg_database.datname, pg_database_size(pg_database.datname) as size FROM pg_database"
-    master: true
-    cache_seconds: 30
-    metrics:
-    - datname:
-        usage: "LABEL"
-        description: "Name of the database"
-    - size_bytes:
-        usage: "GAUGE"
-        description: "Disk space used by the database"
+
+# WARNING: This set of metrics can be very expensive on a busy server as every unique query executed will create an additional time series
 pg_stat_statements:
-    query: "SELECT t2.rolname, t3.datname, queryid, query, calls, total_time / 1000 as total_time_seconds, min_time / 1000 as min_time_seconds, max_time / 1000 as max_time_seconds, mean_time / 1000 as mean_time_seconds, stddev_time / 1000 as stddev_time_seconds, rows, shared_blks_hit, shared_blks_read, shared_blks_dirtied, shared_blks_written, local_blks_hit, local_blks_read, local_blks_dirtied, local_blks_written, temp_blks_read, temp_blks_written, blk_read_time / 1000 as blk_read_time_seconds, blk_write_time / 1000 as blk_write_time_seconds FROM pg_stat_statements t1 join pg_roles t2 on (t1.userid=t2.oid) join pg_database t3 on (t1.dbid=t3.oid)"
-    master: true
-    metrics:
+  query: |
+    SELECT
+      pg_roles.rolname,
+      pg_database.datname,
+      pg_stat_statements.queryid,
+      pg_stat_statements.calls,
+      pg_stat_statements.total_exec_time / 1000 AS total_time_seconds,
+      pg_stat_statements.min_exec_time / 1000 AS min_time_seconds,
+      pg_stat_statements.max_exec_time / 1000 AS max_time_seconds,
+      pg_stat_statements.mean_exec_time / 1000 AS mean_time_seconds,
+      pg_stat_statements.stddev_exec_time / 1000 AS stddev_time_seconds,
+      pg_stat_statements.rows,
+      pg_stat_statements.shared_blks_hit,
+      pg_stat_statements.shared_blks_read,
+      pg_stat_statements.shared_blks_dirtied,
+      pg_stat_statements.shared_blks_written,
+      pg_stat_statements.local_blks_hit,
+      pg_stat_statements.local_blks_read,
+      pg_stat_statements.local_blks_dirtied,
+      pg_stat_statements.local_blks_written,
+      pg_stat_statements.temp_blks_read,
+      pg_stat_statements.temp_blks_written,
+      pg_stat_statements.blk_read_time / 1000 AS blk_read_time_seconds,
+      pg_stat_statements.blk_write_time / 1000 AS blk_write_time_seconds
+    FROM pg_stat_statements
+    JOIN pg_roles ON (pg_stat_statements.userid = pg_roles.oid)
+    JOIN pg_database ON (pg_stat_statements.dbid = pg_database.oid)
+    WHERE pg_roles.rolname != 'rdsadmin'
+  master: true
+  metrics:
     - rolname:
         usage: "LABEL"
         description: "Name of user"
@@ -141,9 +201,6 @@ pg_stat_statements:
     - queryid:
         usage: "LABEL"
         description: "Query ID"
-    - query:
-        usage: "LABEL"
-        description: "Query"
     - calls:
         usage: "COUNTER"
         description: "Number of times executed"
@@ -201,3 +258,47 @@ pg_stat_statements:
     - blk_write_time_seconds:
         usage: "COUNTER"
         description: "Total time the statement spent writing blocks, in milliseconds (if track_io_timing is enabled, otherwise zero)"
+
+pg_process_idle:
+  query: |
+    WITH
+      metrics AS (
+        SELECT
+          application_name,
+          SUM(EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - state_change))::bigint)::float AS process_idle_seconds_sum,
+          COUNT(*) AS process_idle_seconds_count
+        FROM pg_stat_activity
+        WHERE state = 'idle'
+        GROUP BY application_name
+      ),
+      buckets AS (
+        SELECT
+          application_name,
+          le,
+          SUM(
+            CASE WHEN EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - state_change)) <= le
+              THEN 1
+              ELSE 0
+            END
+          )::bigint AS bucket
+        FROM
+          pg_stat_activity,
+          UNNEST(ARRAY[1, 2, 5, 15, 30, 60, 90, 120, 300]) AS le
+        GROUP BY application_name, le
+        ORDER BY application_name, le
+      )
+    SELECT
+      application_name,
+      process_idle_seconds_sum AS seconds_sum,
+      process_idle_seconds_count as seconds_count,
+      ARRAY_AGG(le) AS seconds,
+      ARRAY_AGG(bucket) AS seconds_bucket
+    FROM metrics JOIN buckets USING (application_name)
+    GROUP BY 1, 2, 3
+  metrics:
+    - application_name:
+        usage: "LABEL"
+        description: "Application Name"
+    - seconds:
+        usage: "HISTOGRAM"
+        description: "Idle time of server processes"
