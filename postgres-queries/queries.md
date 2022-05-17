@@ -94,8 +94,8 @@ SELECT
     )
   ) AS table_size
 FROM pg_catalog.pg_tables AS pg_tables
-WHERE pg_tables.schemaname != 'pg_catalog' AND 
-    pg_tables.schemaname != 'information_schema'
+WHERE pg_tables.schemaname != 'pg_catalog' 
+  AND pg_tables.schemaname != 'information_schema'
 ORDER BY pg_tables.schemaname ASC,
   pg_tables.tablename ASC;
 ```
