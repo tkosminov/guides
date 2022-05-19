@@ -33,5 +33,6 @@ nano /usr/share/atop/atop.daily
 Устанавливаем интервал записи лога в 30 секунд:
 
 ```bash
+LOGINTERVAL = 30
 INTERVAl=30
 ```
