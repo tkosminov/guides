@@ -100,3 +100,19 @@ cp /usr/share/zoneinfo/UTC /etc/localtime
 ```bash
 reboot
 ```
+
+## Очистка архивов
+
+Скопировать скрипт для создания бэкапа `03-postgresql/scripts/clean-pg_wal.sh` в `/var/lib/postgresql/clean-pg_wal.sh`
+
+*Скриптам необходимо выдать права на запуск*
+
+```bash
+chmod +x /var/lib/postgresql/clean-pg_wal.sh
+```
+
+Пример запуска:
+
+```bash
+/var/lib/postgresql/clean-pg_wal.sh -p /var/lib/postgresql/13/main/pg_wal -a 14 -d
+```
