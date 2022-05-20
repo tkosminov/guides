@@ -61,6 +61,7 @@ CREATE EXTENSION pg_stat_statements;
 1. Конфиг для ресурсов. Скопировать `03-postgresql/conf/custom.conf` в `/etc/postgresql/13/main/conf.d`
 2. Конфиг для аналитики. Скопировать `03-postgresql/conf/statements.conf` в `/etc/postgresql/13/main/conf.d`
 3. Конфиг для таймзоны. Скопировать `03-postgresql/conf/time.conf` в `/etc/postgresql/13/main/conf.d`
+3. Конфиг для журналов. Скопировать `03-postgresql/conf/wal.conf` в `/etc/postgresql/13/main/conf.d`
 
 ### Шаблон БД
 
