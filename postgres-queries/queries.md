@@ -14,7 +14,8 @@ SELECT
   pg_indexes.indexdef AS index_query
 FROM pg_catalog.pg_indexes AS pg_indexes
 WHERE pg_indexes.schemaname = 'public'
-ORDER BY pg_indexes.tablename ASC,
+ORDER BY pg_indexes_size(pg_indexes.indexname::regclass) DESC,
+  pg_indexes.tablename ASC,
   pg_indexes.indexname ASC;
 ```
 
@@ -82,6 +83,20 @@ WHERE pg_catalog.pg_function_is_visible(pg_proc.oid)
   AND pg_proc.prokind = 'f';
 ```
 
+## Список баз данных и их размер
+
+```sql
+SELECT
+  pg_database.datname AS db_name,  
+  pg_size_pretty(
+    pg_database_size(
+      pg_database.datname
+    )
+  ) AS db_size
+FROM pg_database
+ORDER BY pg_database_size(pg_database.datname) DESC;
+```
+
 ## Список таблиц и их размер
 
 ```sql
@@ -96,7 +111,8 @@ SELECT
 FROM pg_catalog.pg_tables AS pg_tables
 WHERE pg_tables.schemaname != 'pg_catalog' 
   AND pg_tables.schemaname != 'information_schema'
-ORDER BY pg_tables.schemaname ASC,
+ORDER BY pg_total_relation_size(pg_tables.tablename::regclass) DESC,
+  pg_tables.schemaname ASC,
   pg_tables.tablename ASC;
 ```
 
