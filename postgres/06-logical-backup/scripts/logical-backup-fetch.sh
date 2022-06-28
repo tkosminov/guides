@@ -13,10 +13,10 @@ source /var/lib/postgresql/base-config.sh
 BACKUP_DIR="/tmp/backups"
 
 # если она существует, то удаляем её
-if [ -d "${BACKUP_DIR}" ]; then rm -rf ${BACKUP_DIR}/ts; fi
+if [ -d "${BACKUP_DIR}" ]; then rm -rf ${BACKUP_DIR}/files; fi
 
 # создаем папку для sql файлов
-mkdir -p ${BACKUP_DIR}/ts
+mkdir -p ${BACKUP_DIR}/files
 
 # переходим в паку с бэкапами
 pushd ${BACKUP_DIR}
@@ -30,12 +30,12 @@ if [ "${BACKUP_DECRYPT}" = true ]; then
   lastDumpName=$(echo ${lastDump} | sed s/.tar.xz.gpg//)
 
   echo ${BACKUP_PASS_PHRASE} | gpg --batch --yes --pinentry-mode loopback --passphrase-fd 0 ${lastDump}
-  tar -C ${BACKUP_DIR}/ts -xJvf ${lastDumpName}.tar.xz
+  tar -C ${BACKUP_DIR}/files -xJvf ${lastDumpName}.tar.xz
 
   rm ${lastDumpName}.tar.xz
 else
   # если без фирования
-  tar -C ${BACKUP_DIR}/ts -xJvf ${lastDump}
+  tar -C ${BACKUP_DIR}/files -xJvf ${lastDump}
 fi
 
 # останавливаем сервисы мониторинга и пулер (чтобы не спамили ошибки в логи, пока восстанавливаемся из дампа)
@@ -45,7 +45,7 @@ service pgbouncer_exporter stop
 service pgbouncer stop
 
 # обходим циклом sql файлы
-for filename in $(ls ${BACKUP_DIR}/ts); do
+for filename in $(ls ${BACKUP_DIR}/files); do
   # название бд
   dbName=$(echo ${filename} | sed s/.sql//)
 
@@ -59,12 +59,12 @@ for filename in $(ls ${BACKUP_DIR}/ts); do
   }
   {
     # применяем бэкап
-    cat ${BACKUP_DIR}/ts/${filename} | su - postgres -c "psql -U postgres -d ${dbName}"
+    cat ${BACKUP_DIR}/files/${filename} | su - postgres -c "psql -U postgres -d ${dbName}"
   }
 done
 
 # удаляем sql файлы
-rm -rf ${BACKUP_DIR}/ts
+rm -rf ${BACKUP_DIR}/files
 
 # запускаем сервисы мониторинга и пулер
 service pgbouncer start

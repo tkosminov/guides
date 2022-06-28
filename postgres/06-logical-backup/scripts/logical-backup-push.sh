@@ -26,7 +26,7 @@ BACKUP_DIR="/tmp/backups"
 if [ -d "${BACKUP_DIR}" ]; then rm -rf ${BACKUP_DIR}; fi
 
 # создаем папку для бэкапов
-mkdir -p ${BACKUP_DIR}/ts
+mkdir -p ${BACKUP_DIR}/files
 
 # префифкс/постфикс в названии баз
 DB_SEARCH_PATTERN="production"
@@ -39,11 +39,11 @@ dbNames=$(su - postgres -c "psql -U postgres -c '\l'" | grep ${DB_SEARCH_PATTERN
 
 # делаем логический бэкап баз
 for dbName in ${dbNames}; do
-  su - postgres -c "pg_dump -U postgres ${dbName}" >"${BACKUP_DIR}/ts/${dbName}.sql"
+  su - postgres -c "pg_dump -U postgres ${dbName}" >"${BACKUP_DIR}/files/${dbName}.sql"
 done
 
 # переходим в папку с бэкапами
-pushd ${BACKUP_DIR}/ts
+pushd ${BACKUP_DIR}/files
 
 # архивируем бэкапы (архив кладем на 1 каталог выше)
 if [ "${BACKUP_ENCRYPT}" = true ]; then
@@ -58,7 +58,7 @@ fi
 pushd ${BACKUP_DIR}
 
 # удаляем .sql файлы с бэкапами
-rm -rf ${BACKUP_DIR}/ts
+rm -rf ${BACKUP_DIR}/files
 
 # загружаем бэкап в облако
 if [ "${BACKUP_ENCRYPT}" = true ]; then
