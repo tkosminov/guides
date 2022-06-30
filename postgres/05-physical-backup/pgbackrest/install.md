@@ -69,6 +69,8 @@ repo1-s3-key=
 repo1-s3-key-secret=
 ```
 
+*Эти параметры нельзя оставлять пустыми! Т.к. перестанет работать архивирование журналов и они будут накапливаться забивая место на диске.*
+
 Скопировать конфиг для pgbackrest `05-physical-backup/pgbackrest/conf/etc_pgbackrest.conf` в папку `/etc/pgbackrest/pgbackrest.conf`
 
 *После выдаем права для `postgres` на этот конфиг*
