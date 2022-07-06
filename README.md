@@ -2,5 +2,5 @@
 2. [PostgreSQL](postgres/README.md)
 3. Yandex Cloud
     1. [Незавершенные загрузки](yandex-cloud/incomplete-downloads.md)
-4. [tar](tar/index.md)
-5. [PostgreSQL-quesries](postgres-queries/queries.md)
+4. [PostgreSQL-quesries](postgres-queries/queries.md)
+5. [Common](common/index.md)

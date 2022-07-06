@@ -17,3 +17,23 @@ gpg -d ${TAR_NAME}.tar.xz.gpg | tar -xJvf -
 ```bash
 gpg -d ${TAR_NAME}.tar.xz.gpg | tar -tvJf -
 ```
+
+# Size
+
+## Место на диске
+
+```bash
+df -h
+```
+
+## Размер папки
+
+```bash
+du -sh ${DIR_PATH}
+```
+
+## Размер файлов внутри папки
+
+```bash
+ls -lah
+```

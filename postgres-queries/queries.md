@@ -263,3 +263,14 @@ SELECT pg_advisory_unlock(<PID>); /* Если не помогает, то раз
 ```sql
 SELECT date_trunc('second', CURRENT_TIMESTAMP - pg_postmaster_start_time()) as uptime;
 ```
+
+## Узнать название таблицы по oid
+
+*Названия папок, которые хранятся /var/lib/postgresql/${PG_VERSION}/main/base, и есть oid таблиц*
+
+```sql
+SELECT
+  pg_database.datname
+FROM pg_database
+WHERE pg_database.oid = <OID>;
+```
