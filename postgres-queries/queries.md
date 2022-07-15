@@ -178,6 +178,28 @@ INNER JOIN information_schema.constraint_column_usage AS ccu
 WHERE tc.constraint_type = 'FOREIGN KEY';
 ```
 
+## Список enum
+
+```sql
+SELECT
+  pg_namespace.nspname AS schema,  
+  columns.table_name,
+  columns.column_name,
+  pg_type.typname AS enum_type_name,  
+  jsonb_agg(pg_enum.enumlabel) AS enum_values
+FROM pg_type
+INNER JOIN pg_enum
+  ON pg_type.oid = pg_enum.enumtypid  
+INNER JOIN pg_catalog.pg_namespace AS pg_namespace
+  ON pg_namespace.oid = pg_type.typnamespace
+INNER JOIN information_schema.columns AS columns
+  ON columns.udt_name = pg_type.typname
+GROUP BY pg_namespace.nspname,  
+  pg_type.typname,
+  columns.table_name,
+  columns.column_name
+```
+
 ## Список внешних ключей, у которых отсутствуют индексы
 
 ```sql
