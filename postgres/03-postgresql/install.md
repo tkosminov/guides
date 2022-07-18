@@ -90,6 +90,40 @@ update pg_database set datistemplate = TRUE where datname = 'template1';
 update pg_database set datallowconn = FALSE where datname = 'template0';
 ```
 
+### Шаблон БД - Способ 2
+
+**Способ требует переустановки PostgreSQL**
+
+список доступных локалей:
+
+```bash
+locale -a
+```
+
+отредактировать `nano /etc/default/locale`:
+
+```conf
+LANG="en_US.utf8"
+LANGUAGE="en_US.utf8"
+LC_ALL="en_US.utf8"
+```
+
+перезапустить сервер:
+
+```bash
+reboot
+```
+
+удалить PostgreSQL: 
+
+```bash
+apt -y remove postgresql-13 postgresql-client-13
+
+apt -y purge postgresql-13 postgresql-client-13
+```
+
+вернутся к пункту с установкой.
+
 ### Таймзона
 
 *В конфигах для постгреса указано, что таймзона должна быть `UTC`, но это может оверрайдиться таймзоной системы и её возможно так же нужно изменить на `UTC`, после чего перезапустить сервер*
@@ -97,6 +131,8 @@ update pg_database set datallowconn = FALSE where datname = 'template0';
 ```bash
 cp /usr/share/zoneinfo/UTC /etc/localtime
 ```
+
+перезапустить сервер:
 
 ```bash
 reboot
