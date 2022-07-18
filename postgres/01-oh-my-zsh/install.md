@@ -43,3 +43,17 @@ DISABLE_UPDATE_PROMPT="true"
 ```conf
 DISABLE_AUTO_UPDATE="true"
 ```
+
+## Удаление
+
+Выдать права на запуск для скрипта для удаления:
+
+```bash
+sudo chmod 777 ~/.oh-my-zsh/tools/uninstall.sh
+```
+
+Запустить скрипт для удаления:
+
+```bash
+~/.oh-my-zsh/tools/uninstall.sh
+```
