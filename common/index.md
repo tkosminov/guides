@@ -12,7 +12,7 @@ tar cf - *.sql | xz -z | gpg --symmetric --cipher-algo aes256 --passphrase-file 
 gpg -d ${TAR_NAME}.tar.xz.gpg | tar -xJvf -
 ```
 
-## Посмотреть список файлов, не разархивируя
+## Расшифровать и посмотреть список файлов, не разархивируя
 
 ```bash
 gpg -d ${TAR_NAME}.tar.xz.gpg | tar -tvJf -
