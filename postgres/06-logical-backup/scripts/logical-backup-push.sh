@@ -35,7 +35,7 @@ DB_SEARCH_PATTERN="production"
 CURRENT_TIME=$(date +%Y-%m-%dT%H:%M:%S)
 
 # получаем имена баз
-dbNames=$(su - postgres -c "psql -U postgres -c '\l'" | grep ${DB_SEARCH_PATTERN} | awk '{print $1}')
+dbNames=$(su - postgres -c "psql -q -A -t -c \"SELECT datname FROM pg_database;\"" | grep ${DB_SEARCH_PATTERN} | awk '{print $1}')
 
 # делаем логический бэкап баз
 for dbName in ${dbNames}; do
