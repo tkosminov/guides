@@ -2,6 +2,8 @@
 
 ## Установка
 
+### Через zsh-nvm
+
 *Так как нам нужен `nodejs` для `root` пользователя, то устанавливать его будем через `nvm` как плагин для `oh-my-zsh`*
 
 ```bash
@@ -24,6 +26,16 @@ plugins+=(zsh-nvm)
 
 ```bash
 nvm install 14.18.2
+```
+
+### Стандартная
+
+```bash
+curl -s https://deb.nodesource.com/setup_16.x | sudo bash
+```
+
+```bash
+sudo apt install nodejs -y
 ```
 
 ## Путь к бинарнику
