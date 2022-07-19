@@ -1,7 +1,7 @@
 #!/bin/bash
 
 read -r -p "Вы точно хотите восстановиться из логического бэкапа? <y/N> " response
-if [ "$response" =~ ^([yY][eE][sS]|[yY])$ ]; then
+if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
   echo "Logical Fetch Start"
 else
   exit 0
