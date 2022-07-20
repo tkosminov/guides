@@ -48,31 +48,22 @@ mkdir -p ~/.bin
 ```bash
 mkdir -p /tmp/helm
 
-cd /tmp/helm && curl -L $(curl -s https://api.github.com/repos/little-angry-clouds/kubernetes-binaries-managers/releases/latest | grep browser_download_url | grep helmenv-linux-amd64.tar.gz | cut -d '"' -f 4 | head -n 1) | tar xzf -
+cd /tmp/helm && curl -L $(curl -s https://api.github.com/repos/little-angry-clouds/kubernetes-binaries-managers/releases/latest | grep browser_download_url | grep -E 'kubernetes-binaries-managers_[0-9\.\-]+_linux_amd64.tar.gz' | cut -d '"' -f 4 | head -n 1) | tar xzf -
 
-mv helmenv-linux-amd64 ~/.bin/helmenv
-mv helm-wrapper-linux-amd64 ~/.bin/helm
+mv ./helm-linux-amd64/helmenv ~/.bin/helmenv
+mv ./helm-linux-amd64/helm-wrapper ~/.bin/helm
+
+cd /tmp && rm -r ./helm
 ```
 
-### helm v2
+### helm
 
 ```bash
-helmenv install 2.17.0
-helmenv use 2.17.0
-
-helm reset
+helmenv install 3.9.1
+helmenv use 3.9.1
 ```
 
-
-## Настрйока
-
-### Сервисный аккаунт
-
-```bash
-kubectl apply -f tiller.yaml
-
-helm init --service-account tiller
-```
+## Настройка
 
 ### Базовые репозитории чартов
 

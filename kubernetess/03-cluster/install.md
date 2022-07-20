@@ -45,7 +45,7 @@ kubectl taint nodes --all node-role.kubernetes.io/master-
 kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
 ```
 
-#### Настройка сети для подов (flannel dns)
+#### Настройка сети для подов (flannel dns) **`предпочтительнее`**
 
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
@@ -62,7 +62,7 @@ kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Doc
 
 #### Создание сервисного аккаунта
 
-Шаблоны находятся в папке `cluster/roles`
+Шаблоны находятся в папке `03-cluster/roles`
 
 Переходим в папку с шаблоном и выполняем:
 
