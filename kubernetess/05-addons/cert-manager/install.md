@@ -5,12 +5,12 @@
 ```bash
 helm repo add jetstack https://charts.jetstack.io
 
-helm install cert-manager jetstack/cert-manager --namespace kube-system --version v1.6.0 --set installCRDs=true
+helm install cert-manager jetstack/cert-manager --namespace kube-system --set installCRDs=true
 ```
 
 ## Настройка
 
-Изменить `email` в файле `addons/cert-manager/issuer.yaml`
+Изменить `email` в файле `05-addons/cert-manager/issuer.yaml`
 
 ```bash
 kubectl apply -f issuer.yaml

@@ -12,8 +12,8 @@ helm install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard --na
 
 ### Если нужно открыть дэшборд в браузере вне контейнера
 
-1. В файлах `addons/dashboard/cert.yaml` изменить поля `commonName`, `dnsNames` на свой домен
-2. В файле `addons/dashboard/ingress.yaml` изменить поле `host` на свой домен
+1. В файлах `05-addons/dashboard/cert.yaml` изменить поля `commonName`, `dnsNames` на свой домен
+2. В файле `05-addons/dashboard/ingress.yaml` изменить поле `host`, `hosts` на свой домен
 
 ```bash
 kubectl apply -f cert.yaml

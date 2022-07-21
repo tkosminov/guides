@@ -8,3 +8,7 @@ spec:
     email: test@test.ru
     privateKeySecretRef:
       name: cert-cluster-issuer
+    solvers:
+      - http01:
+          ingress:
+            class: nginx

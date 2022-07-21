@@ -8,6 +8,6 @@ spec:
   issuerRef:
     name: cert-cluster-issuer
     kind: ClusterIssuer
-  commonName: 127.0.0.1
+  commonName: k8s.example.com
   dnsNames:
-  - 127.0.0.1
+  - k8s.example.com

@@ -14,10 +14,10 @@ metadata:
 spec:
   tls:
     - hosts:
-      - 127.0.0.1
+      - k8s.example.com
       secretName: kubernetes-dashboard-tls
   rules:
-    - host: 127.0.0.1
+    - host: k8s.example.com
       http:
         paths:
           - path: /
