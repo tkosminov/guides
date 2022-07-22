@@ -12,3 +12,8 @@ spec:
       - http01:
           ingress:
             class: nginx
+            podTemplate:
+              metadata:
+              spec:
+                nodeSelector:
+                  kubernetes.io/hostname: ${название_мастер_ноды}

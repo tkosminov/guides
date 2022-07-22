@@ -5,7 +5,8 @@
 ```bash
 helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/
 
-helm install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard --namespace kube-system
+helm install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard --namespace kube-system \
+                                                                            --set nodeSelector."kubernetes\.io/hostname"=${название_мастер_ноды}
 ```
 
 ## Настройка
