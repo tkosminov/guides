@@ -8,11 +8,11 @@ metadata:
 spec:
   storageClassName: manual
   capacity:
-    storage: 1Gi
+    storage: 2Gi
   accessModes:
     - ReadWriteMany
   hostPath:
-    path: "/tmp/volumes/rabbitmq"
+    path: "/volumes/rabbitmq"
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
@@ -26,4 +26,4 @@ spec:
     - ReadWriteMany
   resources:
     requests:
-      storage: 1Gi
+      storage: 2Gi
