@@ -5,7 +5,7 @@
 ```bash
 helm repo add jetstack https://charts.jetstack.io
 
-helm upgrade cert-manager jetstack/cert-manager --namespace kube-system \
+helm install cert-manager jetstack/cert-manager --namespace kube-system \
                                                 --set installCRDs=true \
                                                 --set nodeSelector."kubernetes\.io/hostname"=${название_мастер_ноды} \
                                                 --set webhook.nodeSelector."kubernetes\.io/hostname"=${название_мастер_ноды} \
