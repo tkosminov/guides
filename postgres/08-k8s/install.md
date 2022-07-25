@@ -4,7 +4,7 @@
 
 ## Настройка
 
-Редактируем файл `13-k8s/service.yaml`
+Редактируем файл `08-k8s/service.yaml`
 
 Название сервиса и порт сервиса внутри k8s:
 
@@ -24,9 +24,9 @@ metadata:
   name: postgres-external
 subsets:
   - addresses:
-      - ip: 192.168.0.2
-    ports:
-      - port: 6432
+    - ip: ${ip_сервер_с_бд}
+  ports:
+    - port: ${порт_бд}
 
 ```
 

@@ -13,6 +13,6 @@ metadata:
  name: postgres-external
 subsets:
  - addresses:
-     - ip: 192.168.0.2
+     - ip: ${ip_сервер_с_бд}
    ports:
-     - port: 6432
+     - port: ${порт_бд}

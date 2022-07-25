@@ -29,11 +29,11 @@ cd /tmp && rm -r ./pgbouncer_exporter
 mkdir -p /opt/pgbouncer_exporter && cd /opt/pgbouncer_exporter
 ```
 
-* Скопировать файл `09-monitoring/pgbouncer_exporter/pgbouncer_exporter.env` в папку `/opt/pgbouncer_exporter/pgbouncer_exporter.env`
+* Скопировать файл `monitoring/pgbouncer_exporter/pgbouncer_exporter.env` в папку `/opt/pgbouncer_exporter/pgbouncer_exporter.env`
 
 ### Создание сервиса для автозапуска
 
-* Скопировать файл `09-monitoring/pgbouncer_exporter/pgbouncer_exporter.service` в папку `/etc/systemd/system/pgbouncer_exporter.service`
+* Скопировать файл `monitoring/pgbouncer_exporter/pgbouncer_exporter.service` в папку `/etc/systemd/system/pgbouncer_exporter.service`
 
 ### Запуск сервиса
 

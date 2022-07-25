@@ -29,11 +29,11 @@ cd /tmp && rm -r ./node_exporter
 mkdir -p /opt/node_exporter && cd /opt/node_exporter
 ```
 
-* Скопировать файл `09-monitoring/node_exporter/node_exporter.env` в папку `/opt/node_exporter/node_exporter.env`
+* Скопировать файл `monitoring/node_exporter/node_exporter.env` в папку `/opt/node_exporter/node_exporter.env`
 
 ### Создание сервиса для автозапуска
 
-* Скопировать файл `09-monitoring/node_exporter/node_exporter.service` в папку `/etc/systemd/system/node_exporter.service`
+* Скопировать файл `monitoring/node_exporter/node_exporter.service` в папку `/etc/systemd/system/node_exporter.service`
 
 ### Запуск сервиса
 

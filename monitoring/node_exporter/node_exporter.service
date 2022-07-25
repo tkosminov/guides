@@ -4,8 +4,8 @@ Wants=network-online.target
 After=network-online.target
 
 [Service]
-User=postgres
-Group=postgres
+User=root
+Group=sudo
 WorkingDirectory=/opt/node_exporter
 EnvironmentFile=/opt/node_exporter/node_exporter.env
 ExecStart=/usr/local/bin/node_exporter \

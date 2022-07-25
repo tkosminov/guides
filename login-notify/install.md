@@ -8,7 +8,7 @@
 apt install jq
 ```
 
-* Скопировать скрипт уведомления `12-login-notify/scripts/login-notify.sh` в `/usr/bin/login-notify.sh`
+* Скопировать скрипт уведомления `login-notify/scripts/login-notify.sh` в `/usr/bin/login-notify.sh`
 
 Указать в файле
 * `TELEGRAM_TOKEN` - токен для телеграм бота

@@ -1,0 +1,17 @@
+[Unit]
+Description=redis_exporter for prometheus
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=root
+Group=sudo
+WorkingDirectory=/opt/redis_exporter
+EnvironmentFile=/opt/redis_exporter/redis_exporter.env
+ExecStart=/usr/local/bin/redis_exporter \
+    --web.listen-address=127.0.0.1:9121 \
+    --web.telemetry-path=/metrics
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

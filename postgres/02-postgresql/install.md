@@ -56,12 +56,12 @@ CREATE EXTENSION pg_stat_statements;
 
 ### Конфиг
 
-Рассчитать настройки используя [pgtune](https://pgtune.leopard.in.ua/#/) и вставить в файл `03-postgresql/conf/custom.conf`
+Рассчитать настройки используя [pgtune](https://pgtune.leopard.in.ua/#/) и вставить в файл `02-postgresql/conf/custom.conf`
 
-1. Конфиг для ресурсов. Скопировать `03-postgresql/conf/custom.conf` в `/etc/postgresql/13/main/conf.d`
-2. Конфиг для аналитики. Скопировать `03-postgresql/conf/statements.conf` в `/etc/postgresql/13/main/conf.d`
-3. Конфиг для таймзоны. Скопировать `03-postgresql/conf/time.conf` в `/etc/postgresql/13/main/conf.d`
-3. Конфиг для журналов. Скопировать `03-postgresql/conf/wal.conf` в `/etc/postgresql/13/main/conf.d`
+1. Конфиг для ресурсов. Скопировать `02-postgresql/conf/custom.conf` в `/etc/postgresql/13/main/conf.d`
+2. Конфиг для аналитики. Скопировать `02-postgresql/conf/statements.conf` в `/etc/postgresql/13/main/conf.d`
+3. Конфиг для таймзоны. Скопировать `02-postgresql/conf/time.conf` в `/etc/postgresql/13/main/conf.d`
+3. Конфиг для журналов. Скопировать `02-postgresql/conf/wal.conf` в `/etc/postgresql/13/main/conf.d`
 
 ### Шаблон БД
 
@@ -140,7 +140,7 @@ reboot
 
 ## Очистка архивов
 
-Скопировать скрипт для создания бэкапа `03-postgresql/scripts/clean-pg_wal.sh` в `/var/lib/postgresql/clean-pg_wal.sh`
+Скопировать скрипт для создания бэкапа `02-postgresql/scripts/clean-pg_wal.sh` в `/var/lib/postgresql/clean-pg_wal.sh`
 
 *Скриптам необходимо выдать права на запуск*
 

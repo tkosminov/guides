@@ -29,12 +29,12 @@ cd /tmp && rm -r ./postgres_exporter
 mkdir -p /opt/postgres_exporter && cd /opt/postgres_exporter
 ```
 
-* Скопировать файл `09-monitoring/postgres_exporter/postgres_exporter.env` в папку `/opt/postgres_exporter/postgres_exporter.env`
-* Скопировать файл `09-monitoring/postgres_exporter/queries.yaml` в папку `/opt/postgres_exporter/queries.yaml`
+* Скопировать файл `monitoring/postgres_exporter/postgres_exporter.env` в папку `/opt/postgres_exporter/postgres_exporter.env`
+* Скопировать файл `monitoring/postgres_exporter/queries.yaml` в папку `/opt/postgres_exporter/queries.yaml`
 
 ### Создание сервиса для автозапуска
 
-* Скопировать файл `09-monitoring/postgres_exporter/postgres_exporter.service` в папку `/etc/systemd/system/postgres_exporter.service`
+* Скопировать файл `monitoring/postgres_exporter/postgres_exporter.service` в папку `/etc/systemd/system/postgres_exporter.service`
 
 ### Запуск сервиса
 

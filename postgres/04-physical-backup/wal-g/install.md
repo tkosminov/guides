@@ -14,7 +14,7 @@ mv wal-g-pg-ubuntu-20.04-amd64 wal-g
 
 ### Конфиг постгреса
 
-Скопировать конфиг для постгреса `05-physical-backup/wal-g/conf/walg.conf` в папку `/etc/postgresql/13/main/conf.d/walg.conf`
+Скопировать конфиг для постгреса `04-physical-backup/wal-g/conf/walg.conf` в папку `/etc/postgresql/13/main/conf.d/walg.conf`
 
 Перезапустить постгрес
 
@@ -73,7 +73,7 @@ chown postgres: /var/lib/postgresql/privkey.txt
 
 #### Для создания бэкапов
 
-*Необходимо отредактировать файл `05-physical-backup/wal-g/conf/.walg.json`*
+*Необходимо отредактировать файл `04-physical-backup/wal-g/conf/.walg.json`*
 
 *Для `создания` бэкапов используется `публичный` ключ шифрования, так же указываем данные для s3 и фразу пароль для ключа*
 
@@ -87,7 +87,7 @@ chown postgres: /var/lib/postgresql/privkey.txt
 }
 ```
 
-Скопировать файл `05-physical-backup/wal-g/conf/.walg.json` в папку `/var/lib/postgresql/.walg.json`
+Скопировать файл `04-physical-backup/wal-g/conf/.walg.json` в папку `/var/lib/postgresql/.walg.json`
 
 *Этому конфигу так же нужно выдать права для `postgres`*
 
@@ -97,7 +97,7 @@ chown postgres: /var/lib/postgresql/.walg.json
 
 #### Для восстановления из бэкапа
 
-*Необходимо отредактировать файл `05-physical-backup/wal-g/conf/.walg-restore.json`*
+*Необходимо отредактировать файл `04-physical-backup/wal-g/conf/.walg-restore.json`*
 
 *Для `восстановления` из бэкапа используется `приватный` ключ шифрования, так же указываем данные для s3 и фразу пароль для ключа*
 
@@ -111,7 +111,7 @@ chown postgres: /var/lib/postgresql/.walg.json
 }
 ```
 
-Скопировать файл `05-physical-backup/wal-g/conf/.walg-restore.json` в папку `/var/lib/postgresql/.walg-restore.json`
+Скопировать файл `04-physical-backup/wal-g/conf/.walg-restore.json` в папку `/var/lib/postgresql/.walg-restore.json`
 
 *Этому конфигу так же нужно выдать права для `postgres`*
 
@@ -121,10 +121,10 @@ chown postgres: /var/lib/postgresql/.walg-restore.json
 
 ### Скрипты
 
-* Скопировать скрипт для создания бэкапа `05-physical-backup/wal-g/scripts/walg-backup-push.sh` в `/var/lib/postgresql/walg-backup-push.sh`
-* Скопировать скрипт восстановления из последнего бэкапа `05-physical-backup/wal-g/scripts/walg-backup-fetch.sh` в `/var/lib/postgresql/walg-backup-fetch.sh`
-* Скопировать скрипт для удаления устаревших бэкапов (7+ дней) `05-physical-backup/wal-g/scripts/walg-backup-delete.sh` в `/var/lib/postgresql/walg-backup-delete.sh`
-* Скопировать скрипт для удаления устаревших бэкапов (7+ дней), этот скрипт так же запускает создание логического и физического бэкапа `05-physical-backup/wal-g/scripts/walg-backup-weekly-delete.sh` в `/var/lib/postgresql/walg-backup-weekly-delete.sh`
+* Скопировать скрипт для создания бэкапа `04-physical-backup/wal-g/scripts/walg-backup-push.sh` в `/var/lib/postgresql/walg-backup-push.sh`
+* Скопировать скрипт восстановления из последнего бэкапа `04-physical-backup/wal-g/scripts/walg-backup-fetch.sh` в `/var/lib/postgresql/walg-backup-fetch.sh`
+* Скопировать скрипт для удаления устаревших бэкапов (7+ дней) `04-physical-backup/wal-g/scripts/walg-backup-delete.sh` в `/var/lib/postgresql/walg-backup-delete.sh`
+* Скопировать скрипт для удаления устаревших бэкапов (7+ дней), этот скрипт так же запускает создание логического и физического бэкапа `04-physical-backup/wal-g/scripts/walg-backup-weekly-delete.sh` в `/var/lib/postgresql/walg-backup-weekly-delete.sh`
 
 *Скриптам необходимо выдать права на запуск*
 

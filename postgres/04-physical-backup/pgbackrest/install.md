@@ -48,7 +48,7 @@ mkdir -p /etc/pgbackrest/conf.d
 
 ### Конфиг постгреса
 
-Скопировать конфиг для постгреса `05-physical-backup/pgbackrest/conf/postres_pgbackrest.conf` в папку `/etc/postgresql/13/main/conf.d/pgbackrest.conf`
+Скопировать конфиг для постгреса `04-physical-backup/pgbackrest/conf/postres_pgbackrest.conf` в папку `/etc/postgresql/13/main/conf.d/pgbackrest.conf`
 
 Перезапустить постгрес
 
@@ -58,7 +58,7 @@ service postgresql restart
 
 ### Конфиг pgbackrest
 
-*Необходимо отредактировать файл `05-physical-backup/pgbackrest/conf/etc_pgbackrest.conf`*
+*Необходимо отредактировать файл `04-physical-backup/pgbackrest/conf/etc_pgbackrest.conf`*
 
 *Необходимо указать пасс-фразу для шифрования бэкапов и данные для s3*
 
@@ -71,7 +71,7 @@ repo1-s3-key-secret=
 
 *Эти параметры нельзя оставлять пустыми! Т.к. перестанет работать архивирование журналов и они будут накапливаться забивая место на диске.*
 
-Скопировать конфиг для pgbackrest `05-physical-backup/pgbackrest/conf/etc_pgbackrest.conf` в папку `/etc/pgbackrest/pgbackrest.conf`
+Скопировать конфиг для pgbackrest `04-physical-backup/pgbackrest/conf/etc_pgbackrest.conf` в папку `/etc/pgbackrest/pgbackrest.conf`
 
 *После выдаем права для `postgres` на этот конфиг*
 
@@ -86,9 +86,9 @@ chown postgres:postgres /etc/pgbackrest/pgbackrest.conf
 
 *Скрипт для очистки бакета*
 
-*Необходимо указать данные для s3 в файле `05-physical-backup/pgbackrest/pgbackrest-stanza-delete/s3.js`*
+*Необходимо указать данные для s3 в файле `04-physical-backup/pgbackrest/pgbackrest-stanza-delete/s3.js`*
 
-Копируем папку `05-physical-backup/pgbackrest/pgbackrest-stanza-delete` в `/var/lib/postgresql/pgbackrest-stanza-delete`
+Копируем папку `04-physical-backup/pgbackrest/pgbackrest-stanza-delete` в `/var/lib/postgresql/pgbackrest-stanza-delete`
 
 *Необходимо установить node_modules*
 
@@ -98,9 +98,9 @@ cd /var/lib/postgresql/pgbackrest-stanza-delete && npm i
 
 ### Bash
 
-* Скопировать скрипт для создания бэкапа `05-physical-backup/pgbackrest/scripts/pgbackrest-backup-push.sh` в `/var/lib/postgresql/pgbackrest-backup-push.sh`
-* Скопировать скрипт восстановления из последнего бэкапа `05-physical-backup/pgbackrest/scripts/pgbackrest-backup-fetch.sh` в `/var/lib/postgresql/pgbackrest-backup-fetch.sh`
-* Скопировать скрипт для удаления устаревших бэкапов (7+ дней), этот скрипт так же запускает создание логического и физического бэкапа `05-physical-backup/pgbackrest/scripts/pgbackrest-backup-weekly-delete-node.sh` в `/var/lib/postgresql/pgbackrest-backup-weekly-delete-node.sh`
+* Скопировать скрипт для создания бэкапа `04-physical-backup/pgbackrest/scripts/pgbackrest-backup-push.sh` в `/var/lib/postgresql/pgbackrest-backup-push.sh`
+* Скопировать скрипт восстановления из последнего бэкапа `04-physical-backup/pgbackrest/scripts/pgbackrest-backup-fetch.sh` в `/var/lib/postgresql/pgbackrest-backup-fetch.sh`
+* Скопировать скрипт для удаления устаревших бэкапов (7+ дней), этот скрипт так же запускает создание логического и физического бэкапа `04-physical-backup/pgbackrest/scripts/pgbackrest-backup-weekly-delete-node.sh` в `/var/lib/postgresql/pgbackrest-backup-weekly-delete-node.sh`
 
 *pgbackrest не поддерживает удаление бэкапов. Для этого необходимо полностью удалить stanza.*
 
@@ -112,7 +112,7 @@ cd /var/lib/postgresql/pgbackrest-stanza-delete && npm i
 
 *Для нас непреемлимо останавливать постгрес раз в неделю, по этому мы используем срипт с очисткой бакета через `nodejs`.*
 *Чтобы вызывать `js` скрипты из `bash` скриптом необходимо указывать полный путь к бинарнику `nodejs`. Как узнать этот путь можно посмотреть тут - [Установка nodejs](../../02-nodejs/install.md).*
-*После чего необходимо указать правильный путь в файле скрипта `05-physical-backup/pgbackrest/scripts/pgbackrest-backup-weekly-delete-node.sh`*
+*После чего необходимо указать правильный путь в файле скрипта `04-physical-backup/pgbackrest/scripts/pgbackrest-backup-weekly-delete-node.sh`*
 
 *Скриптам необходимо выдать права на запуск*
 

@@ -39,7 +39,7 @@ cd /tmp && rm -r ./prometheus
 
 ### Создание сервиса для автозапуска
 
-* Скопировать файл `09-monitoring/prometheus/prometheus.service` в папку `/etc/systemd/system/prometheus.service`
+* Скопировать файл `monitoring/prometheus/prometheus.service` в папку `/etc/systemd/system/prometheus.service`
 
 ### Установка прав на файлы
 
@@ -65,6 +65,10 @@ nano /etc/prometheus/prometheus.yml
 - job_name: 'pgbouncer_exporter'
     static_configs:
     - targets: ['127.0.0.1:9127']
+
+- job_name: 'redis_exporter'
+    static_configs:
+    - targets: ['127.0.0.1:9121']
 
 - job_name: 'node_exporter'
     static_configs:
