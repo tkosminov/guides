@@ -15,6 +15,6 @@ metadata:
   namespace: db
 subsets:
   - addresses:
-      - ip: 192.168.0.2
+      - ip: ${ip_адрес_сервера_с_бд}
     ports:
-      - port: 6432
+      - port: ${порт_на_котором_запущена_бд}
