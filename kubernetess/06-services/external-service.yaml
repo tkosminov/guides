@@ -1,18 +1,20 @@
 kind: Service
 apiVersion: v1
 metadata:
- name: postgres-external
+  name: postgres-external
+  namespace: db
 spec:
- ports:
- - port: 5432
-   targetPort: 5432
+  ports:
+    - port: 5432
+      targetPort: 5432
 ---
 kind: Endpoints
 apiVersion: v1
 metadata:
- name: postgres-external
+  name: postgres-external
+  namespace: db
 subsets:
- - addresses:
-     - ip: 192.168.0.2
-   ports:
-     - port: 6432
+  - addresses:
+      - ip: 192.168.0.2
+    ports:
+      - port: 6432
