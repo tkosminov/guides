@@ -18,7 +18,7 @@ nano /etc/default/atop
 
 Устанавливаем интервал записи лога в 30 секунд:
 
-```bash
+```conf
 SET INTERVAl=30
 ```
 
@@ -32,7 +32,7 @@ nano /usr/share/atop/atop.daily
 
 Устанавливаем интервал записи лога в 30 секунд:
 
-```bash
+```conf
 LOGINTERVAL = 30
 INTERVAl=30
 ```

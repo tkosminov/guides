@@ -13,13 +13,19 @@ swapoff -a
 #### Создать кластер
 
 ```bash
-kubeadm init --pod-network-cidr=10.244.0.0/16 --node-name ${название_ноды}
+kubeadm init --pod-network-cidr=10.244.0.0/16 --node-name ${название_мастер_ноды}
 ```
 
 Сохраните запись kubeadm join команды, которую выведет kubeadm init. (Это нужно для присоединения slave нод) Пример:
 
 ```bash
 kubeadm join ${ip:port} --token ${token} ----discovery-token-ca-cert-hash ${ca}
+```
+
+Повторно создать токен для добавления salve-ноды можно командой:
+
+```bash
+kubeadm token create --print-join-command
 ```
 
 Чтобы использовать кластер выполните команду:
@@ -33,25 +39,19 @@ chown $(id -u):$(id -g) $HOME/.kube/config
 # export KUBECONFIG=/etc/kubernetes/admin.conf
 ```
 
-#### Если необходимо ставить поды на мастер ноду (для локального тестирования)
+#### Если необходимо ставить поды на мастер ноду
 
 ```bash
 kubectl taint nodes --all node-role.kubernetes.io/master-
 ```
 
-#### Настройка сети для подов (weave dns)
-
-```bash
-kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
-```
-
-#### Настройка сети для подов (flannel dns) **`предпочтительнее`**
+#### Настройка сети для подов (flannel dns)
 
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
 ```
 
-#### Замена dns
+#### Если необходимо заменить dns
 
 * Установить новый dns
 * Удалить старый dns
