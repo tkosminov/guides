@@ -16,6 +16,7 @@ Ubuntu 20.04+
    1. [ingress](05-addons/ingress/install.md)
    2. [cert-manager](05-addons/cert-manager/install.md)
    3. [dashboard](05-addons/dashboard/install.md)
+   4. [kube-prometheus-stack](05-addons/kube-prometheus-stack/install.md)
 6. services
    1. [postgres](06-services/postgresql/install.md)
    2. [pgbouncer](06-services/pgbouncer/install.md)
