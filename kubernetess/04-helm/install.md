@@ -59,6 +59,10 @@ helm repo add stable https://charts.helm.sh/stable
 helm repo add bitnami https://charts.bitnami.com/bitnami
 ```
 
+```bash
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+```
+
 ## Полезные команды
 
 ### Скачать чарт
