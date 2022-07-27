@@ -7,7 +7,6 @@ helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 
 helm install ingress-nginx ingress-nginx/ingress-nginx --namespace kube-system \
                                                        --set controller.hostNetwork=true \
-                                                       --set controller.dnsPolicy=ClusterFirstWithHostNet \
                                                        --set controller.kind=DaemonSet \
                                                        --set-string controller.config."enable-underscores-in-headers"="true"
 ```
