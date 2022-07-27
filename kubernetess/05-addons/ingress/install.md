@@ -7,10 +7,9 @@ helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 
 helm install ingress-nginx ingress-nginx/ingress-nginx --namespace kube-system \
                                                        --set controller.hostNetwork=true \
-                                                       --set-string controller.config."enable-underscores-in-headers"="true" \
-                                                       --set controller.nodeSelector."kubernetes\.io/hostname"=${название_мастер_ноды} \
-                                                       --set controller.admissionWebhooks.patch.nodeSelector."kubernetes\.io/hostname"=${название_мастер_ноды} \
-                                                       --set defaultBackend.nodeSelector."kubernetes\.io/hostname"=${название_мастер_ноды}
+                                                       --set controller.dnsPolicy=ClusterFirstWithHostNet \
+                                                       --set controller.kind=DaemonSet \
+                                                       --set-string controller.config."enable-underscores-in-headers"="true"
 ```
 
 ## Возможные решения некоторых проблем
