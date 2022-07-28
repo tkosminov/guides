@@ -76,3 +76,9 @@ helm pull ${REPO_NAME}/${CHART_NAME} --untar
 ```bash
 helm -n ${NAMESPACE} get values ${CHART_NAME}
 ```
+
+### Посмотреть values.yaml не установленного чарта
+
+```bash
+helm show values ${CHART_NAME}
+```

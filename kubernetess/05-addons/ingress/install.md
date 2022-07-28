@@ -2,18 +2,32 @@
 
 ## Установка 
 
-```bash
-helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+### Скачиваем чарт
 
-helm install ingress-nginx ingress-nginx/ingress-nginx --namespace kube-system \
-                                                       --set controller.hostNetwork=true \
-                                                       --set controller.kind=DaemonSet \
-                                                       --set-string controller.config."enable-underscores-in-headers"="true"
+```bash
+helm pull ingress-nginx/ingress-nginx --untar
 ```
 
-## Возможные решения некоторых проблем
+### Редактируем values.yaml:
 
-### LoadBalancer "pending"
+```yaml
+controller:
+  ...
+  hostNetwork: true
+  dnsPolicy: ClusterFirstWithHostNet
+  kind: DaemonSet
+  config:
+    - enable-underscores-in-headers: true
+```
+
+### Устанавливаем chart
+
+```bash
+helm upgrade ingress-nginx ingress-nginx/ingress-nginx  --namespace kube-system \
+                                                        -f ./values.yaml
+```
+
+<!-- ### LoadBalancer "pending"
 
 Возможно надо указать externalIPs.
 
@@ -24,4 +38,4 @@ spec:
   type: LoadBalancer
   externalIPs:
     - 192.168.0.10
-```
+``` -->
