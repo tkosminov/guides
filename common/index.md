@@ -11,7 +11,13 @@ tar cf - * | xz -z | gpg --symmetric --cipher-algo aes256 --passphrase-file <(ec
 Разархивировать:
 
 ```bash
-gpg -d ${TAR_NAME}.tar.xz.gpg | tar -xJvf -
+gpg -d ./${TAR_NAME}.tar.xz.gpg | tar -xJvf -
+```
+
+Посмотреть список файлов не разархивируя:
+
+```bash
+gpg -d ./${TAR_NAME}.tar.xz.gpg | tar -tvJf -
 ```
 
 ## Без шифрования
@@ -19,19 +25,19 @@ gpg -d ${TAR_NAME}.tar.xz.gpg | tar -xJvf -
 Архивировать:
 
 ```bash
-tar cf - * | xz -z - >../${TAR_NAME}.tar.xz
+tar cf - * | xz -z - >../taat.tar.xz
 ```
 
 Разархивировать:
 
 ```bash
-tar -C ./ -xJvf ${TAR_NAME}.tar.xz
+tar -xJvf ./${TAR_NAME}.tar.xz -C ./
 ```
 
-## Расшифровать и посмотреть список файлов, не разархивируя
+Посмотреть список файлов не разархивируя:
 
 ```bash
-gpg -d ${TAR_NAME}.tar.xz.gpg | tar -tvJf -
+tar -tvJf ./${TAR_NAME}.tar.xz
 ```
 
 # Size
