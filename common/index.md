@@ -1,15 +1,31 @@
 # Tar
 
-## Архивировать и зашифровать
+## С шифрованием
+
+Архивировать:
 
 ```bash
-tar cf - *.sql | xz -z | gpg --symmetric --cipher-algo aes256 --passphrase-file <(echo ${PASS_PHRASE}) - > ../${TAR_NAME}.tar.xz.gpg
+tar cf - * | xz -z | gpg --symmetric --cipher-algo aes256 --passphrase-file <(echo ${PASS_PHRASE}) - > ../${TAR_NAME}.tar.xz.gpg
 ```
 
-## Расшифровать и разархивировать
+Разархивировать:
 
 ```bash
 gpg -d ${TAR_NAME}.tar.xz.gpg | tar -xJvf -
+```
+
+## Без шифрования
+
+Архивировать:
+
+```bash
+tar cf - * | xz -z - >../${TAR_NAME}.tar.xz
+```
+
+Разархивировать:
+
+```bash
+tar -C ./ -xJvf ${TAR_NAME}.tar.xz
 ```
 
 ## Расшифровать и посмотреть список файлов, не разархивируя
