@@ -53,6 +53,36 @@ helm install monitoring prometheus-community/kube-prometheus-stack --namespace m
                                                                    --set kube-state-metrics.nodeSelector."kubernetes\.io/hostname"=${название_мастер_ноды}
 ```
 
+### Необходимо открыть порты для метрик, если установлен ufw
+
+*Чтобы метрики нормально собирались все эти сервисы должны быть запущены на `0.0.0.0`*
+
+`из values.yaml:`
+
+* 10250 - prometheusOperator.tls.internalPort
+* 10249 - kubeProxy.service.port / kubeProxy.service.targetPort
+* 10249 - kubeEtcd.service.port / kubeEtcd.service.targetPort
+
+`дефолтные порты из readme.md`
+
+* 10259 - kubeSchedulerDefaultSecurePort
+* 10257 - kubeControllerManagerDefaultSecurePort
+
+`из charts/prometheus-node-exporter/values.yaml:`
+
+* 9100 - service.port / service.targetPort
+
+```bash
+sudo ufw allow from ${ip_мастер_ноды} to any port 10250
+sudo ufw allow from ${ip_мастер_ноды} to any port 10249
+sudo ufw allow from ${ip_мастер_ноды} to any port 2379
+sudo ufw allow from ${ip_мастер_ноды} to any port 9100
+sudo ufw allow from ${ip_мастер_ноды} to any port 10259
+sudo ufw allow from ${ip_мастер_ноды} to any port 10257
+
+sudo ufw allow from 10.0.0.0/8
+```
+
 ## Удаление
 
 ```bash
