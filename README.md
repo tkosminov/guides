@@ -1,6 +1,17 @@
-1. [Kubernetess](kubernetess/README.md)
+1. [Kubernetes](kubernetes/README.md)
 2. [PostgreSQL](postgres/README.md)
 3. Yandex Cloud
     1. [Незавершенные загрузки](yandex-cloud/incomplete-downloads.md)
 4. [PostgreSQL-quesries](postgres-queries/queries.md)
 5. [Common](common/index.md)
+6. [atop](atop/install.md)
+7. [firewall](firewall/install.md)
+8. [login-notify](login-notify/install.md)
+9. monitoring
+    1. [grafana](monitoring/grafana/install.md)
+    2. [prometheus](monitoring/prometheus/install.md)
+    3. [node_exporter](monitoring/node_exporter/install.md)
+    4. [postgres_exporter](monitoring/postgres_exporter/install.md)
+    5. [pgbouncer_exporter](monitoring/pgbouncer_exporter/install.md)
+    6. [redis_exporter](monitoring/redis_exporter/install.md)
+10. [oh-my-zsh](oh-my-zsh/install.md)
