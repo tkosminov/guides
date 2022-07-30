@@ -23,7 +23,7 @@ controller:
 ### Устанавливаем chart
 
 ```bash
-helm upgrade ingress-nginx ingress-nginx/ingress-nginx  --namespace kube-system \
+helm install ingress-nginx ingress-nginx/ingress-nginx  --namespace kube-system \
                                                         -f ./values.yaml
 ```
 

@@ -93,7 +93,7 @@ image:
 ### Устанавливаем chart
 
 ```bash
-helm install rabbitmq bitnami/rabbitmq --namespace default \
+helm install rabbitmq bitnami/rabbitmq --namespace rabbitmq \
                                        -f ./values.yaml \
                                        --set nodeSelector."kubernetes\.io/hostname"=${название_ноды}
 ```

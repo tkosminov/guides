@@ -18,6 +18,7 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: rabbitmq-pv-claim
+  namespace: rabbitmq
   labels:
     app: rabbitmq
 spec:
