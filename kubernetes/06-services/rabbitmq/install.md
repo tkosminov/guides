@@ -80,7 +80,7 @@ extraPlugins: "rabbitmq_auth_backend_ldap rabbitmq_delayed_message_exchange"
 communityPlugins: https://github.com/rabbitmq/rabbitmq-delayed-message-exchange/releases/download/3.10.2/rabbitmq_delayed_message_exchange-3.10.2.ez
 ```
 
-Чтобы сменить версию rabbitmq (**если необходимо**) надо поменять `tag`, список которых можно посмотреть [тут](https://hub.docker.com/r/bitnami/rabbitmq/tags)
+* Чтобы сменить версию rabbitmq_delayed_message (**если необходимо**), замените ссылку в `communityPlugins` на другой релиз плагина, список которых можно посмотреть [тут](https://github.com/rabbitmq/rabbitmq-delayed-message-exchange/releases/)
 
 ```yaml
 image:
@@ -89,6 +89,8 @@ image:
   repository: bitnami/rabbitmq
   tag: 3.10.2-debian-10-r11
 ```
+
+* Чтобы сменить версию rabbitmq (**если необходимо**) надо поменять `tag`, список которых можно посмотреть [тут](https://hub.docker.com/r/bitnami/rabbitmq/tags)
 
 ### Устанавливаем chart
 
