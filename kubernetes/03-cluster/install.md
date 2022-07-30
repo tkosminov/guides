@@ -45,11 +45,18 @@ chown $(id -u):$(id -g) $HOME/.kube/config
 kubectl taint nodes --all node-role.kubernetes.io/master-
 ```
 
-#### Настройка сети для подов (flannel dns)
+#### Настройка сети для подов
 
-```bash
-kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
-```
+**`Выбрать одно из:`**
+
+* flannel dns (`предпочтительнее`):
+   ```bash
+   kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
+   ```
+* weave dns:
+   ```bash
+   kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
+   ```
 
 #### Если необходимо заменить dns
 
