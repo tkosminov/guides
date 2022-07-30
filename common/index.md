@@ -40,6 +40,26 @@ tar -xJvf ./${TAR_NAME}.tar.xz -C ./
 tar -tvJf ./${TAR_NAME}.tar.xz
 ```
 
+# zip
+
+## Установка
+
+```bash
+apt install p7zip-full
+```
+
+## Архивировать
+
+```bash
+7z a -r ../${TAR_NAME}.zip *
+```
+
+## Разархивировать
+
+```bash
+7z x ${TAR_NAME}.zip
+```
+
 # Size
 
 ## Место на диске
