@@ -38,6 +38,12 @@ apt-get update
 
 ```bash
 apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+
+curl -SL $(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep browser_download_url | grep linux-x86_64 | cut -d '"' -f 4 | head -n 1) -o /usr/local/bin/docker-compose
+
+ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+
+chmod +x /usr/local/bin/docker-compose
 ```
 
 ### Сервис
