@@ -3,7 +3,11 @@
 3. Yandex Cloud
     1. [Незавершенные загрузки](yandex-cloud/incomplete-downloads.md)
 4. [PostgreSQL-quesries](postgres-queries/queries.md)
-5. [Common](common/index.md)
+5. Common
+    1. [tar](common/tar.md)
+    2. [7z](common/7z.md)
+    3. [common](common/common.md)
+    4. [monorepo](common/monorepo.md)
 6. [atop](atop/install.md)
 7. [firewall](firewall/install.md)
 8. [login-notify](login-notify/install.md)
