@@ -231,16 +231,17 @@ GROUP BY pg_constraint.conname,
 
 ```sql
 SELECT
-  pid,
-  age(clock_timestamp(), query_start) AS runtime,
-  usename,
-  datname,
-  state,
-  query 
+  pg_stat_activity.pid,
+  pg_database.datname,
+  pg_stat_activity.state,
+  pg_stat_activity.query,
+  age(clock_timestamp(), pg_stat_activity.query_start) AS runtime_in_time,
+  EXTRACT(EPOCH FROM age(clock_timestamp(), pg_stat_activity.query_start)) AS runtime_in_seconds
 FROM pg_stat_activity 
-WHERE query NOT ILIKE '%pg_stat_activity%' 
-  -- AND query != '<IDLE>'
-ORDER BY query_start desc;
+INNER JOIN pg_database
+  ON pg_database.oid = pg_stat_activity.datid
+WHERE pg_stat_activity.query NOT ILIKE '%pg_stat_activity%' 
+ORDER BY runtime_in_seconds DESC;
 ```
 
 ## Отменить running query

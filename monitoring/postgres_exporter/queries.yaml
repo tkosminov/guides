@@ -167,6 +167,7 @@ pg_stat_statements:
       pg_roles.rolname,
       pg_database.datname,
       pg_stat_statements.queryid,
+      pg_stat_statements.query,
       pg_stat_statements.calls,
       pg_stat_statements.total_exec_time / 1000 AS total_time_seconds,
       pg_stat_statements.min_exec_time / 1000 AS min_time_seconds,
@@ -201,6 +202,9 @@ pg_stat_statements:
     - queryid:
         usage: "LABEL"
         description: "Query ID"
+    - query:
+        usage: "LABEL"
+        description: "Query"
     - calls:
         usage: "COUNTER"
         description: "Number of times executed"
@@ -302,3 +306,48 @@ pg_process_idle:
     - seconds:
         usage: "HISTOGRAM"
         description: "Idle time of server processes"
+
+pg_stat_custom_activity:
+  query: |
+    SELECT
+      pg_stat_activity.pid,
+      pg_database.datname,
+      pg_stat_activity.state,
+      pg_stat_activity.query,
+      EXTRACT(EPOCH FROM age(clock_timestamp(), pg_stat_activity.query_start)) AS runtime
+    FROM pg_stat_activity
+    INNER JOIN pg_database
+      ON pg_database.oid = pg_stat_activity.datid
+    WHERE pg_stat_activity.query NOT ILIKE '%pg_stat_activity%'
+  metrics:
+    - pid:
+        usage: "LABEL"
+        description: "Process Pid"
+    - datname:
+        usage: "LABEL"
+        description: "Name of current database"
+    - state:
+        usage: "LABEL"
+        description: "Query state"
+    - query:
+        usage: "LABEL"
+        description: "Query"
+    - runtime:
+        usage: "COUNTER"
+        description: "Query runtime"
+
+pg_database:
+  query: |
+    SELECT
+      pg_database.datname,  
+      pg_database_size(
+        pg_database.datname
+      ) AS size_in_bytes
+    FROM pg_database
+  metrics:
+    - datname:
+        usage: "LABEL"
+        description: "Name of current database"
+    - size_in_bytes:
+        usage: "COUNTER"
+        description: "Size of current database"

@@ -43,3 +43,9 @@ systemctl daemon-reload
 systemctl enable postgres_exporter
 systemctl start postgres_exporter
 ```
+
+### Grafana dashboard
+
+Импортируем `monitoring/postgres_exporter/grafana_dashboard.json` в графану через `Import via panel json` на странице иморта бордов.
+
+Далее заходим в созданую борду и для каждой панели меняем источник данных на свой.
