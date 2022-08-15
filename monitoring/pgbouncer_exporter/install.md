@@ -33,6 +33,7 @@ mkdir -p /opt/pgbouncer_exporter && cd /opt/pgbouncer_exporter
 
 ### Создание сервиса для автозапуска
 
+* Поменять в файле `monitoring/pgbouncer_exporter/pgbouncer_exporter.service` авторизационные данные
 * Скопировать файл `monitoring/pgbouncer_exporter/pgbouncer_exporter.service` в папку `/etc/systemd/system/pgbouncer_exporter.service`
 
 ### Запуск сервиса

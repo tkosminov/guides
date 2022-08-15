@@ -34,6 +34,7 @@ mkdir -p /opt/postgres_exporter && cd /opt/postgres_exporter
 
 ### Создание сервиса для автозапуска
 
+* Поменять в файле `monitoring/postgres_exporter/postgres_exporter.service` авторизационные данные
 * Скопировать файл `monitoring/postgres_exporter/postgres_exporter.service` в папку `/etc/systemd/system/postgres_exporter.service`
 
 ### Запуск сервиса
