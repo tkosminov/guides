@@ -40,6 +40,8 @@ CREATE USER stats WITH ENCRYPTED PASSWORD 'stats';
 
 ### Extension для сбора аналитики
 
+*track planning and execution statistics of all SQL statements executed*
+
 ```psql
 SELECT * FROM pg_available_extensions 
 WHERE name = 'pg_stat_statements' AND 
@@ -50,6 +52,22 @@ WHERE name = 'pg_stat_statements' AND
 
 ```psql
 CREATE EXTENSION pg_stat_statements;
+```
+
+### Extension для улучшенного поиска
+
+*text similarity measurement and index searching based on trigrams*
+
+```psql
+SELECT * FROM pg_available_extensions 
+WHERE name = 'pg_trgm' AND 
+  installed_version IS NOT NULL;
+```
+
+Если результат запроса - пустая таблица, то надо исполнить:
+
+```psql
+CREATE EXTENSION pg_trgm;
 ```
 
 ## Настройка конфигов
