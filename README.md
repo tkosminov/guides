@@ -8,6 +8,7 @@
     2. [7z](common/7z.md)
     3. [common](common/common.md)
     4. [monorepo](common/monorepo.md)
+    5. [disk-speed](common/dist-speed.md)
 6. [atop](atop/install.md)
 7. [firewall](firewall/install.md)
 8. [login-notify](login-notify/install.md)
