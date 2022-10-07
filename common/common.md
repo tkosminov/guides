@@ -37,3 +37,19 @@ usermod -aG sudo ${username}
 ```bash
 echo "${username}  ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/${username}
 ```
+
+# Список дисков
+
+```bash
+fdisk -l
+```
+
+# Скорость диска
+
+```bash
+apt install hdparm
+```
+
+```bash
+hdparm -t ${disk}
+```
