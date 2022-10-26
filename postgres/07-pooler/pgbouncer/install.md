@@ -14,52 +14,34 @@ systemctl enable pgbouncer
 nano -w /etc/pgbouncer/pgbouncer.ini
 ```
 
-### Запускаем баунсер в локальной сети
-
-```ini
-listen_addr = 0.0.0.0
-listen_port = 6432
-```
-
-### Настройка режима работы пула
-
-```ini
-pool_mode = transaction
-```
-
-### Настройка юзера для выгрузки статистики
-
-```ini
-stats_users = stats
-```
-
-### Настройка количества подключений и размер пула
-
-```ini
-max_client_conn = 1000
-```
-
 ### Добавление настроек соединения с базой данных
 
 ```ini
 [databases]
 * = host=localhost port=5432
-```
 
-### Настройка параметров старта
+listen_addr = 0.0.0.0
+listen_port = 6432
 
-```ini
-ignore_startup_parameters = extra_float_digits
-```
-
-### Настройка типа аутентификации
-
-```ini
 auth_type = md5
 auth_file = /etc/pgbouncer/userlist.txt
+
+stats_users = postgres
+
+pool_mode = transaction
+
+ignore_startup_parameters = extra_float_digits
+
+max_client_conn = 1000
+default_pool_size = 100
+
+server_lifetime = 600
+server_idle_timeout = 300
 ```
 
-#### Узнаем пароль от дефолтного юзера
+### Настраиваем вход по md5
+
+Получаем список пользователей и их пароли в md5
 
 ```bash
 su - postgres
@@ -68,22 +50,27 @@ psql -qAtX -F ' ' -U postgres -c 'select rolname, rolpassword from pg_authid'
 ```
 
 Пример вывода:
+
 ```log
 postgres md5...
-stats md5...
 ```
 
-#### Редактируем файл с юзерами
+Редактируем файл с паролями:
 
 ```bash
 nano -w /etc/pgbouncer/userlist.txt
 ```
 
-Указываем в нем юзера с паролем
+Указываем в нем юзера и его md5-хэш
 
 ```txt
 "postgres" "md5..."
-"stats" "md5..."
+```
+
+### После изменения настроек необходимо сделать рестарт сервиса
+
+```bash
+systemctl restart pgbouncer
 ```
 
 Проверить что все работает можно командой

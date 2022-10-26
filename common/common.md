@@ -37,3 +37,61 @@ usermod -aG sudo ${username}
 ```bash
 echo "${username}  ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/${username}
 ```
+
+# Locale
+
+список доступных локалей:
+
+```bash
+locale -a
+```
+
+отредактировать `nano /etc/default/locale`:
+
+```conf
+LANG="en_US.utf8"
+LANGUAGE="en_US.utf8"
+LC_ALL="en_US.utf8"
+```
+
+перезапустить сервер:
+
+```bash
+reboot
+```
+
+# Timezone
+
+```bash
+cp /usr/share/zoneinfo/UTC /etc/localtime
+```
+
+перезапустить сервер:
+
+```bash
+reboot
+```
+
+# Network scan
+
+```bash
+sudo apt-get install arp-scan
+```
+
+Localnet:
+
+```bash
+sudo arp-scan --localnet
+```
+
+WiFi:
+
+```bash
+sudo arp-scan -l --interface=wlan0
+```
+
+Ethernet:
+
+```bash
+sudo arp-scan -l --interface=eth0
+```

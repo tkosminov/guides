@@ -13,7 +13,7 @@
 *Необходимо установить node_modules*
 
 ```bash
-cd /var/lib/postgresql/logical-upload && npm i
+cd /var/lib/postgresql/logical-upload && npm ci
 ```
 
 ### Bash

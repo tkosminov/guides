@@ -8,7 +8,7 @@ source /var/lib/postgresql/base-config.sh
 /bin/bash /var/lib/postgresql/logical-backup-push.sh
 
 # После мы удаляем текущую станзу
-/root/.nvm/versions/node/v14.18.2/bin/node /var/lib/postgresql/pgbackrest-stanza-delete/index.js stanzaDelete
+/usr/bin/node /var/lib/postgresql/pgbackrest-stanza-delete/index.js stanzaDelete
 
 # И создаем новый бэкап
 /bin/bash /var/lib/postgresql/pgbackrest-backup-push.sh

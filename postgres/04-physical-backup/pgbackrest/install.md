@@ -11,9 +11,9 @@ apt install build-essential libssl-dev libxml2-dev libperl-dev zlib1g-dev libpq-
 ```bash
 mkdir -p /tmp/pgbackrest
 
-cd /tmp/pgbackrest && curl -L https://github.com/pgbackrest/pgbackrest/archive/release/2.38.tar.gz | tar xzf -
+cd /tmp/pgbackrest && curl -L https://github.com/pgbackrest/pgbackrest/archive/release/2.41.tar.gz | tar xzf -
 
-cd /tmp/pgbackrest/pgbackrest-release-2.38/src && ./configure
+cd /tmp/pgbackrest/pgbackrest-release-2.41/src && ./configure
 ```
 
 *Если при выполнении команды `./configure` сыпятся ошибки на отсутствие `libxml`, то надо залинковать его*
@@ -25,13 +25,13 @@ ln -s /usr/include/libxml2/libxml /usr/include/libxml
 *Билдим бинарник и кладем его в `/usr/local/bin`, затем удаляем исходники*
 
 ```bash
-make -s -C /tmp/pgbackrest/pgbackrest-release-2.38/src
+make -s -C /tmp/pgbackrest/pgbackrest-release-2.41/src
 
-cp /tmp/pgbackrest/pgbackrest-release-2.38/src/pgbackrest /usr/local/bin
+cp /tmp/pgbackrest/pgbackrest-release-2.41/src/pgbackrest /usr/local/bin
 
 chmod 755 /usr/local/bin/pgbackrest
 
-rm -r /tmp/pgbackrest
+cd /tmp && rm -r /tmp/pgbackrest
 ```
 
 *Создаем папки для логов и конфигов, и выдаем на них права*
@@ -93,7 +93,7 @@ chown postgres:postgres /etc/pgbackrest/pgbackrest.conf
 *Необходимо установить node_modules*
 
 ```bash
-cd /var/lib/postgresql/pgbackrest-stanza-delete && npm i
+cd /var/lib/postgresql/pgbackrest-stanza-delete && npm ci
 ```
 
 ### Bash

@@ -59,19 +59,19 @@ nano /etc/prometheus/prometheus.yml
 
 ```yml
 - job_name: 'postgres_exporter'
-    static_configs:
+  static_configs:
     - targets: ['127.0.0.1:9187']
 
 - job_name: 'pgbouncer_exporter'
-    static_configs:
+  static_configs:
     - targets: ['127.0.0.1:9127']
 
 - job_name: 'redis_exporter'
-    static_configs:
+  static_configs:
     - targets: ['127.0.0.1:9121']
 
 - job_name: 'node_exporter'
-    static_configs:
+  static_configs:
     - targets: ['127.0.0.1:9167']
 ```
 
