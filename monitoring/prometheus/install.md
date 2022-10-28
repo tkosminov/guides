@@ -73,6 +73,10 @@ nano /etc/prometheus/prometheus.yml
 - job_name: 'node_exporter'
   static_configs:
     - targets: ['127.0.0.1:9167']
+
+- job_name: 'mongodb_exporter'
+  static_configs:
+    - targets: ['127.0.0.1:9216']
 ```
 
 ### Запуск сервиса

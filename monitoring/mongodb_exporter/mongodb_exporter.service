@@ -1,0 +1,17 @@
+[Unit]
+Description=redis_exporter for prometheus
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=root
+Group=sudo
+WorkingDirectory=/opt/mongodb_exporter
+EnvironmentFile=/opt/mongodb_exporter/mongodb_exporter.env
+ExecStart=/usr/local/bin/mongodb_exporter \
+    --web.listen-address=127.0.0.1:9216 \
+    --web.telemetry-path=/metrics
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
