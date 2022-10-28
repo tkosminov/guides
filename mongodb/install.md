@@ -50,7 +50,30 @@ db.createUser(
     pwd: "password",
     roles: [ { role: "userAdminAnyDatabase", db: "admin" }, 
              { role: "dbAdminAnyDatabase", db: "admin" }, 
+             { role: "clusterMonitor", db: "admin" }, 
              { role: "readWriteAnyDatabase", db: "admin" } ]
   }
+)
+```
+
+Добавить роль:
+
+```mongosh
+db.grantRolesToUser(
+    "admin",
+    [
+      { role: "clusterMonitor", db: "admin" }
+    ]
+)
+```
+
+Убрать роль:
+
+```mongosh
+db.revokeRolesFromUser(
+    "admin",
+    [
+      { role: "clusterMonitor", db: "accounts" }
+    ]
 )
 ```
