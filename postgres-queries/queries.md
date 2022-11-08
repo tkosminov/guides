@@ -346,6 +346,35 @@ WHERE pg_stat_activity.query NOT ILIKE '%pg_stat_activity%'
 ORDER BY runtime_in_seconds DESC;
 ```
 
+## Список блокировок
+
+```sql
+SELECT
+  COALESCE(blockingl.relation::regclass::text, blockingl.locktype) AS locked_item,
+  CURRENT_TIMESTAMP - blockeda.query_start AS waiting_duration,
+  blockeda.pid AS blocked_pid,
+  blockeda.query AS blocked_query,
+  blockedl.mode AS blocked_mode,
+  blockinga.pid AS blocking_pid,
+  blockinga.query AS blocking_query,
+  blockingl.mode AS blocking_mode
+FROM pg_locks AS blockedl
+INNER JOIN pg_stat_activity AS blockeda
+  ON blockedl.pid = blockeda.pid
+INNER JOIN pg_locks AS blockingl
+  ON (
+      blockingl.transactionid = blockedl.transactionid
+    OR blockingl.relation = blockedl.relation
+    AND blockingl.locktype = blockedl.locktype
+  )
+  AND blockedl.pid != blockingl.pid
+INNER JOIN pg_stat_activity blockinga
+  ON blockingl.pid = blockinga.pid
+  AND blockinga.datid = blockeda.datid
+WHERE NOT blockedl.granted
+  AND blockinga.datname = current_database();
+```
+
 ## Отменить running query
 
 ```sql
