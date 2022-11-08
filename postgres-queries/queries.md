@@ -19,6 +19,31 @@ ORDER BY pg_indexes_size(pg_indexes.indexname::regclass) DESC,
   pg_indexes.indexname ASC;
 ```
 
+## Использование индексов
+
+```sql
+SELECT
+  pg_stat_user_tables.relname AS table_name,
+  pg_stat_user_tables.n_live_tup AS rows_in_table,
+  100 * pg_stat_user_tables.idx_scan / (pg_stat_user_tables.seq_scan + pg_stat_user_tables.idx_scan) AS percent_of_times_index_used
+FROM pg_stat_user_tables 
+WHERE pg_stat_user_tables.seq_scan + pg_stat_user_tables.idx_scan > 0 
+ORDER BY pg_stat_user_tables.n_live_tup DESC;
+```
+
+## Неиспользуемые индексы
+
+```sql
+SELECT
+  pg_stat_all_indexes.schemaname AS table_schema,
+  pg_stat_all_indexes.relname AS table_name,
+  pg_stat_all_indexes.indexrelname AS index_name
+FROM pg_stat_all_indexes
+WHERE pg_stat_all_indexes.idx_scan = 0
+  AND schemaname != 'pg_toast'
+  AND schemaname != 'pg_catalog';
+```
+
 ## Список констрейнтов
 
 ```sql
@@ -83,6 +108,32 @@ WHERE pg_catalog.pg_function_is_visible(pg_proc.oid)
   AND pg_proc.prokind = 'f';
 ```
 
+## Список схем в базе данных
+
+```sql
+SELECT
+  pg_stat_user_tables.schemaname,
+  pg_size_pretty(
+    SUM(pg_relation_size(pg_class.oid))
+  ) AS table_size, 
+  pg_size_pretty(
+    SUM(pg_total_relation_size(pg_class.oid) - pg_relation_size(pg_class.oid))
+  ) AS index_size, 
+  pg_size_pretty(
+    SUM(pg_total_relation_size(pg_class.oid))
+  ) AS total_size,
+  SUM(pg_stat_user_tables.n_live_tup) AS rows_in_tables
+FROM pg_class
+LEFT JOIN pg_namespace
+  ON pg_namespace.oid = pg_class.relnamespace
+INNER JOIN pg_stat_user_tables
+  ON pg_class.relname = pg_stat_user_tables.relname
+WHERE pg_namespace.nspname NOT IN ('pg_catalog', 'information_schema')
+  AND pg_class.relkind != 'i'
+  AND pg_namespace.nspname !~ '^pg_toast'
+GROUP BY pg_stat_user_tables.schemaname;
+```
+
 ## Список баз данных и их размер
 
 ```sql
@@ -101,19 +152,23 @@ ORDER BY pg_database_size(pg_database.datname) DESC;
 
 ```sql
 SELECT
-  pg_tables.schemaname AS table_schema,
-  pg_tables.tablename AS table_name,
+  pg_stat_user_tables.schemaname AS table_schema,
+  pg_class.relname AS table_name,
+  pg_size_pretty(pg_relation_size(pg_class.oid)) AS table_size,
   pg_size_pretty(
-    pg_total_relation_size(
-      pg_tables.tablename::regclass
-    )
-  ) AS table_size
-FROM pg_catalog.pg_tables AS pg_tables
-WHERE pg_tables.schemaname != 'pg_catalog' 
-  AND pg_tables.schemaname != 'information_schema'
-ORDER BY pg_total_relation_size(pg_tables.tablename::regclass) DESC,
-  pg_tables.schemaname ASC,
-  pg_tables.tablename ASC;
+    pg_total_relation_size(pg_class.oid) - pg_relation_size(pg_class.oid)
+  ) AS index_size,
+  pg_size_pretty(pg_total_relation_size(pg_class.oid)) AS total_size,
+  pg_stat_user_tables.n_live_tup AS rows_in_table
+FROM pg_class
+LEFT JOIN pg_namespace
+  ON pg_namespace.oid = pg_class.relnamespace
+LEFT JOIN pg_stat_user_tables
+  ON pg_class.relname = pg_stat_user_tables.relname
+WHERE pg_namespace.nspname NOT IN ('pg_catalog', 'information_schema')
+  AND pg_class.relkind != 'i'
+  AND pg_namespace.nspname !~ '^pg_toast'
+ORDER BY pg_total_relation_size(pg_class.oid) DESC;
 ```
 
 ## Список колонок таблиц(ы)
@@ -197,7 +252,7 @@ INNER JOIN information_schema.columns AS columns
 GROUP BY pg_namespace.nspname,  
   pg_type.typname,
   columns.table_name,
-  columns.column_name
+  columns.column_name;
 ```
 
 ## Список внешних ключей, у которых отсутствуют индексы
@@ -225,6 +280,53 @@ GROUP BY pg_constraint.conname,
   pg_constraint.conrelid,
   pg_constraint.confrelid,
   pg_constraint.conkey;
+```
+
+## Коэффициент кэширования
+
+```sql
+SELECT
+  SUM(pg_statio_user_tables.heap_blks_read) AS heap_read,
+  SUM(pg_statio_user_tables.heap_blks_hit) AS heap_hit,
+  SUM(pg_statio_user_tables.heap_blks_hit) / (
+    SUM(pg_statio_user_tables.heap_blks_hit) + SUM(pg_statio_user_tables.heap_blks_read)
+  ) AS ratio
+FROM pg_statio_user_tables;  
+```
+
+## Коэффициент кэшировани индексов
+
+```sql
+SELECT
+  SUM(pg_statio_user_indexes.idx_blks_read) AS idx_read,
+  SUM(pg_statio_user_indexes.idx_blks_hit) AS idx_hit,
+  (
+    SUM(pg_statio_user_indexes.idx_blks_hit) - SUM(pg_statio_user_indexes.idx_blks_read)
+  ) / SUM(pg_statio_user_indexes.idx_blks_hit) AS ratio
+FROM pg_statio_user_indexes;
+```
+
+## Проверка запусков VACUUM
+
+```sql
+SELECT
+  pg_stat_user_tables.relname AS table_name,
+  pg_stat_user_tables.last_vacuum,
+  pg_stat_user_tables.last_autovacuum 
+FROM pg_stat_user_tables;
+```
+
+## Количество открытых подключений
+
+```sql
+SELECT
+  COUNT(*) as connections,
+  pg_stat_activity.backend_type
+FROM pg_stat_activity
+WHERE pg_stat_activity.state = 'active'
+  OR pg_stat_activity.state = 'idle'
+GROUP BY pg_stat_activity.backend_type
+ORDER BY connections DESC;
 ```
 
 ## Список выполняемых запросов
