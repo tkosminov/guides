@@ -39,5 +39,5 @@ chmod +x /var/lib/postgresql/logical-backup-monthly-delete.sh
 ```bash
 cd /tmp/backups
 
-curl -L ${link}
+curl -L "${link}" --output "${FILE_NAME}"
 ```
