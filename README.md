@@ -9,6 +9,7 @@
     3. [common](common/common.md)
     4. [monorepo](common/monorepo.md)
     5. [disk-speed](common/disk-speed.md)
+    6. [swap](common/swap.md)
 6. [firewall](firewall/install.md)
 7. [login-notify](login-notify/install.md)
 8. monitoring

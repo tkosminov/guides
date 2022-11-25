@@ -2,24 +2,11 @@
 
 ## Установка
 
-### Отключение файла подкачки
+### Файл подкачки
 
-* Отключить файл подкачи
-   ```bash
-   swapoff -a
-   ```
-* Закомментировать строку с файлом подкачки в файле
-   ```bash
-   nano /etc/fstab
-   ```
-* Удалить файл подкачи (опционально), название файла в `/etc/fstab`
-   ```bash
-   rm -f $SWAP_FILE
-   ```
+Необходимо отключить [файл подкачки](../../common/swap.md)
 
-### Создание и настройка кластера
-
-#### Создать кластер
+### Создание кластера
 
 ```bash
 kubeadm init --pod-network-cidr=10.244.0.0/16 --node-name ${название_мастер_ноды}
@@ -48,13 +35,13 @@ chown $(id -u):$(id -g) $HOME/.kube/config
 # export KUBECONFIG=/etc/kubernetes/admin.conf
 ```
 
-#### Если необходимо ставить поды на мастер ноду
+### Если необходимо ставить поды на мастер ноду
 
 ```bash
 kubectl taint nodes --all node-role.kubernetes.io/master-
 ```
 
-#### Настройка сети для подов
+### Настройка сети для подов
 
 **`Выбрать одно из:`**
 
@@ -67,7 +54,7 @@ kubectl taint nodes --all node-role.kubernetes.io/master-
    kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
    ```
 
-#### Если необходимо заменить dns
+### Если необходимо заменить dns
 
 * Установить новый dns
 * Удалить старый dns
@@ -76,7 +63,7 @@ kubectl taint nodes --all node-role.kubernetes.io/master-
   systemctl restart kubelet
   ```
 
-#### Создание сервисного аккаунта
+### Создание сервисного аккаунта
 
 Шаблоны находятся в папке `03-cluster/roles`
 
@@ -94,7 +81,7 @@ kubectl get secrets
 kubectl describe secret ${ROLE_SERVICE_ACCOUNT}-token-${RANDOM_HASH}
 ```
 
-#### Если нужно получить доступ к поду снаружи
+### Если нужно получить доступ к поду снаружи
 
 1. Можно сделать прокси для сервиса:
    ```bash
@@ -105,7 +92,7 @@ kubectl describe secret ${ROLE_SERVICE_ACCOUNT}-token-${RANDOM_HASH}
    kubectl exec -it $POD_NAME sh
    ```
 
-### Удаление кластера
+## Удаление кластера
 
 ```bash
 kubeadm reset
