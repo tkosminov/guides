@@ -1,8 +1,10 @@
+#!/bin/bash
+
 echo "Logical Monthly Delete Start"
 
 source /var/lib/postgresql/base-config.sh
 
-/root/.nvm/versions/node/v14.18.2/bin/node /var/lib/postgresql/logical-upload/index.js deleteOldBackups
+/usr/bin/node /var/lib/postgresql/logical-upload/index.js deleteOldBackups
 
 if [ ! -z "$TELEGRAM_CHAT_ID" ] && [ ! -z "$TELEGRAM_TOKEN" ]; then
   curl -X POST \

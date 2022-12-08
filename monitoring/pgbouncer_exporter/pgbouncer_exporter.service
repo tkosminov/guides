@@ -11,7 +11,7 @@ EnvironmentFile=/opt/pgbouncer_exporter/pgbouncer_exporter.env
 ExecStart=/usr/local/bin/pgbouncer_exporter \
     --web.listen-address=127.0.0.1:9127 \
     --web.telemetry-path=/metrics \
-    --pgBouncer.connectionString="postgresql://stats:stats@localhost:6432/pgbouncer?sslmode=disable"
+    --pgBouncer.connectionString="postgresql://postgres:postgres@localhost:6432/pgbouncer?sslmode=disable"
 Restart=on-failure
 
 [Install]

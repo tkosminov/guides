@@ -63,10 +63,10 @@ rm -rf ${BACKUP_DIR}/files
 # загружаем бэкап в облако
 if [ "${BACKUP_ENCRYPT}" = true ]; then
   # если с шифрованием
-  /root/.nvm/versions/node/v14.18.2/bin/node /var/lib/postgresql/logical-upload/index.js uploadBackup -p ${BACKUP_DIR}/${CURRENT_TIME}.tar.xz.gpg
+  /usr/bin/node /var/lib/postgresql/logical-upload/index.js uploadBackup -p ${BACKUP_DIR}/${CURRENT_TIME}.tar.xz.gpg
 else
   # если без шифрования
-  /root/.nvm/versions/node/v14.18.2/bin/node /var/lib/postgresql/logical-upload/index.js uploadBackup -p ${BACKUP_DIR}/${CURRENT_TIME}.tar.xz
+  /usr/bin/node /var/lib/postgresql/logical-upload/index.js uploadBackup -p ${BACKUP_DIR}/${CURRENT_TIME}.tar.xz
 fi
 
 # размер файла
