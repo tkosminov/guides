@@ -32,12 +32,6 @@ psql -U postgres
 ALTER USER postgres PASSWORD 'postgres';
 ```
 
-### Юзер для pgbouncer метрики
-
-```psql
-CREATE USER stats WITH ENCRYPTED PASSWORD 'stats';
-```
-
 ### Extension для сбора аналитики
 
 *track planning and execution statistics of all SQL statements executed*
