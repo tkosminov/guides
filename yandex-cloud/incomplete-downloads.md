@@ -39,7 +39,7 @@ sudo pip3 install awscli
 ```
 
 ```bash
-awscli configure
+aws configure
 ```
 
 Данные используем от сервисного аккаунта.
@@ -81,4 +81,16 @@ aws --endpoint-url=https://storage.yandexcloud.net s3api list-multipart-uploads 
 
 ```bash
 aws --endpoint-url=https://storage.yandexcloud.net s3api abort-multipart-upload --bucket ${BUCKET} --key "${Key}" --upload-id "${UploadId}"
+```
+
+## Размер бакета
+
+```bash
+aws --endpoint-url=https://storage.yandexcloud.net s3 ls s3://${BUCKET} --recursive --human-readable --summarize
+```
+
+или
+
+```bash
+aws --endpoint-url=https://storage.yandexcloud.net s3api list-objects --bucket ${BUCKET} --output json --query "[sum(Contents[].Size), length(Contents[])]"
 ```

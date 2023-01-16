@@ -9,6 +9,21 @@ fi
 
 source /var/lib/postgresql/base-config.sh
 
+trap 'catch $? $LINENO' ERR
+set -e
+catch() {
+  echo "Error in ${BASH_SOURCE[1]}:${BASH_LINENO[0]}. '${BASH_COMMAND}' exited with status $1"
+
+  if [ ! -z "$TELEGRAM_CHAT_ID" ] && [ ! -z "$TELEGRAM_TOKEN" ]; then
+    curl -X POST \
+      -H 'Content-Type: application/json' \
+      -d "{\"chat_id\": \"${TELEGRAM_CHAT_ID}\", \"text\": \"🆘 При восстановлении из физического бэкапа базы данных ${BACKUP_PROJECT_NAME} возникли ошибки\nError in ${BASH_SOURCE[1]}:${BASH_LINENO[0]}. ${BASH_COMMAND} exited with status $1\", \"disable_notification\": true}" \
+      https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage
+  else
+    echo "Physical Restore chat_id and token not provided"
+  fi
+}
+
 # останавливаем сервисы мониторинга и пулер (чтобы не спамили ошибки в логи, пока постгрес выключен)
 service prometheus stop
 service postgres_exporter stop

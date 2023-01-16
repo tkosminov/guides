@@ -1,10 +1,11 @@
 {
-  "name": "logical-upload",
+  "name": "pgbackrest-delete-backups",
   "version": "1.0.0",
-  "description": "Upload Bot",
-  "main": "index.js",
+  "description": "Clear pgbackrest repository",
+  "type": "module",
+  "main": "index.mjs",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.mjs stanzaDelete"
   },
   "dependencies": {
     "aws-sdk": "^2.906.0",
