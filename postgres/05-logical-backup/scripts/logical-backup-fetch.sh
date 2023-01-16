@@ -75,7 +75,7 @@ service prometheus start
 if [ ! -z "$TELEGRAM_CHAT_ID" ] && [ ! -z "$TELEGRAM_TOKEN" ]; then
   curl -X POST \
     -H 'Content-Type: application/json' \
-    -d "{\"chat_id\": \"${TELEGRAM_CHAT_ID}\", \"text\": \"✅ Базы данных ${BACKUP_PROJECT_NAME} успешно создан восстановлена из логического бэкапа\", \"disable_notification\": true}" \
+    -d "{\"chat_id\": \"${TELEGRAM_CHAT_ID}\", \"text\": \"✅ Базы данных ${BACKUP_PROJECT_NAME} успешно восстановлены из логического бэкапа\", \"disable_notification\": true}" \
     https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage
 else
   echo "Logical Fetch chat_id and token not provided"
