@@ -1,3 +1,5 @@
 postgres/06-logical-backup/logical-upload/node_modules
 postgres/05-physical-backup/pgbackrest/pgbackrest-stanza-delete/node_modules
 redis-commander
+
+tmp
