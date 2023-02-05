@@ -3,7 +3,7 @@
 ## Установка
 
 ```bash
-apt install curl liblzo2-dev
+apt install libbrotli-dev liblzo2-dev libsodium-dev curl
 
 cd /usr/local/bin && curl -L $(curl -s https://api.github.com/repos/wal-g/wal-g/releases/latest | grep browser_download_url | grep pg-ubuntu-20.04-amd64.tar.gz | cut -d '"' -f 4 | head -n 1) | tar xzf -
 
