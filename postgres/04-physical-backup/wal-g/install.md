@@ -153,10 +153,16 @@ chmod +x /var/lib/postgresql/walg-backup-weekly-delete.sh
 /usr/local/bin/wal-g backup-push /var/lib/postgresql/13/main --config /var/lib/postgresql/.walg.json
 ```
 
-#### Удалить бэкапы старше 7-и дней
+#### Удалить бэкапы созданные за 7 дней по последнего полного бэкапа
 
 ```bash
-/usr/local/bin/wal-g delete before FIND_FULL \$(date -d '-7 days' '+\\%FT\\%TZ') --config /var/lib/postgresql/.walg.json --confirm
+/usr/local/bin/wal-g delete before FIND_FULL \$(date -d '-7 days' +\"%Y-%m-%dT%H:%M:%SZ\") --config /var/lib/postgresql/.walg.json --confirm --use-sentinel-time
+```
+
+#### Удалить бэкапы созданные до последнего полного
+
+```bash
+/usr/local/bin/wal-g delete retain FULL 1 --config /var/lib/postgresql/.walg.json --confirm --use-sentinel-time
 ```
 
 #### Восстановиться из последнего бэкапа
