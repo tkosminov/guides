@@ -113,3 +113,15 @@ kubeadm certs renew all
 ```
 
 *По идее он должен делать это сам автоматически*
+
+После замены сертификатов необходимо заменить конфиг
+
+```bash
+cd ~/.kube
+
+mv config conf.archive.${year}
+
+cp -i /etc/kubernetes/admin.conf ~/.kube/config
+
+chown $(id -u):$(id -g) ~/.kube/config 
+```
