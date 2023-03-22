@@ -97,3 +97,19 @@ kubectl describe secret ${ROLE_SERVICE_ACCOUNT}-token-${RANDOM_HASH}
 ```bash
 kubeadm reset
 ```
+
+## Сертификаты кластера
+
+Проверить:
+
+```bash
+kubeadm certs check-expiration
+```
+
+Заменить:
+
+```bash
+kubeadm certs renew all
+```
+
+*По идее он должен делать это сам автоматически*
