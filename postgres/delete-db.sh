@@ -1,4 +1,4 @@
-DB_SEARCH_PATTERN="bugfix-8756042"
+DB_SEARCH_PATTERN="bugfix-9026282-zoom_"
 
 dbNames=$(su - postgres -c "psql -q -A -t -c \"SELECT datname FROM pg_database WHERE datistemplate = false AND datname != 'postgres';\"" | grep ${DB_SEARCH_PATTERN} | awk '{print $1}')
 

@@ -150,7 +150,9 @@ cp /usr/share/zoneinfo/UTC /etc/localtime
 reboot
 ```
 
-## Очистка архивов
+## Очистка WAL
+
+### Скриптом (найден на просторах интернета)
 
 Скопировать скрипт для создания бэкапа `02-postgresql/scripts/clean-pg_wal.sh` в `/var/lib/postgresql/clean-pg_wal.sh`
 
@@ -163,5 +165,35 @@ chmod +x /var/lib/postgresql/clean-pg_wal.sh
 Пример запуска:
 
 ```bash
-/var/lib/postgresql/clean-pg_wal.sh -p /var/lib/postgresql/13/main/pg_wal -a 14 -d
+/var/lib/postgresql/clean-pg_wal.sh -p /var/lib/postgresql/13/main/pg_wal -a ${DAYS_COUNT} -d
+```
+
+### В ручную
+
+Эта команда выведет информацию о кластере:
+
+```bash
+/usr/lib/postgresql/13/bin/pg_controldata -D /var/lib/postgresql/13/main
+```
+
+Пример вывода:
+
+```bash
+Номер версии pg_control:              1300
+Номер версии каталога:                202007201
+Идентификатор системы баз данных:     7212239371412468712
+Состояние кластера БД:                в работе
+Последнее обновление pg_control:      Вт 11 апр 2023 11:34:51
+Положение последней конт. точки:      0/609DD00
+Положение REDO последней конт. точки: 0/609DCC8
+Файл WAL c REDO последней к. т.:      000000010000000000000006
+...
+```
+
+В поле `Файл WAL c REDO последней к. т.:` значение текущего WAL .
+
+Далее используя команду можно удалить все WAL, кроме текущего:
+
+```bash
+/usr/lib/postgresql/13/bin/pg_archivecleanup -d /var/lib/postgresql/13/main/pg_wal/ ${WAL_HASH}
 ```
