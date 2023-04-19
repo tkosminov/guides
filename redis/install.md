@@ -28,3 +28,17 @@ requirepass <password>
 ```bash
 sudo systemctl restart redis
 ```
+
+## Полезное
+
+### Получить список ключей
+
+```bash
+redis-cli -a ${REDIS_PASSWORD} KEYS "key_prefix_*"
+```
+
+### Удалить ключи
+
+```bash
+redis-cli -a ${REDIS_PASSWORD} KEYS "key_prefix_*" | xargs redis-cli -a ${REDIS_PASSWORD} DEL
+```
