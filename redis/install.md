@@ -34,11 +34,13 @@ sudo systemctl restart redis
 ### Получить список ключей
 
 ```bash
-redis-cli -a ${REDIS_PASSWORD} KEYS "key_prefix_*"
+redis-cli -a ${REDIS_PASSWORD} KEYS "${KEY_PATTERN}"
 ```
+
+`KEY_PATTERN` пример: `beta_*` или `beta_*_key_*_`
 
 ### Удалить ключи
 
 ```bash
-redis-cli -a ${REDIS_PASSWORD} KEYS "key_prefix_*" | xargs redis-cli -a ${REDIS_PASSWORD} DEL
+redis-cli -a ${REDIS_PASSWORD} KEYS "${KEY_PATTERN}" | xargs redis-cli -a ${REDIS_PASSWORD} DEL
 ```
