@@ -95,3 +95,9 @@ Ethernet:
 ```bash
 sudo arp-scan -l --interface=eth0
 ```
+
+# Chrome with fake media
+
+```bash
+google-chrome --disable-web-security --use-fake-device-for-media-stream
+```
