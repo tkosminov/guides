@@ -18,7 +18,7 @@ du -sh ${DIR_PATH}
 ls -lah
 ```
 
-# Пользователь
+## Пользователь
 
 Создать пользователя:
 
@@ -38,7 +38,7 @@ usermod -aG sudo ${username}
 echo "${username}  ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/${username}
 ```
 
-# Locale
+## Locale
 
 список доступных локалей:
 
@@ -60,7 +60,7 @@ LC_ALL="en_US.utf8"
 reboot
 ```
 
-# Timezone
+## Timezone
 
 ```bash
 cp /usr/share/zoneinfo/UTC /etc/localtime
@@ -72,32 +72,60 @@ cp /usr/share/zoneinfo/UTC /etc/localtime
 reboot
 ```
 
-# Network scan
+## Network scan
 
 ```bash
 sudo apt-get install arp-scan
 ```
 
-Localnet:
+### Localnet
 
 ```bash
 sudo arp-scan --localnet
 ```
 
-WiFi:
+### WiFi
 
 ```bash
 sudo arp-scan -l --interface=wlan0
 ```
 
-Ethernet:
+### Ethernet
 
 ```bash
 sudo arp-scan -l --interface=eth0
 ```
 
-# Chrome with fake media
+## Chrome
+
+### Launch with fake media
 
 ```bash
 google-chrome --disable-web-security --use-fake-device-for-media-stream
+```
+
+## Amixer
+
+### Включить/выключить микрофон
+
+```bash
+amixer -c 1 sset Capture toggle
+```
+
+### Список
+
+```bash
+amixer -c 1 scontrols
+```
+
+### Получить инфу о текущем состоянии
+
+```bash
+amixer -c 1 sget ${CONTROL_NAME}
+```
+
+### Изменить состояние
+
+```bash
+amixer -c 1 sset ${CONTROL_NAME} ${ACTION_OR_VALUE}
 ```
