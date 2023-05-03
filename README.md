@@ -24,3 +24,4 @@
 9. [oh-my-zsh](oh-my-zsh/install.md)
 10. [redis](redis/install.md)
 11. [mongodb](mongodb/install.md)
+12. [Лицензии](license/README.md)
