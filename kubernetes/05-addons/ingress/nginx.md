@@ -35,3 +35,44 @@ controller:
 helm install ingress-nginx ingress-nginx/ingress-nginx  --namespace kube-system \
                                                         -f ./values.yaml
 ```
+
+## Патч sysctl
+
+```bash
+kubectl patch deployment -n ingress-nginx ingress-nginx-controller \
+                            --type strategic \
+                            --patch-file ./patch.json
+```
+
+patch.json:
+
+```json
+{
+  "spec": {
+    "template": {
+      "spec": {
+        "initContainers": [
+          {
+            "name": "sysctl",
+            "image": "alpine:$ALPINE_VERSION",
+            "securityContext": {
+              "privileged": true
+            },
+            "command": [
+              "sh",
+              "-c",
+              "sysctl -w net.core.somaxconn=65535; sysctl -w net.ipv4.ip_local_port_range='1024 65000'; sysctl -w net.ipv4.tcp_tw_reuse=1"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
+```
+
+`$ALPINE_VERSION` можно посмотреть внутри контейнера `ingress-nginx-controller`:
+
+```bash
+cat /etc/alpine-release
+```

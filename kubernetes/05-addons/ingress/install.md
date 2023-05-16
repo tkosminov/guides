@@ -237,4 +237,5 @@ net.core.somaxconn = 65535
 * [Nginx Ingress High-Concurrency Practices](https://www.tencentcloud.com/document/product/457/38300)
 * [3 необычных кейса о сетевой подсистеме Linux](https://habr.com/ru/companies/flant/articles/343348/)
 * [Coping with the TCP TIME-WAIT state on busy Linux servers](https://vincent.bernat.ch/en/blog/2014-tcp-time-wait-state-linux)
-* 
+* [Ingress-nginx sysctl tuning](https://kubernetes.github.io/ingress-nginx/examples/customization/sysctl/)
+* [Update API Objects in Place Using kubectl patch](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/update-api-object-kubectl-patch/)
