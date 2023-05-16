@@ -7,23 +7,26 @@
 
 ## NoFile
 
-### Ingress controller
+### App
 
-* Nginx
-  * Список воркеров:
-    ```bash
-    ps aux | grep worker
-    ```
-  * Сколько файлов может открыть воркер:
-    ```bash
-    cat /proc/${PID}/limits | grep open
-    ```
-  * Сколько сейчас открыто файлов воркером:
-    ```bash
-    lsof -p ${PID} | wc -l
-    ```
-* Traefik
-  * ...
+```bash
+$SERVICE_NAME = worker # (если nginx)
+                containerd # (если containerd)
+                dockerd # (если docker)
+```
+
+* Список воркеров:
+  ```bash
+  ps aux | grep ${SERVICE_NAME}
+  ```
+* Сколько файлов может открыть воркер:
+  ```bash
+  cat /proc/${PID}/limits | grep open
+  ```
+* Сколько сейчас открыто файлов воркером:
+  ```bash
+  lsof -p ${PID} | wc -l
+  ```
 
 ### System
 
@@ -70,6 +73,9 @@
 ### Изменение лимитов на дескрипторы
 
 * [docker](../../02-container-runtime/docker/install.md)
+  
+  Для контейнеров:
+
   ```bash
   nano /etc/docker/daemon.json
   ```
@@ -85,9 +91,42 @@
   }
   ...
   ```
+
+  Для самого docker:
+
+  ```bash
+  nano /usr/lib/systemd/system/docker.service
+  ```
+
+  ```conf
+  [Service]
+  ...
+  LimitNOFILE=infinity # Или число > 0
+  LimitNPROC=infinity
+  LimitCORE=infinity
+  ...
+  ```
 * [containerd](../../02-container-runtime/containerd/install.md)
+
+  Для контейнеров:
+
   ```bash
   nano /etc/systemd/system/kubelet.service.d/0-containerd.conf
+  ```
+
+  ```conf
+  [Service]
+  ...
+  LimitNOFILE=infinity # Или число > 0
+  LimitNPROC=infinity
+  LimitCORE=infinity
+  ...
+  ```
+
+  Для самого containerd:
+
+  ```bash
+  nano /usr/lib/systemd/system/containerd.service
   ```
 
   ```conf
