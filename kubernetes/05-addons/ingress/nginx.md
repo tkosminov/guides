@@ -41,10 +41,10 @@ helm install ingress-nginx ingress-nginx/ingress-nginx  --namespace kube-system 
 ```bash
 kubectl patch deployment -n ingress-nginx ingress-nginx-controller \
                             --type strategic \
-                            --patch-file ./patch.json
+                            --patch-file ./sysctl_patch.json
 ```
 
-patch.json:
+sysctl_patch.json:
 
 ```json
 {

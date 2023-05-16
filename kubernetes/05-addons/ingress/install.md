@@ -72,6 +72,11 @@ $SERVICE_NAME = worker # (если nginx)
 
 ### Изменение лимитов на дескрипторы
 
+```bash
+$HARD_LIMIT=65535
+$SOFT_LIMIT=65535
+```
+
 * [docker](../../02-container-runtime/docker/install.md)
   
   Для контейнеров:
