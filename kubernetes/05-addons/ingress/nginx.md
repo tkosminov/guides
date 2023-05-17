@@ -39,12 +39,12 @@ helm install ingress-nginx ingress-nginx/ingress-nginx  --namespace kube-system 
 ## Патч sysctl
 
 ```bash
-kubectl patch deployment -n ingress-nginx ingress-nginx-controller \
-                            --type strategic \
-                            --patch-file ./sysctl_patch.json
+kubectl patch ds -n kube-system ingress-nginx-controller \
+                                --type strategic \
+                                --patch-file ./ingress-nginx-sysctl-patch.json
 ```
 
-sysctl_patch.json:
+ingress-nginx-sysctl-patch.json:
 
 ```json
 {
