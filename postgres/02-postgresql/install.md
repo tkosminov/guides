@@ -68,6 +68,9 @@ CREATE EXTENSION pg_trgm;
 
 *connect to other PostgreSQL databases from within a database*
 
+*Необходимо ставить в каждую бд*
+*Может быть только один такой запрос к одной бд*
+
 ```psql
 SELECT * FROM pg_available_extensions 
 WHERE name = 'dblink' AND 
