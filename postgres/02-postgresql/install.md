@@ -64,6 +64,22 @@ WHERE name = 'pg_trgm' AND
 CREATE EXTENSION pg_trgm;
 ```
 
+### Extension для cross-db запросов
+
+*connect to other PostgreSQL databases from within a database*
+
+```psql
+SELECT * FROM pg_available_extensions 
+WHERE name = 'dblink' AND 
+  installed_version IS NOT NULL;
+```
+
+Если результат запроса - пустая таблица, то надо исполнить:
+
+```psql
+CREATE EXTENSION dblink;
+```
+
 ## Настройка конфигов
 
 ### Конфиг
