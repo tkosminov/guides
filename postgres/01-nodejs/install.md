@@ -35,7 +35,7 @@ curl -s https://deb.nodesource.com/setup_16.x | sudo bash
 ```
 
 ```bash
-sudo apt install nodejs -y
+sudo apt -y install nodejs
 ```
 
 ## Путь к бинарнику

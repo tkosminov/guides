@@ -3,7 +3,7 @@
 ## Установка
 
 ```bash
-apt install libbrotli-dev liblzo2-dev libsodium-dev curl
+apt -y install libbrotli-dev liblzo2-dev libsodium-dev curl
 
 cd /usr/local/bin && curl -L $(curl -s https://api.github.com/repos/wal-g/wal-g/releases/latest | grep browser_download_url | grep pg-ubuntu-20.04-amd64.tar.gz | cut -d '"' -f 4 | head -n 1) | tar xzf -
 
@@ -31,7 +31,7 @@ service postgresql restart
 #### Установка
 
 ```bash
-apt install gnupg rng-tools
+apt -y install gnupg rng-tools
 ```
 
 #### Создаем ключ
@@ -141,10 +141,22 @@ chmod +x /var/lib/postgresql/walg-backup-weekly-delete.sh
 
 ### Команды
 
-#### Список бэкапов
+#### Проверки
 
 ```bash
 /usr/local/bin/wal-g backup-list --config /var/lib/postgresql/.walg.json
+```
+
+```bash
+/usr/local/bin/wal-g wal-show --config /var/lib/postgresql/.walg.json
+```
+
+```bash
+/usr/local/bin/wal-g wal-verify integrity --config /var/lib/postgresql/.walg.json
+```
+
+```bash
+/usr/local/bin/wal-g wal-verify timeline --config /var/lib/postgresql/.walg.json
 ```
 
 #### Создать бэкап
@@ -170,3 +182,9 @@ chmod +x /var/lib/postgresql/walg-backup-weekly-delete.sh
 ```bash
 /usr/local/bin/wal-g backup-fetch /var/lib/postgresql/13/main LATEST --config /var/lib/postgresql/.walg-restore.json
 ```
+
+### Важно!
+
+Параметры из [файла](../../02-postgresql/conf/custom.conf) на сервере где происходит восстановление из бэкапа должны совпадать с теми, которые на сервере где бэкап был сделан.
+
+*Это не обязательно должно быть совпадение по всем параметрам, но размеры журналов и количество воркеров должно совпадать.*
