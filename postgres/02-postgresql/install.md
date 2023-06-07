@@ -216,3 +216,11 @@ chmod +x /var/lib/postgresql/clean-pg_wal.sh
 ```bash
 /usr/lib/postgresql/13/bin/pg_archivecleanup -d /var/lib/postgresql/13/main/pg_wal/ ${WAL_HASH}
 ```
+
+Обновить конфиги постгреса
+
+```bash
+/usr/lib/postgresql/13/bin/pg_ctl reload -D /var/lib/postgresql/13/main
+```
+
+В `/var/lib/postgresql/13/main/postgresql.auto.conf` могут быть команды на `restore_command`. Они могут не переопределиться - надо удалить вручную перед восстановлением.
