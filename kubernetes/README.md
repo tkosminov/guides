@@ -22,6 +22,7 @@ Ubuntu 20.04+
    2. [pgbouncer](06-services/pgbouncer/install.md)
    3. [redis](06-services/redis/install.md)
    4. [rabbitmq](06-services/rabbitmq/install.md)
+7. [volume-backup](07-volume-backup/install.md)
 
 ## Полезные ссылки
 
