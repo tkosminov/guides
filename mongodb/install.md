@@ -77,3 +77,37 @@ db.revokeRolesFromUser(
     ]
 )
 ```
+
+## Базовые команды
+
+1. Консоль
+   ```bash
+   mongosh
+   ```
+2. Список БД
+   ```bash
+   db.adminCommand( { listDatabases: 1 } )
+   ```
+3. Подключиться к БД
+   ```bash
+   use $db_name
+   ```
+4. Список таблиц (коллекций) в БД
+   ```bash
+   show collections
+   ```
+5. Поиск строки в коллекции
+   ```bash
+   # db.$collection_name.find($filter, $select)
+   # $select, не обязательно передавать 
+
+   db.$collection_name.find({ $column_name: "$column_value" })
+   db.$collection_name.find({ $column_name: "$column_value" }, { _id: 1, $column_name: 1 })
+   ```
+6. Изменение строки
+   ```bash
+   # db.$collection_name.update($filter, $update, $options)
+   # $options, не обязательно передавать, если обновлять несколько строк то { multi: true }
+
+   db.$collection_name.update({ _id: ObjectId("$object_id") }, { $set: { $column_name: $column_value } })
+   ```
