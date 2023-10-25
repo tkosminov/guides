@@ -112,8 +112,6 @@ kubeadm certs check-expiration
 kubeadm certs renew all
 ```
 
-*По идее он должен делать это сам автоматически*
-
 После замены сертификатов необходимо заменить конфиг
 
 ```bash
@@ -124,4 +122,28 @@ mv config conf.archive.${year}
 cp -i /etc/kubernetes/admin.conf ~/.kube/config
 
 chown $(id -u):$(id -g) ~/.kube/config 
+```
+
+И перезапустить поды управления кластером, для этого надо перейти в папку, с конфигами этих подов:
+
+```bash
+cd /etc/kubernetes/manifests
+```
+
+И переименовать файлы в этой папке:
+
+```bash
+mv etcd.yaml etcd.yaml.old
+mv kube-apiserver.yaml kube-apiserver.yaml.old
+mv kube-controller-manager.yaml kube-controller-manager.yaml.old
+mv kube-scheduler.yaml kube-scheduler.yaml.old
+```
+
+Когда пройдет `fileCheckFrequency` (~20 секунд) поды будут перезапущены с обновленными сертификатами. После этого надо будет переименовать файлы обратно:
+
+```bash
+mv etcd.yaml.old etcd.yaml
+mv kube-apiserver.yaml.old kube-apiserver.yaml
+mv kube-controller-manager.yaml.old kube-controller-manager.yaml
+mv kube-scheduler.yaml.old kube-scheduler.yaml
 ```
