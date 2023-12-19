@@ -177,7 +177,7 @@ $SOFT_LIMIT=65535
   sysctl -p
   ```
 
-Так значение можно изменить след. образом:
+Также значение можно изменить след. образом:
 
 ```bash
 nano /etc/sysctl.d/tcp_tw_reuse.conf
@@ -200,7 +200,7 @@ net.ipv4.tcp_tw_reuse = 1
   sysctl -p
   ```
 
-Так значение можно изменить след. образом:
+Также значение можно изменить след. образом:
 
 ```bash
 nano /etc/sysctl.d/ip_local_port_range.conf
@@ -227,7 +227,7 @@ net.ipv4.ip_local_port_range = "1024 65535"
   sysctl -p
   ```
 
-Так значение можно изменить след. образом:
+Также значение можно изменить след. образом:
 
 ```bash
 nano /etc/sysctl.d/somaxconn.conf
