@@ -9,7 +9,7 @@ source /var/lib/volume/base-config.sh
 if [ ! -z "$TELEGRAM_CHAT_ID" ] && [ ! -z "$TELEGRAM_TOKEN" ]; then
   curl -X POST \
     -H 'Content-Type: application/json' \
-    -d "{\"chat_id\": \"${TELEGRAM_CHAT_ID}\", \"text\": \"✅ Старые бэкапы ассетов ${BACKUP_PROJECT_NAME} успешно удалены\n Размер ${backupSize}\", \"disable_notification\": true}" \
+    -d "{\"chat_id\": \"${TELEGRAM_CHAT_ID}\", \"text\": \"✅ Старые бэкапы ассетов ${BACKUP_PROJECT_NAME} успешно удалены\", \"disable_notification\": true}" \
     https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage
 else
   echo "Volume Monthly Delete chat_id and token not provided"
