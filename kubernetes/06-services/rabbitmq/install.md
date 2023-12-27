@@ -70,7 +70,7 @@ image:
   clusterDomain: cluster.local
 ```
 
-Если сообщение долго обрабатывается, то происходит обрыв соединения с кроликом, чтобы этого не происходило надо исправить это соедующим конфигом:
+Если сообщение долго обрабатывается, то происходит обрыв соединения с кроликом, чтобы этого не происходило надо исправить это следующим конфигом:
 
 ```yaml
 advancedConfiguration: |-
@@ -136,3 +136,23 @@ kubectl -n default port-forward $POD_NAME 15672:15672
 Dashboard будет доступен по ссылке:
 
 `http://127.0.0.1:15672`
+
+## Полезные команды для кролика
+
+Очистить все очереди:
+
+```bash
+rabbitmqctl list_queues --vhost vhost | awk '{ print $1 }' | xargs -L1 rabbitmqctl purge_queue --vhost vhost
+```
+
+Очистить очереди, в которых есть сообщения:
+
+```bash
+rabbitmqctl list_queues --vhost vhost | awk '$2!=0 { print $1 }' | xargs -L1 rabbitmqctl purge_queue --vhost vhost
+```
+
+Удалить очереди, в которых нету сообщений:
+
+```bash
+rabbitmqctl list_queues --vhost vhost | awk '$2==0 { print $1 }' | xargs -L1 rabbitmqctl delete_queue --vhost vhost
+```
