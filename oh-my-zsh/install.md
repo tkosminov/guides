@@ -15,7 +15,7 @@ apt install zsh curl wget
 *Необходимо поставить `oh-my-zsh` для `root` пользователя и для обычного. Для этого под каждым пользователем необходимо исполнить следующую команду*
 
 ```bash
-sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ```
 
 ## Настройка
@@ -29,7 +29,7 @@ ZSH_THEME="agnoster"
 в файле `.zshrc` для `%username%` пользователя меняем тему, чтобы сразу определить пользователя под которым зашли
 
 ```conf
-ZSH_THEME="maran"
+ZSH_THEME="af-magic"
 ```
 
 в файле `.zshrc` для `%username%` прописать в самом верху, `если необходимо отключить вопросы связанные с обновлениями` (спрашивать не будет - будет сразу обновлять)
@@ -56,4 +56,34 @@ sudo chmod 777 ~/.oh-my-zsh/tools/uninstall.sh
 
 ```bash
 ~/.oh-my-zsh/tools/uninstall.sh
+```
+
+## Плагины
+
+### [asdf](https://asdf-vm.com/)
+
+#### Установка
+
+```bash
+git clone https://github.com/asdf-vm/asdf.git ~/.asdf
+```
+
+#### Настройка
+
+```bash
+nano ~/.zshrc
+```
+
+```ini
+plugins+=(asdf)
+```
+
+#### Плагины
+
+```bash
+asdf plugin add ruby
+```
+
+```bash
+asdf plugin add nodejs
 ```
