@@ -83,6 +83,28 @@ WHERE name = 'dblink' AND
 CREATE EXTENSION dblink;
 ```
 
+Пример использования:
+
+```sql
+SELECT
+  table_1.id,
+  table_1.title,
+  t.title
+FROM table_1
+LEFT JOIN (
+  SELECT * FROM dblink(
+    'dbname=database_2',
+    '
+      SELECT
+        table_2.id,
+        table_2.title
+      FROM table_2
+    '
+  ) AS t(id uuid, title varchar)
+) AS t
+ON t.id = table_1.id
+```
+
 ## Настройка конфигов
 
 ### Конфиг
