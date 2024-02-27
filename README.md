@@ -11,6 +11,7 @@
     5. [disk-speed](common/disk-speed.md)
     6. [swap](common/swap.md)
     7. [ssh](common/ssh.md)
+    7. [ffmpeg](common/ffmpeg.md)
 6. [firewall](firewall/install.md)
 7. [login-notify](login-notify/install.md)
 8. monitoring
