@@ -135,20 +135,6 @@
  pg_catalog   | pg_namespace | oid         | oid       | NO          | 
 ```
 
-## constraint_column_usage
-
-```sql
-    table_schema    |       table_name        |    column_name     | data_type | is_nullable | column_default 
---------------------+-------------------------+--------------------+-----------+-------------+----------------
- information_schema | constraint_column_usage | column_name        | name      | YES         | 
- information_schema | constraint_column_usage | constraint_catalog | name      | YES         | 
- information_schema | constraint_column_usage | constraint_name    | name      | YES         | 
- information_schema | constraint_column_usage | constraint_schema  | name      | YES         | 
- information_schema | constraint_column_usage | table_catalog      | name      | YES         | 
- information_schema | constraint_column_usage | table_name         | name      | YES         | 
- information_schema | constraint_column_usage | table_schema       | name      | YES         | 
-```
-
 ## triggers
 
 ```sql

@@ -196,41 +196,96 @@ ORDER BY columns.table_schema ASC,
 SELECT
   tc.constraint_name,
   tc.table_schema,
-  tc.table_name,
+  pk.relname AS table_name,
   kcu.column_name,
   ccu.table_schema AS foreign_table_schema,
   ccu.table_name AS foreign_table_name,
   ccu.column_name AS foreign_column_name,
   (
     CASE pc.confupdtype
-      WHEN 'a' THEN 'no_action'
-      WHEN 'r' THEN 'restrict'
-      WHEN 'c' THEN 'cascade'
-      WHEN 'n' THEN 'set_null'
-      WHEN 'd' THEN 'set_default'
+      WHEN 'a' THEN 'NO ACTION'
+      WHEN 'r' THEN 'RESTRICT'
+      WHEN 'c' THEN 'CASCADE'
+      WHEN 'n' THEN 'SET NULL'
+      WHEN 'd' THEN 'SET DEFAULT'
     END
   ) AS on_update,
   (
     CASE pc.confdeltype
-      WHEN 'a' THEN 'no_action'
-      WHEN 'r' THEN 'restrict'
-      WHEN 'c' THEN 'cascade'
-      WHEN 'n' THEN 'set_null'
-      WHEN 'd' THEN 'set_default'
+      WHEN 'a' THEN 'NO ACTION'
+      WHEN 'r' THEN 'RESTRICT'
+      WHEN 'c' THEN 'CASCADE'
+      WHEN 'n' THEN 'SET NULL'
+      WHEN 'd' THEN 'SET DEFAULT'
     END
   ) AS on_delete
 FROM information_schema.table_constraints AS tc
-INNER JOIN pg_constraint AS pc
-  ON pc.conname = tc.constraint_name
-INNER JOIN information_schema.key_column_usage AS kcu
+
+INNER JOIN (
+  SELECT
+    kcu.constraint_name,
+    kcu.table_schema,
+    kcu.table_name,
+    array_agg(DISTINCT kcu.column_name) AS column_name
+  FROM information_schema.key_column_usage AS kcu
+  GROUP BY kcu.constraint_name,
+    kcu.table_schema,
+    kcu.table_name
+) AS kcu
   ON tc.constraint_name = kcu.constraint_name
   AND tc.table_schema = kcu.table_schema
-  -- AND tc.table_name = 'table_name'
-INNER JOIN information_schema.constraint_column_usage AS ccu
-  ON ccu.constraint_name = tc.constraint_name
+  AND tc.table_name = kcu.table_name
+
+INNER JOIN (
+  SELECT
+    ccu.constraint_name,
+    ccu.table_schema,
+    ccu.table_name,
+    array_agg(DISTINCT ccu.column_name) AS column_name
+  FROM information_schema.constraint_column_usage AS ccu
+  GROUP BY ccu.constraint_name,
+    ccu.table_schema,
+    ccu.table_name
+) AS ccu
+  ON ccu.constraint_name = kcu.constraint_name
   AND ccu.table_schema = tc.table_schema
-  -- AND ccu.table_name = 'table_name'
-WHERE tc.constraint_type = 'FOREIGN KEY';
+
+INNER JOIN pg_catalog.pg_constraint AS pc
+  ON pc.conname = tc.constraint_name
+INNER JOIN pg_catalog.pg_class AS pk
+  ON pk.oid = pc.conrelid
+
+WHERE tc.constraint_type = 'FOREIGN KEY'
+  -- AND (
+  --   tc.table_name = 'table_name' -- если активен этот фильтр, то выведет таблицы, на которые ссылается эта таблица
+  --   OR ccu.table_name = 'table_name' -- если активен этот фильтр, то выведет таблицы, которые ссылаются на эту таблицу
+  -- )
+
+ORDER BY tc.constraint_name ASC,
+  pk.relname ASC;
+```
+
+## Список секций таблицы
+
+```sql
+SELECT
+  nmsp_parent.nspname AS parent_schema,
+  parent.relname      AS parent,
+  nmsp_child.nspname  AS child_schema,
+  child.relname       AS child
+FROM pg_inherits
+
+INNER JOIN pg_class AS parent
+  ON pg_inherits.inhparent = parent.oid
+INNER JOIN pg_namespace AS nmsp_parent
+  ON nmsp_parent.oid  = parent.relnamespace
+
+INNER JOIN pg_class AS child
+  ON pg_inherits.inhrelid   = child.oid
+INNER JOIN pg_namespace AS nmsp_child
+  ON nmsp_child.oid   = child.relnamespace
+
+-- WHERE parent.relname = 'table_name';
 ```
 
 ## Список enum

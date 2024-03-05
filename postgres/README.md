@@ -11,9 +11,9 @@
 5. [logical-backup](05-logical-backup/install.md)
 6. [cron](06-cron/install.md)
 7. pooler
-    1. [pgbouncer](07-pooler/pgbouncer/install.md)
+    1. [pgbouncer](07-pooler/pgbouncer/install.md) - используем это
     2. [odyssey](07-pooler/odyssey/install.md)
-    3. [pgcat](07-pooler/pgcat/install.md) - используем это
+    3. [pgcat](07-pooler/pgcat/install.md)
 8. [k8s](08-k8s/install.md)
 9. migrations
    1.  [pgroll](09-migrations/pgroll/install.md)
