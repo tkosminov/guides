@@ -1,6 +1,6 @@
 # Сеть
 
-## Проверить пинг до сервера
+## Пинг
 
 ### basic
 
@@ -32,7 +32,7 @@ apt install nmap
 nmap -p $PORT $IP
 ```
 
-## Список используемых портов
+## Используемые порты
 
 ### ss
 
@@ -40,4 +40,12 @@ nmap -p $PORT $IP
 apt install iproute2
 
 ss -tulpn
+```
+
+## DNS Check
+
+```bash
+apt-get install dnsutils
+
+dig $DOMAIN
 ```
