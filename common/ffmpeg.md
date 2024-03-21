@@ -135,5 +135,5 @@ duration=10 # в секундах
 Пример:
 
 ```bash
-ffmpeg -i ${file_name}.${file_ext} -c:av copy -ss ${starts_time} -t ${duration} ${new_file_name}.${new_file_ext}
+ffmpeg -i ${file_name}.${file_ext} -c:a copy -c:v copy -ss ${starts_time} -t ${duration} ${new_file_name}.${new_file_ext}
 ```
