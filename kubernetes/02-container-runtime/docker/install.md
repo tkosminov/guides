@@ -46,6 +46,29 @@ ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
 ```
 
+### Зеркала
+
+Список актуальных зеркал docker hub (docker registry-mirrors):
+* https://mirror.gcr.io - зеркало Google
+* https://dockerhub.timeweb.cloud - зеркало Timeweb
+* https://registry.docker-cn.com - зеркало Китай
+* https://daocloud.io - зеркало Китай
+* https://cr.yandex/mirror - зеркало Яндекс
+* https://quay.io - зеркало Redhat
+* https://registry.access.redhat.com - зеркало Redhat
+* https://registry.redhat.io - зеркало Redhat
+* https://public.ecr.aws - зеркало Amazon
+
+
+```bash
+cat <<EOF | sudo tee /etc/docker/daemon.json
+{
+  "registry-mirrors": [
+    "https://mirror.gcr.io",
+  ]
+}
+```
+
 ### Сервис
 
 ```bash

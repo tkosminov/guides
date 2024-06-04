@@ -3,3 +3,4 @@ postgres/05-physical-backup/pgbackrest/pgbackrest-stanza-delete/node_modules
 redis-commander
 
 tmp
+.obsidian

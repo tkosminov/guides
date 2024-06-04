@@ -244,3 +244,4 @@ net.core.somaxconn = 65535
 * [Coping with the TCP TIME-WAIT state on busy Linux servers](https://vincent.bernat.ch/en/blog/2014-tcp-time-wait-state-linux)
 * [Ingress-nginx sysctl tuning](https://kubernetes.github.io/ingress-nginx/examples/customization/sysctl/)
 * [Update API Objects in Place Using kubectl patch](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/update-api-object-kubectl-patch/)
+* [TIME-WAIT описание из коммита](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=79e9fed460385a3d8ba0b5782e9e74405cb199b1)
