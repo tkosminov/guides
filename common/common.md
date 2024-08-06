@@ -18,6 +18,32 @@ du -sh ${DIR_PATH}
 ls -lah
 ```
 
+## lsof
+
+[Статья на хабре](https://habr.com/ru/companies/ruvds/articles/337934/)
+
+### Занимающие порт
+
+```bash
+sudo lsof -wni tcp:${PORT}
+```
+
+### Список
+
+```bash
+sudo lsof -i -P -n
+```
+
+## Копирование в буфер
+
+```bash
+sudo apt install xclip
+```
+
+```bash
+cat ${FILE} | xclip -selection clipboard
+```
+
 ## Пользователь
 
 Создать пользователя:
