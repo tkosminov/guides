@@ -1,5 +1,11 @@
 # [RabbitMQ](https://github.com/bitnami/charts/tree/master/bitnami/rabbitmq)
 
+## namespace
+
+```bash
+kubectl create namespace rabbitmq
+```
+
 ## PV and PVC
 
 Указать размер хранилища в поле `storage` в файле `rabbitmq-pv.yaml`
@@ -33,14 +39,18 @@ auth:
 ingress:
   ...
   enabled: true
+  ...
   hostname: rabbitmq.example.com
+  ...
   annotations:
     nginx.ingress.kubernetes.io/force-ssl-redirect: “true”
     nginx.ingress.kubernetes.io/rewrite-target: "/"
-    kubernetes.io/ingress.class: "nginx"
     kubernetes.io/tls-acme: "true"
     cert-manager.io/cluster-issuer: cert-cluster-issuer
+  ...
   tls: true
+  ...
+  ingressClassName: nginx
 ```
 
 Указываем созданный pvc в persistence:
@@ -84,7 +94,7 @@ advancedConfiguration: |-
 ```yaml
 extraPlugins: "rabbitmq_auth_backend_ldap rabbitmq_delayed_message_exchange"
 
-communityPlugins: https://github.com/rabbitmq/rabbitmq-delayed-message-exchange/releases/download/3.10.2/rabbitmq_delayed_message_exchange-3.10.2.ez
+communityPlugins: https://github.com/rabbitmq/rabbitmq-delayed-message-exchange/releases/download/v3.13.0/rabbitmq_delayed_message_exchange-3.13.0.ez
 ```
 
 * Чтобы сменить версию rabbitmq_delayed_message (**если необходимо**), замените ссылку в `communityPlugins` на другой релиз плагина, список которых можно посмотреть [тут](https://github.com/rabbitmq/rabbitmq-delayed-message-exchange/releases/)

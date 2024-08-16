@@ -38,7 +38,8 @@ chown $(id -u):$(id -g) $HOME/.kube/config
 ### Если необходимо ставить поды на мастер ноду
 
 ```bash
-kubectl taint nodes --all node-role.kubernetes.io/master-
+kubectl taint nodes --all node-role.kubernetes.io/control-plane-
+kubectl label nodes --all node.kubernetes.io/exclude-from-external-load-balancers-
 ```
 
 ### Настройка сети для подов
@@ -47,7 +48,7 @@ kubectl taint nodes --all node-role.kubernetes.io/master-
 
 * flannel dns (`предпочтительнее`):
    ```bash
-   kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
+   kubectl apply -f https://github.com/coreos/flannel/raw/master/Documentation/kube-flannel.yml
    ```
 * weave dns:
    ```bash

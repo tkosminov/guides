@@ -13,14 +13,22 @@ apt-get install apt-transport-https \
                 curl
 ```
 
+### Стабильная версия
+
+```bash
+GPG_STABLE_VERSION=$(curl -sL https://dl.k8s.io/release/stable.txt | cut -d '"' -f 4 | head -n 1)
+
+STABLE_VERSION=$(echo $GPG_STABLE_VERSION | awk -F "." '{print $1"."$2}')
+```
+
 ### Ключ и репозиторий
 
 ```bash
-curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+curl -fsSL "https://pkgs.k8s.io/core:/stable:/${STABLE_VERSION}/deb/Release.key" | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 ```
 
 ```bash
-echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
+echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/${STABLE_VERSION}/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
 ```
 
 ### Пакеты

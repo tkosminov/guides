@@ -6,7 +6,7 @@
 helm repo add jetstack https://charts.jetstack.io
 
 helm install cert-manager jetstack/cert-manager --namespace kube-system \
-                                                --set installCRDs=true \
+                                                --set crds.enabled=true \
                                                 --set nodeSelector."kubernetes\.io/hostname"=${название_мастер_ноды} \
                                                 --set webhook.nodeSelector."kubernetes\.io/hostname"=${название_мастер_ноды} \
                                                 --set cainjector.nodeSelector."kubernetes\.io/hostname"=${название_мастер_ноды}

@@ -2,6 +2,10 @@
 
 ## Установка
 
+```bash
+kubectl create namespace monitoring
+```
+
 ### Скачиваем чарт
 
 ```bash
@@ -23,7 +27,6 @@ grafana:
     annotations:
       nginx.ingress.kubernetes.io/force-ssl-redirect: “true”
       nginx.ingress.kubernetes.io/rewrite-target: "/"
-      kubernetes.io/ingress.class: "nginx"
       kubernetes.io/tls-acme: "true"
       cert-manager.io/cluster-issuer: cert-cluster-issuer
     tls:
