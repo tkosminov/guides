@@ -20,6 +20,7 @@ grafana:
   adminPassword: 'password'
   ...
   ingress:
+    ingressClassName: nginx
     ...
     enabled: true
     hosts:
