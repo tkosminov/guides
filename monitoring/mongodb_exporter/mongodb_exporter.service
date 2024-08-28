@@ -11,7 +11,7 @@ EnvironmentFile=/opt/mongodb_exporter/mongodb_exporter.env
 ExecStart=/usr/local/bin/mongodb_exporter \
     --mongodb.uri=mongodb://127.0.0.1:27017 \
     --web.listen-address=127.0.0.1:9216 \
-    --web.telemetry-path=/metrics
+    --web.telemetry-path=/metrics \
     --collect-all
 Restart=on-failure
 
