@@ -30,6 +30,7 @@ mkdir -p /opt/redis_exporter && cd /opt/redis_exporter
 ```
 
 * Скопировать файл `monitoring/redis_exporter/redis_exporter.env` в папку `/opt/redis_exporter/redis_exporter.env`
+* Прописать пароль в файле с энвами `/opt/redis_exporter/redis_exporter.env`
 
 ### Создание сервиса для автозапуска
 
@@ -42,3 +43,7 @@ systemctl daemon-reload
 systemctl enable redis_exporter
 systemctl start redis_exporter
 ```
+
+## Dashboard
+
+* [grafana](https://grafana.com/grafana/dashboards/763-redis-dashboard-for-prometheus-redis-exporter-1-x/)

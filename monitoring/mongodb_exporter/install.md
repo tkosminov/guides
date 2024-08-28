@@ -30,6 +30,7 @@ mkdir -p /opt/mongodb_exporter && cd /opt/mongodb_exporter
 ```
 
 * Скопировать файл `monitoring/mongodb_exporter/mongodb_exporter.env` в папку `/opt/mongodb_exporter/mongodb_exporter.env`
+* Прописать в нем логин и пароль
 
 ### Создание сервиса для автозапуска
 
@@ -42,3 +43,7 @@ systemctl daemon-reload
 systemctl enable mongodb_exporter
 systemctl start mongodb_exporter
 ```
+
+## Dashboard
+
+* [grafana](https://grafana.com/grafana/dashboards/20867-mongodb-dashboard/)

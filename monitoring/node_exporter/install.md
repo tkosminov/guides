@@ -42,3 +42,7 @@ systemctl daemon-reload
 systemctl enable node_exporter
 systemctl start node_exporter
 ```
+
+## Dashboard
+
+* [grafana](https://grafana.com/grafana/dashboards/11074)

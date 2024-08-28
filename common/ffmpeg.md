@@ -137,3 +137,11 @@ duration=10 # в секундах
 ```bash
 ffmpeg -i ${file_name}.${file_ext} -c:a copy -c:v copy -ss ${starts_time} -t ${duration} ${new_file_name}.${new_file_ext}
 ```
+
+## Объединить видео
+
+Объединяет видел в формате mp4, которые лежат в одной папке
+
+```bash
+ffmpeg -f concat -safe 0 -i <(for f in *.mp4; do echo "file '$PWD/$f'"; done) -c copy output.mp4
+```
