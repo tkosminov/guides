@@ -42,6 +42,12 @@ apt install iproute2
 ss -tulpn
 ```
 
+## lsof
+
+```bash
+lsof -i -P -n
+```
+
 ## DNS Check
 
 ```bash

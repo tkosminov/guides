@@ -36,7 +36,7 @@ sudo useradd -s /bin/true -m -r rtunnel
 
 ```bash
 sudo -u rtunnel mkdir -p /home/rtunnel/.ssh
-sudo -u rtunnel touch -p /home/rtunnel/.ssh/authorized_keys
+sudo -u rtunnel touch /home/rtunnel/.ssh/authorized_keys
 ```
 
 Копируем свой `id_rsa.pub` в созданный `/home/rtunnel/.ssh/authorized_keys`
