@@ -108,3 +108,21 @@ server {
   }
 }
 ```
+
+## Проверка сертификата
+
+1. [онлайн сервис](https://www.ssllabs.com/ssltest/analyze.html)
+2. openssl
+   ```bash
+   DOMAIN=
+
+   openssl s_client -connect $DOMAIN:443 -servername $DOMAIN -tls1_3 | openssl x509 -noout -text
+   ```
+   Если используется ESNI, в выводе команды вы увидите строку "extendedKeyUsage = TLS Web Server Authentication".
+3. curl
+   ```bash
+   DOMAIN=
+
+   curl --tlsv1.3 -v https://$DOMAIN
+   ```
+   Если ESNI используется, в выводе будет видна информация о шифровании "Encrypted Client Hello".
