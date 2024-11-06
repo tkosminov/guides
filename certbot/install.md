@@ -126,3 +126,14 @@ server {
    curl --tlsv1.3 -v https://$DOMAIN
    ```
    Если ESNI используется, в выводе будет видна информация о шифровании "Encrypted Client Hello".
+4. Создаем файл `check-domains.txt`
+   ```txt
+   example.com
+   example1.com
+   ...
+   ```
+   Запускам
+   ```bash
+   truncate -s 0 ./output_check.txt && for suite_check in $(cat check-domains.txt); do curl -4s "https://dns.google/resolve?name=${suite_check}&type=HTTPS" | jq; done >> ./output_check.txt
+   ```
+   Если в инфе о домене присутствует `ech=`, то используется ESNI
