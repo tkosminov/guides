@@ -3,6 +3,10 @@
 ## Установка
 
 ```bash
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+```
+
+```bash
 kubectl create namespace monitoring
 ```
 

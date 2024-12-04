@@ -13,11 +13,11 @@ kubectl create -f postgresql-pv.yaml
 ### Chart
 
 ```bash
-helm install postgresql bitnami/postgresql --set global.postgresql.postgresqlPassword=postgres \
-                                           --set global.postgresql.postgresqlUsername=postgres \
-                                           --set image.tag=13.4.0-debian-10-r79 \
-                                           --set persistence.existingClaim=postgresql-pv-claim \
-                                           --set volumePermissions.enabled=true
+helm install postgresql oci://registry-1.docker.io/bitnamicharts/postgresql --set global.postgresql.postgresqlPassword=postgres \
+                                                                            --set global.postgresql.postgresqlUsername=postgres \
+                                                                            --set image.tag=13.4.0-debian-10-r79 \
+                                                                            --set persistence.existingClaim=postgresql-pv-claim \
+                                                                            --set volumePermissions.enabled=true
 ```
 
 ### Host

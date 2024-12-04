@@ -26,7 +26,9 @@ requirepass <password>
 ```
 
 ```bash
-sudo systemctl restart redis
+systemctl enable redis-server
+
+systemctl restart redis-server
 ```
 
 ## Полезное

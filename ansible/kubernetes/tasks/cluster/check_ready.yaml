@@ -1,0 +1,8 @@
+- name: Add cluster
+  tags: check_cluster
+
+  block:
+    - name: Check cluster ready
+      shell: |
+        kubectl wait -A pods --all --for=condition=ready --timeout=300s
+      changed_when: false

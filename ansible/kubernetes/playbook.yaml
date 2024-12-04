@@ -1,0 +1,48 @@
+- hosts: all
+  become: true
+
+  tasks:
+    - name: Ping all Nodes
+      ping:
+
+    - import_tasks: tasks/node/prepare.yaml
+
+- hosts: all
+  become: true
+
+  vars_files:
+    - vars/env.yaml
+
+  tasks:
+    - import_tasks: tasks/node/install_nodejs.yaml
+    - import_tasks: tasks/node/install_containerd.yaml
+    - import_tasks: tasks/node/install_kubernetes.yaml
+
+- hosts: master
+  become: true
+
+  vars_files:
+    - vars/env.yaml
+
+  tasks:
+    - import_tasks: tasks/cluster/kubeadm_init.yaml
+
+- hosts: slave
+  become: true
+
+  tasks:
+    - import_tasks: tasks/cluster/kubeadm_join.yaml
+
+- hosts: master
+  become: true
+
+  vars_files:
+    - vars/env.yaml
+
+  tasks:
+    - import_tasks: tasks/cluster/check_ready.yaml
+    - import_tasks: tasks/roles/add_owner.yaml
+    - import_tasks: tasks/node/install_helm.yaml
+    - import_tasks: tasks/charts/install_ingress.yaml
+    - import_tasks: tasks/charts/install_cert_manager.yaml
+    - import_tasks: tasks/charts/install_dashboard.yaml

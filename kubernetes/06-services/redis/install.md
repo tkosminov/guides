@@ -13,14 +13,15 @@ kubectl create -f redis-pv.yaml
 ### Chart
 
 ```bash
-helm install redis bitnami/redis --set global.redis.password=redis \
-                                 --set image.tag=6.2.6-debian-10-r21 \
-                                 --set master.persistence.enabled=true \
-                                 --set master.persistence.existingClaim=redis-pv-claim \
-                                 --set volumePermissions.enabled=true \
-                                 --set replica.replicaCount=0
+helm install redis oci://registry-1.docker.io/bitnamicharts/redis --set global.redis.password=redis \
+                                                                  --set image.tag=6.2.6-debian-10-r21 \
+                                                                  --set master.persistence.enabled=true \
+                                                                  --set master.persistence.existingClaim=redis-pv-claim \
+                                                                  --set volumePermissions.enabled=true \
+                                                                  --set replica.replicaCount=0
 ```
 
 ### Host
 
 `redis.default.svc.cluster.local`
+

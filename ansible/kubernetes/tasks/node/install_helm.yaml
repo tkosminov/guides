@@ -1,0 +1,42 @@
+- name: Install helm
+  tags: install_helm
+
+  block:
+    - name: Add Helm GPG key
+      apt_key:
+        url: https://baltocdn.com/helm/signing.asc
+        state: present
+
+    - name: Download Helm GPG key
+      get_url:
+        url: "https://baltocdn.com/helm/signing.asc"
+        dest: /tmp/helm-signing.asc
+        mode: '0644'
+        force: true
+        timeout: 300
+
+    - name: Convert Helm GPG key from ASCII to binary format
+      shell: |
+        sudo gpg --batch --dearmor -o /etc/apt/keyrings/helm-apt-keyring.gpg /tmp/helm-signing.asc
+      args:
+        creates: /etc/apt/keyrings/helm-apt-keyring.gpg
+
+    - name: Set permissions on the binary Helm GPG key
+      file:
+        path: /etc/apt/keyrings/helm-apt-keyring.gpg
+        mode: '0644'
+
+    - name: Add Helm APT repository
+      apt_repository:
+        repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/helm-apt-keyring.gpg] https://baltocdn.com/helm/stable/debian/ all main"
+        state: present
+        update_cache: yes
+
+    - name: Install Helm
+      apt:
+        name: helm
+        state: present
+
+    - name: Add stable charts repo
+      shell: |
+        helm repo add stable https://charts.helm.sh/stable

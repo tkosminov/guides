@@ -1,0 +1,19 @@
+- name: Kubeadm Join
+  tags: kubeadm_join
+
+  block:
+    - name: Check cluster exists
+      shell: |
+        lsof -wni tcp:6443
+      register: cluster_info
+      ignore_errors: true
+
+    - name: Copy join_command to slave node
+      copy: |
+        src="./tmp/join_command" dest="/tmp/join_command.sh" mode=0777
+      when: "cluster_info.stdout == \"\""
+
+    - name: Join slave to cluster
+      shell: |
+        sh /tmp/join_command.sh
+      when: "cluster_info.stdout == \"\""

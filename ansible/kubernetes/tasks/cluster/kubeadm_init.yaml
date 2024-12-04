@@ -1,0 +1,58 @@
+- name: Kubeadm Init
+  tags: kubeadm_init
+
+  block:
+    - name: Check cluster exists
+      shell: |
+        lsof -wni tcp:6443
+      register: cluster_info
+      ignore_errors: true
+
+    - name: Initialize cluster
+      shell: |
+        kubeadm init --pod-network-cidr=10.244.0.0/16 --node-name {{ MASTER_NODE_NAME }}
+      when: "cluster_info.stdout == \"\""
+
+    - name: "Create $HOME/.kube"
+      file:
+        path: "{{ ansible_user_dir }}/.kube"
+        state: directory
+      when: "cluster_info.stdout == \"\""
+
+    - name: "Copy admin.conf to $HOME/.kube/config"
+      copy:
+        remote_src: yes
+        src: /etc/kubernetes/admin.conf
+        dest: "{{ ansible_user_dir }}/.kube/config"
+        owner: "{{ ansible_user_uid }}"
+      when: "cluster_info.stdout == \"\""
+
+    - name: Check master node taint for no schedule
+      shell: |
+        kubectl get node/master -o=jsonpath='{.spec.taints[].effect}'
+      register: taints_result
+      changed_when: false
+
+    - name: Remove the master node taint for no schedule
+      shell: |
+        kubectl taint nodes --all node-role.kubernetes.io/control-plane-
+      when: "taints_result.stdout is search('NoSchedule')"
+
+    - name: Remove the master node taint for no schedule
+      shell: |
+        kubectl label nodes --all node.kubernetes.io/exclude-from-external-load-balancers-
+      when: "taints_result.stdout is search('NoSchedule')"
+
+    - name: Install flannel
+      shell: |
+        kubectl apply -f https://github.com/coreos/flannel/raw/master/Documentation/kube-flannel.yml
+      when: "cluster_info.stdout == \"\""
+
+    - name: Generate join command
+      shell: |
+        kubeadm token create --print-join-command
+      register: join_command
+
+    - name: Copy join_command to local file
+      local_action: |
+        copy content="{{ join_command.stdout_lines[0] }}" dest="./tmp/join_command"

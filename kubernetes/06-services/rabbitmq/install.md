@@ -19,7 +19,7 @@ kubectl apply -f rabbitmq-pv.yaml
 ### Скачиваем чарт
 
 ```bash
-helm pull bitnami/rabbitmq --untar
+helm pull oci://registry-1.docker.io/bitnamicharts/rabbitmq --version 14.6.6 --untar
 ```
 
 ### Редактируем values.yaml:
@@ -73,11 +73,11 @@ volumePermissions:
 Количество потоков и домен внутри кластера:
 
 ```yaml
-image:
-  ...
-  maxAvailableSchedulers: 2
-  onlineSchedulers: 1
-  clusterDomain: cluster.local
+maxAvailableSchedulers: 2
+...
+onlineSchedulers: 1
+...
+clusterDomain: cluster.local
 ```
 
 Если сообщение долго обрабатывается, то происходит обрыв соединения с кроликом, чтобы этого не происходило надо исправить это следующим конфигом:
@@ -112,21 +112,23 @@ image:
 ### Устанавливаем chart
 
 ```bash
-helm install rabbitmq bitnami/rabbitmq --namespace rabbitmq \
-                                       -f ./values.yaml \
-                                       --set nodeSelector."kubernetes\.io/hostname"=${название_ноды}
+helm install rabbitmq oci://registry-1.docker.io/bitnamicharts/rabbitmq --version 14.6.6 \
+                                                                        --namespace rabbitmq \
+                                                                        -f ./values.yaml \
+                                                                        --set nodeSelector."kubernetes\.io/hostname"=${название_ноды}
 ```
 
 ## Установка (Локально)
 
 ```bash
-helm install rabbitmq bitnami/rabbitmq --namespace rabbitmq \
-                                       --set auth.username=${USER_NAME} \
-                                       --set auth.password=${USER_PASSWORD} \
-                                       --set persistence.enabled=true \
-                                       --set persistence.existingClaim=rabbitmq-pv-claim \
-                                       --set volumePermissions.enabled=true \
-                                       --set nodeSelector."kubernetes\.io/hostname"=${название_ноды}
+helm install rabbitmq oci://registry-1.docker.io/bitnamicharts/rabbitmq --version 14.6.6 \
+                                                                        --namespace rabbitmq \
+                                                                        --set auth.username=${USER_NAME} \
+                                                                        --set auth.password=${USER_PASSWORD} \
+                                                                        --set persistence.enabled=true \
+                                                                        --set persistence.existingClaim=rabbitmq-pv-claim \
+                                                                        --set volumePermissions.enabled=true \
+                                                                        --set nodeSelector."kubernetes\.io/hostname"=${название_ноды}
 ```
 
 ### Host

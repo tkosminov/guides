@@ -1,0 +1,51 @@
+- name: Install cert-manager
+  tags: install_cert_manager
+
+  block:
+    - name: Check repo exists
+      shell: |
+        helm repo list | grep 'jetstack'
+      register: cert_manager_repo_exists
+      changed_when: false
+      ignore_errors: true
+
+    - name: Add chart if not exists
+      shell: |
+        helm repo add jetstack https://charts.jetstack.io
+      when: "cert_manager_repo_exists.stdout == \"\""
+
+    - name: Check cert-manager exists
+      shell: |
+        kubectl get pods -n kube-system | grep 'cert-manager'
+      register: cert_manager_pod_exists
+      changed_when: false
+      ignore_errors: true
+
+    - name: Install cert-manager if not exists
+      shell: |
+        helm install cert-manager jetstack/cert-manager --namespace kube-system \
+                                                        --set crds.enabled=true \
+                                                        --set nodeSelector."kubernetes\.io/hostname"={{ MASTER_NODE_NAME }} \
+                                                        --set webhook.nodeSelector."kubernetes\.io/hostname"={{ MASTER_NODE_NAME }} \
+                                                        --set cainjector.nodeSelector."kubernetes\.io/hostname"={{ MASTER_NODE_NAME }}
+      when: "cert_manager_pod_exists.stdout == \"\""
+
+    - name: Copy issuer to master node
+      copy: |
+        src="./files/cert-manager-issuer.yaml" dest="/tmp/cert-manager-issuer.yaml" mode=0644
+
+    - name: Configure issuer email for cert-manager
+      replace:
+        path: /tmp/cert-manager-issuer.yaml
+        regexp: '^(.*)\$CERT_MANAGER_EMAIL'
+        replace: '\1{{ CERT_MANAGER_EMAIL }}'
+
+    - name: Configure issuer hostname for cert-manager
+      replace:
+        path: /tmp/cert-manager-issuer.yaml
+        regexp: '^(.*)\$MASTER_NODE_NAME'
+        replace: '\1{{ MASTER_NODE_NAME }}'
+
+    - name: Apply issuer
+      shell: |
+        kubectl apply -f /tmp/cert-manager-issuer.yaml

@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: kubernetes-dashboard
+  namespace: kube-system
+spec:
+  secretName: kubernetes-dashboard-tls
+  issuerRef:
+    name: cert-cluster-issuer
+    kind: ClusterIssuer
+  commonName: $DASHBOARD_DOMAIN
+  dnsNames:
+  - $DASHBOARD_DOMAIN

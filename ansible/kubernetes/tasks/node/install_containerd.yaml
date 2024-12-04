@@ -1,0 +1,62 @@
+- name: Install containerd
+  tags: install_containerd
+
+  block:
+    - name: Add Docker GPG key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker repository
+      apt_repository:
+        repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ UBUNTU_CODENAME }} stable"
+        state: present
+        update_cache: yes
+
+    - name: Install Docker
+      apt:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-buildx-plugin
+          - docker-compose-plugin
+        state: present
+
+    - name: Create configuration directory
+      file:
+        path: /etc/containerd
+        state: directory
+
+    - name: Generate default containerd configuration
+      shell: |
+        containerd config default | sudo tee /etc/containerd/config.toml
+      args:
+        chdir: /etc/containerd
+
+    - name: Configure Systemd as cgroup driver for containerd
+      lineinfile:
+        path: /etc/containerd/config.toml
+        regexp: '^(\s*)SystemdCgroup\s*='
+        line: '\1SystemdCgroup = true'
+        backrefs: yes # чтобы работали обратные ссылки в строке замены внутри lineinfile
+
+    - name: Create service directory
+      file:
+        path: /etc/systemd/system/kubelet.service.d
+        state: directory
+        
+    - name: Generate default containerd configuration
+      shell: |
+        cat << EOF | sudo tee  /etc/systemd/system/kubelet.service.d/0-containerd.conf
+        [Service]
+        Environment="KUBELET_EXTRA_ARGS=--container-runtime=remote --runtime-request-timeout=15m --container-runtime-endpoint=unix:///run/containerd/containerd.sock"
+        EOF
+      args:
+        chdir: /etc/systemd/system/kubelet.service.d
+
+    - name: Restart containerd service to apply changes
+      systemd:
+        name: containerd
+        state: restarted
+        enabled: yes

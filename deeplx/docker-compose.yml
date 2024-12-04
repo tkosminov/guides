@@ -1,0 +1,10 @@
+version: '3'
+services:
+  deeplx:
+    image: ghcr.io/owo-network/deeplx:latest
+    restart: on-failure
+    ports:
+      - "1188:1188"
+    environment:
+      - TOKEN=helloworld
+      - DL_SESSION=xxxxxx

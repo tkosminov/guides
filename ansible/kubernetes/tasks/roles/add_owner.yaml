@@ -1,0 +1,13 @@
+- name: Add role owner
+  tags: add_role_owner
+
+  block:
+    - name: Copy role config to master node
+      copy: |
+        src="./files/role-owner.yaml" dest="/tmp/role-owner.yaml" mode=0644
+
+    - name: Add role
+      shell: |
+        kubectl apply -f /tmp/role-owner.yaml
+      ignore_errors: true
+      changed_when: false

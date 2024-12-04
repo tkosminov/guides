@@ -1,0 +1,33 @@
+- name: Install NodeJS
+  tags: install_nodejs
+
+  block:
+    - name: Download NodeJS GPG key
+      get_url:
+        url: "https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key"
+        dest: /tmp/nodesource-repo.gpg.key
+        mode: '0644'
+        force: true
+        timeout: 300
+
+    - name: Convert NodeJS GPG key from ASCII to binary format
+      shell: |
+        sudo gpg --batch --dearmor -o /etc/apt/keyrings/nodesource.gpg /tmp/nodesource-repo.gpg.key
+      args:
+        creates: /etc/apt/keyrings/nodesource.gpg
+
+    - name: Set permissions on the binary NodeJS GPG key
+      file:
+        path: /etc/apt/keyrings/nodesource.gpg
+        mode: '0644'
+
+    - name: Add NodeJS APT repository
+      apt_repository:
+        repo: "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_{{ NODE_MAJOR_VERSION }}.x nodistro main"
+        state: present
+        update_cache: yes
+
+    - name: Install NodeJS
+      apt:
+        name: nodejs
+        state: present

@@ -1,0 +1,56 @@
+- name: Install dashboard
+  tags: install_dashboard
+
+  block:
+    - name: Check repo exists
+      shell: |
+        helm repo list | grep 'kubernetes-dashboard'
+      register: dashboard_repo_exists
+      changed_when: false
+      ignore_errors: true
+
+    - name: Add chart if not exists
+      shell: |
+        helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/
+      when: "dashboard_repo_exists.stdout == \"\""
+
+    - name: Check dashboard exists
+      shell: |
+        kubectl get pods -n kube-system | grep 'kubernetes-dashboard'
+      register: dashboard_pod_exists
+      changed_when: false
+      ignore_errors: true
+
+    - name: Install dashboard if not exists
+      shell: |
+        helm install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard --namespace kube-system \
+                                                                                    --set nodeSelector."kubernetes\.io/hostname"={{ MASTER_NODE_NAME }}
+      when: "dashboard_pod_exists.stdout == \"\""
+
+    - name: Copy cert to master node
+      copy: |
+        src="./files/dashboard-cert.yaml" dest="/tmp/dashboard-cert.yaml" mode=0644
+
+    - name: Copy ingress to master node
+      copy: |
+        src="./files/dashboard-ingress.yaml" dest="/tmp/dashboard-ingress.yaml" mode=0644
+
+    - name: Configure cert for dashboard
+      replace:
+        path: /tmp/dashboard-cert.yaml
+        regexp: '^(.*)\$DASHBOARD_DOMAIN'
+        replace: '\1{{ DASHBOARD_DOMAIN }}'
+
+    - name: Configure ingress for dashboard
+      replace:
+        path: /tmp/dashboard-ingress.yaml
+        regexp: '^(.*)\$DASHBOARD_DOMAIN'
+        replace: '\1{{ DASHBOARD_DOMAIN }}'
+
+    - name: Apply cert
+      shell: |
+        kubectl apply -f /tmp/dashboard-cert.yaml
+
+    - name: Apply ingress
+      shell: |
+        kubectl apply -f /tmp/dashboard-ingress.yaml

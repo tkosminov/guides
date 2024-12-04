@@ -24,7 +24,7 @@ MINOR_STABLE_VERSION=$(echo $STABLE_VERSION | awk -F "." '{print $1"."$2}')
 ### Ключ и репозиторий
 
 ```bash
-curl -fsSL "https://pkgs.k8s.io/core:/stable:/${STABLE_VERSION}/deb/Release.key" | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+curl -fsSL "https://pkgs.k8s.io/core:/stable:/${MINOR_STABLE_VERSION}/deb/Release.key" | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 ```
 
 ```bash

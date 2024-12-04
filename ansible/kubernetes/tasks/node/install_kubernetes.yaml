@@ -1,0 +1,36 @@
+- name: Install Kubernetes
+  tags: install_kubernetes
+
+  block:
+    - name: Download Kubernetes GPG key
+      get_url:
+        url: "https://pkgs.k8s.io/core:/stable:/v{{ KUBERNETES_STABLE_VERSION }}/deb/Release.key"
+        dest: /tmp/k8s-Release.key
+        mode: '0644'
+        force: true
+        timeout: 300
+
+    - name: Convert Kubernetes GPG key from ASCII to binary format
+      shell: |
+        sudo gpg --batch --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg /tmp/k8s-Release.key
+      args:
+        creates: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+
+    - name: Set permissions on the binary Kubernetes GPG key
+      file:
+        path: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+        mode: '0644'
+
+    - name: Add Kubernetes APT repository
+      apt_repository:
+        repo: "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v{{ KUBERNETES_STABLE_VERSION }}/deb/ /"
+        state: present
+        update_cache: yes
+
+    - name: Install Kubelet, Kubeadm, Kubectl
+      apt:
+        name:
+          - kubelet={{ KUBERNETES_STABLE_VERSION }}.*
+          - kubeadm={{ KUBERNETES_STABLE_VERSION }}.*
+          - kubectl={{ KUBERNETES_STABLE_VERSION }}.*
+        state: present

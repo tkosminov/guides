@@ -1,0 +1,33 @@
+- name: Install Ingress
+  tags: install_ingress
+
+  block:
+    - name: Check repo exists
+      shell: |
+        helm repo list | grep 'ingress-nginx'
+      register: ingress_repo_exists
+      changed_when: false
+      ignore_errors: true
+
+    - name: Add chart if not exists
+      shell: |
+        helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+      when: "ingress_repo_exists.stdout == \"\""
+
+    - name: Check ingress exists
+      shell: |
+        kubectl get pods -n kube-system | grep 'ingress-nginx'
+      register: ingress_pod_exists
+      changed_when: false
+      ignore_errors: true
+
+    - name: Install ingress if not exists
+      shell: |
+        helm install ingress-nginx ingress-nginx/ingress-nginx --namespace kube-system \
+                                                               --set controller.hostNetwork=true \
+                                                               --set controller.dnsPolicy=ClusterFirstWithHostNet \
+                                                               --set controller.kind=DaemonSet \
+                                                               --set controller.allowSnippetAnnotations=true \
+                                                               --set controller.config."enable-underscores-in-headers"=true \
+                                                               --set controller.addHeaders."X-Frame-Options"="SAMEORIGIN"
+      when: "ingress_pod_exists.stdout == \"\""
