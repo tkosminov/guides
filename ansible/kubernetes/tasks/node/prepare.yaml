@@ -64,8 +64,10 @@
         - "net.core.default_qdisc = fq"
         - "# Противодействие SYN-атакам"
         - "net.ipv4.tcp_syncookies = 1"
+        - "net.ipv4.tcp_synack_retries = 2"
         - "# Противодействие SMURF-атакам"
         - "net.ipv4.icmp_echo_ignore_broadcasts = 1"
+        - "net.ipv4.icmp_echo_ignore_all = 1"
 
     - name: Apply sysctl
       shell: |
