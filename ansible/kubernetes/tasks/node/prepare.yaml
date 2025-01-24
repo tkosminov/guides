@@ -47,14 +47,25 @@
         path: /etc/sysctl.d/99-custom-sysctl.conf
         line: "{{ item }}"
       with_items:
+        - "# Будут ли пакеты, проходящие через сетевой мост (bridge), отправляться в iptables для обработки"
         - "net.bridge.bridge-nf-call-iptables = 1"
+        - "# Будут ли пакеты, проходящие через сетевой мост (bridge), отправляться в ip6tables для обработки"
         - "net.bridge.bridge-nf-call-ip6tables = 1"
+        - "# Возможность повторного использования сокетов, находящихся в состоянии TIME_WAIT, для новых соединений"
         - "net.ipv4.tcp_tw_reuse = 1"
+        - "# Диапазон локальных (исходящих) портов, которые могут использоваться при установлении сетевых соединений"
         - "net.ipv4.ip_local_port_range = 1024 65535"
+        - "# Максимальный размер очереди для ожидающих соединений"
         - "net.core.somaxconn = 65535"
+        - "# Для пересылки IP-пакетов между различными сетевыми интерфейсами"
         - "net.ipv4.ip_forward = 1"
-        - "net.core.default_qdisc = fq"
+        - "# BBR для улучшения пропускной способности"
         - "net.ipv4.tcp_congestion_control = bbr"
+        - "net.core.default_qdisc = fq"
+        - "# Противодействие SYN-атакам"
+        - "net.ipv4.tcp_syncookies = 1"
+        - "# Противодействие SMURF-атакам"
+        - "net.ipv4.icmp_echo_ignore_broadcasts = 1"
 
     - name: Apply sysctl
       shell: |
