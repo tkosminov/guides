@@ -73,6 +73,30 @@ chown postgres: /var/lib/postgresql/.privkey.txt
 
 *Ключи все еще остаются зашиврованными фразой-паролем*
 
+#### Продление ключа
+
+```bash
+gpg --edit-key ${KEY_ID}
+```
+
+*Ключ также имеет subkeys, которые тоже нужно продлить. Для переключения:*
+
+```bash
+key 0
+```
+
+*Команда для продления*
+
+```bash
+expire
+```
+
+*Чтобы сохранить и выйти*
+
+```bash
+save
+```
+
 ### Конфиг wal-g
 
 #### Для создания бэкапов
@@ -148,7 +172,7 @@ chmod +x /var/lib/postgresql/walg-backup-weekly-delete.sh
 ```
 
 ```bash
-/usr/local/bin/wal-g wal-show --config /var/lib/postgresql/.walg.json
+/usr/local/bin/wal-g wal-show --config /var/lib/postgresql/.walg-restore.json
 ```
 
 ```bash
