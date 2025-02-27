@@ -1,0 +1,118 @@
+version: '3'
+
+services:
+  superset:
+    image: apache/superset:latest
+    entrypoint: ["/bin/bash", "-c"]
+    command: ["/app/setup/server.sh"]
+    env_file: .env
+    user: "root"
+    networks:
+      - superset-network
+    ports:
+      - "8088:8088"
+    links:
+      - superset-db
+      - superset-redis
+    depends_on:
+      superset-db:
+        condition: service_started
+      superset-redis:
+        condition: service_started
+      superset-init:
+        condition: service_completed_successfully
+    volumes:
+      - ./setup:/app/setup
+    container_name: superset
+    restart: on-failure
+
+  superset-worker:
+    image: apache/superset:latest
+    entrypoint: ["/bin/bash", "-c"]
+    command: ["/app/setup/worker.sh"]
+    env_file: .env
+    user: "root"
+    networks:
+      - superset-network
+    links:
+      - superset
+      - superset-db
+      - superset-redis
+    depends_on:
+      superset-db:
+        condition: service_started
+      superset-redis:
+        condition: service_started
+      superset-init:
+        condition: service_completed_successfully
+    volumes:
+      - ./setup:/app/setup
+    container_name: superset-worker
+    restart: on-failure
+
+  superset-worker-beat:
+    image: apache/superset:latest
+    entrypoint: ["/bin/bash", "-c"]
+    command: ["/app/setup/beat.sh"]
+    env_file: .env
+    user: "root"
+    networks:
+      - superset-network
+    links:
+      - superset
+      - superset-db
+      - superset-redis
+    depends_on:
+      superset-db:
+        condition: service_started
+      superset-redis:
+        condition: service_started
+      superset-init:
+        condition: service_completed_successfully
+    volumes:
+      - ./setup:/app/setup
+    container_name: superset-worker-beat
+    restart: on-failure
+
+  superset-init:
+    image: apache/superset:latest
+    entrypoint: ["/bin/bash", "-c"]
+    command: ["/app/setup/init.sh"]
+    env_file: .env
+    user: "root"
+    networks:
+      - superset-network
+    links:
+      - superset-db
+      - superset-redis
+    depends_on:
+      superset-db:
+        condition: service_started
+      superset-redis:
+        condition: service_started
+    volumes:
+      - ./setup:/app/setup
+    container_name: superset-init
+
+  superset-db:
+    image: postgres:17-alpine
+    env_file: .env
+    expose:
+      - "5432"
+    networks:
+      - superset-network
+    container_name: superset-db
+    restart: on-failure
+
+  superset-redis:
+    image: redis:7-alpine
+    expose:
+      - "6379"
+    networks:
+      - superset-network
+    container_name: superset-redis
+    restart: on-failure
+
+networks:
+  superset-network:
+    external: true

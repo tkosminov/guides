@@ -1,0 +1,84 @@
+version: '3'
+
+services:
+  redash-worker:
+    image: redash/redash:latest
+    command: worker
+    env_file: .env
+    networks:
+      - redash-network
+    links:
+      - redash-db
+      - redash-redis
+    depends_on:
+      redash-db:
+        condition: service_started
+      redash-redis:
+        condition: service_started
+      redash-setup:
+        condition: service_completed_successfully
+    container_name: redash-worker
+    restart: on-failure
+
+  redash-server:
+    image: redash/redash:latest
+    command: server
+    env_file: .env
+    ports:
+      - "5000:5000"
+    expose:
+      - "5678"
+    networks:
+      - redash-network
+    links:
+      - redash-db
+      - redash-redis
+    depends_on:
+      redash-db:
+        condition: service_started
+      redash-redis:
+        condition: service_started
+      redash-setup:
+        condition: service_completed_successfully
+    container_name: redash-server
+    restart: on-failure
+
+  redash-setup:
+    image: redash/redash:latest
+    command: create_db
+    env_file: .env
+    networks:
+      - redash-network
+    links:
+      - redash-db
+      - redash-redis
+    depends_on:
+      redash-db:
+        condition: service_started
+      redash-redis:
+        condition: service_started
+    container_name: redash-setup
+
+  redash-db:
+    image: postgres:17-alpine
+    env_file: .env
+    expose:
+      - "5432"
+    networks:
+      - redash-network
+    container_name: redash-db
+    restart: on-failure
+
+  redash-redis:
+    image: redis:7-alpine
+    env_file: .env
+    expose:
+      - "6379"
+    networks:
+      - redash-network
+    container_name: redash-redis
+    restart: on-failure
+
+networks:
+  redash-network:
+    external: true
