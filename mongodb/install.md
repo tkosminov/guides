@@ -111,3 +111,9 @@ db.revokeRolesFromUser(
 
    db.$collection_name.update({ _id: ObjectId("$object_id") }, { $set: { $column_name: $column_value } })
    ```
+7. Удаление строки
+   ```bash
+   # db.$collection_name.deleteOne($filter)
+
+   db.$collection_name.deleteOne({ _id: ObjectId("$object_id") })
+   ```
