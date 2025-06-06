@@ -44,5 +44,5 @@ redis-cli -a ${REDIS_PASSWORD} KEYS "${KEY_PATTERN}"
 ### Удалить ключи
 
 ```bash
-redis-cli -a ${REDIS_PASSWORD} KEYS "${KEY_PATTERN}" | xargs redis-cli -a ${REDIS_PASSWORD} DEL
+REDISCLI_AUTH=${REDIS_PASSWORD} redis-cli --scan --pattern "${KEY_PATTERN}*" | REDISCLI_AUTH=${REDIS_PASSWORD} xargs -I {} redis-cli UNLINK {}
 ```

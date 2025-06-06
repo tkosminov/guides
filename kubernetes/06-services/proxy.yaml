@@ -2,26 +2,46 @@ kind: Service
 apiVersion: v1
 metadata:
   name: ${SERVICE_NAME}
-  namespace: proxy
+  namespace: ${NAMESPACE}
 spec:
+  ports:
+    - name: https
+      protocol: TCP
+      port: 443
+      targetPort: https
   type: ExternalName
-  externalName: ${домен_на_который_надо_проксировать}
+  sessionAffinity: None
+  externalName: ${TARGET_DOMAIN}
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
+  namespace: ${NAMESPACE}
   name: ${SERVICE_NAME}-ingress
   annotations:
+    # nginx.ingress.kubernetes.io/proxy-body-size: 500m
+    # nginx.ingress.kubernetes.io/proxy-connect-timeout: 300
+    # nginx.ingress.kubernetes.io/proxy-read-timeout: 300
+    # nginx.ingress.kubernetes.io/proxy-send-timeout: 300
+    # nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
+    nginx.ingress.kubernetes.io/proxy-pass-request-headers: "on"
     nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/upstream-vhost: ${TARGET_DOMAIN}
+    nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+    nginx.ingress.kubernetes.io/configuration-snippet: |-
+      proxy_ssl_name ${TARGET_DOMAIN};
+      proxy_ssl_server_name on;
 spec:
+  ingressClassName: nginx
   rules:
-  - host: ${домен_сервера_с_которого_надо_проксировать}
+  - host: ${MASTER_NODE_DOMAIN}
     http:
       paths:
-      - path: ${путь_который_надо_проксировать}
-        pathType: Prefix
+      - path: /${PATH}/(.*)
+        pathType: ImplementationSpecific
         backend:
           service:
             name: ${SERVICE_NAME}
             port:
-              number: 443
+              name: https
