@@ -17,29 +17,18 @@ ansible-playbook -i inventory.ini playbook.yaml
 * Поменять IP нод в `./kubernetes/inventory.ini`
 * Поменять энвы в `./kubernetes/vars/env.yaml`
 
-
-
-<!-- 
 ```bash
-multipass launch 22.04 --cpus 2 --disk 20G --memory 2G --name slave
-
-multipass exec slave -- bash
-
-multipass stop slave
-
-multipass delete slave
-
-multipass purge
+cd ./kubernetes
 ```
--->
 
+### Установка Kubernetes
 
+```bash
+ansible-playbook -i inventory.ini setup.yaml 
+```
 
-<!-- 
-- name: wait until apt lock is released
-  shell: lsof -w /var/lib/apt/lists/lock | wc -l
-  register: lock
-  until: lock.stdout == "0"
-  retries: 10
-  delay: 10 
--->
+### Замена сертификатов кластера
+
+```bash
+ansible-playbook -i inventory.ini expiration.yaml 
+```

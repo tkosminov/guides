@@ -1,6 +1,6 @@
-postgres/06-logical-backup/logical-upload/node_modules
-postgres/05-physical-backup/pgbackrest/pgbackrest-stanza-delete/node_modules
-redis-commander
+database/postgres/05-logical-backup/logical-upload/node_modules
+database/postgres/04-physical-backup/pgbackrest/pgbackrest-stanza-delete/node_modules
+
 bi_analytics/superset/setup/pythonpath_dev/__pycache__
 
 tmp

@@ -2,7 +2,7 @@
   become: true
 
   tasks:
-    - name: Ping all Nodes
+    - name: Prepare all Nodes
       ping:
 
     - import_tasks: tasks/node/prepare.yaml

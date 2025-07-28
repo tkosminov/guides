@@ -1,0 +1,8 @@
+- hosts: master
+  become: true
+
+  vars_files:
+    - vars/env.yaml
+
+  tasks:
+    - import_tasks: tasks/cluster/kubeadm_certs_renew.yaml

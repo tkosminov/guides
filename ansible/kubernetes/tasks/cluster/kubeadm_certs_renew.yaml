@@ -1,0 +1,54 @@
+- name: Kubeadm Certs Renew
+  tags: kubeadm_certs_renew
+
+  block:
+    - name: 'Certs renew'
+      shell: |
+        kubeadm certs renew all
+
+    - name: 'Save prev admin.conf'
+      shell: |
+        mv {{ ansible_user_dir }}/.kube/config {{ ansible_user_dir }}/.kube/config.{{ ansible_date_time.year }}
+
+    - name: "Copy new admin.conf to $HOME/.kube/config"
+      copy:
+        remote_src: yes
+        src: /etc/kubernetes/admin.conf
+        dest: "{{ ansible_user_dir }}/.kube/config"
+        owner: "{{ ansible_user_uid }}"
+
+    - name: 'Rename etcd'
+      shell: |
+        mv /etc/kubernetes/manifests/etcd.yaml /etc/kubernetes/manifests/etcd.yaml.old
+
+    - name: 'Rename kube-apiserver'
+      shell: |
+        mv /etc/kubernetes/manifests/kube-apiserver.yaml /etc/kubernetes/manifests/kube-apiserver.yaml.old
+
+    - name: 'Rename kube-controller-manager'
+      shell: |
+        mv /etc/kubernetes/manifests/kube-controller-manager.yaml /etc/kubernetes/manifests/kube-controller-manager.yaml.old
+
+    - name: 'Rename kube-scheduler'
+      shell: |
+        mv /etc/kubernetes/manifests/kube-scheduler.yaml /etc/kubernetes/manifests/kube-scheduler.yaml.old
+
+    - name: 'Wait fileCheckFrequency'
+      pause:
+        seconds: 30
+
+    - name: 'Rename etcd'
+      shell: |
+        mv /etc/kubernetes/manifests/etcd.yaml.old /etc/kubernetes/manifests/etcd.yaml
+
+    - name: 'Rename kube-apiserver'
+      shell: |
+        mv /etc/kubernetes/manifests/kube-apiserver.yaml.old /etc/kubernetes/manifests/kube-apiserver.yaml
+
+    - name: 'Rename kube-controller-manager'
+      shell: |
+        mv /etc/kubernetes/manifests/kube-controller-manager.yaml.old /etc/kubernetes/manifests/kube-controller-manager.yaml
+
+    - name: 'Rename kube-scheduler'
+      shell: |
+        mv /etc/kubernetes/manifests/kube-scheduler.yaml.old /etc/kubernetes/manifests/kube-scheduler.yaml
