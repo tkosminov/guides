@@ -46,4 +46,4 @@ systemctl start redis_exporter
 
 ## Dashboard
 
-* [grafana](https://grafana.com/grafana/dashboards/763-redis-dashboard-for-prometheus-redis-exporter-1-x/)
+* [763](https://grafana.com/grafana/dashboards/763-redis-dashboard-for-prometheus-redis-exporter-1-x/)

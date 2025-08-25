@@ -61,6 +61,8 @@ helm install monitoring prometheus-community/kube-prometheus-stack --namespace m
                                                                    --set kube-state-metrics.nodeSelector."kubernetes\.io/hostname"=${название_мастер_ноды}
 ```
 
+*Для обновления после внесения изменений в values.yaml, команда та же, но **install** меняем на **upgrade***
+
 ### Необходимо открыть порты для метрик, если установлен ufw
 
 *Чтобы метрики нормально собирались все эти сервисы должны быть запущены на `0.0.0.0`*
@@ -106,4 +108,57 @@ kubectl delete crd prometheuses.monitoring.coreos.com
 kubectl delete crd prometheusrules.monitoring.coreos.com
 kubectl delete crd servicemonitors.monitoring.coreos.com
 kubectl delete crd thanosrulers.monitoring.coreos.com
+```
+
+## Доп. источники для prometheus
+
+Редактируем `values.yaml`:
+
+```yaml
+prometheus:
+  ...
+  prometheusSpec:
+    ...
+    additionalScrapeConfigsSecret:
+      enabled: true
+      name: additional-scrape-configs
+      key: prometheus-additional.yaml
+```
+
+Создаем файл `prometheus-additional.yaml`:
+
+```yaml
+- job_name: $JON_NAME
+  static_configs:
+    - targets: [$IP:$PORT]
+      labels:
+        instance: $INSTANCE_NAME
+```
+
+Создаем k8s Secret из файла:
+
+```bash
+kubectl create secret generic additional-scrape-configs --from-file=prometheus-additional.yaml --dry-run=client -oyaml > additional-scrape-configs.yaml
+```
+
+```bash
+kubectl apply -f additional-scrape-configs.yaml -n monitoring
+```
+
+## Чтобы сделать prometheus доступным снаружи
+
+Редактируем `values.yaml`:
+
+```yaml
+prometheus:
+  ...
+  service:
+    ...
+    nodePort: 30090
+    ...
+    type: NodePort
+```
+
+```bash
+sudo ufw allow from ${IP} to any port 30090
 ```

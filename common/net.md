@@ -51,7 +51,7 @@ lsof -i -P -n
 ```
 
 ```bash
-sudo lsof -wni tcp:${PORT}
+lsof -wni tcp:${PORT}
 ```
 
 ## DNS Check
@@ -62,44 +62,80 @@ apt-get install dnsutils
 dig $DOMAIN
 ```
 
-## [arp-scan](https://github.com/royhills/arp-scan)
+## Сканирование сети
+
+### [arp-scan](https://github.com/royhills/arp-scan)
 
 ```bash
-sudo apt-get install arp-scan
+apt-get install arp-scan
 ```
 
-### Localnet
-
 ```bash
-sudo arp-scan --localnet
+arp-scan --localnet # local
+
+arp-scan -l --interface=wlan0 # wifi
+
+arp-scan -l --interface=eth0 # ethernet
 ```
 
-### WiFi
+### [RealiTLScanner](https://github.com/XTLS/RealiTLScanner)
 
 ```bash
-sudo arp-scan -l --interface=wlan0
+curl -L $(curl -s https://api.github.com/repos/XTLS/RealiTLScanner/releases/latest | grep browser_download_url | grep linux-64 | cut -d '"' -f 4 | head -n 1) --output ./RealiTLScanner
 ```
 
-### Ethernet
-
 ```bash
-sudo arp-scan -l --interface=eth0
+./RealiTLScanner -addr 89.150.41.0/24 -v
 ```
 
-## [iperf3](https://iperf.fr/)
+## Замеры скорости интернета
+
+### [iperf3](https://iperf.fr/)
 
 ```bash
-sudo apt-get install iperf3
+apt-get install iperf3
 ```
 
-### На сервере
-
 ```bash
-iperf3 -s
+iperf3 -s # на сервере
+
+iperf3 -c ${SERVER_IP} -R # на клиенте
 ```
 
-### На клиенте
+### [Speedtest by RosTelekom](https://speedtest.rt.ru/)
 
 ```bash
-iperf3 -c ${SERVER_IP} -R
+curl -sL https://lib.qms.ru/bin/linux/qms_lib.zip | bsdtar -xvf - -C /usr/local/bin
+
+mv /usr/local/bin/qms_lib /usr/local/bin/speedtest-rt
+
+chmod +x /usr/local/bin/speedtest-rt
+```
+
+### [Speedtest by Ookla](https://www.speedtest.net/ru/apps/cli)
+
+```bash
+pip install speedtest-cli
+```
+
+## Проверка маршрута
+
+### traceroute
+
+```bash
+apt install traceroute
+```
+
+```bash
+traceroute -T ${DOMAIN}
+```
+
+### mtr
+
+```bash
+apt install mtr-tiny
+```
+
+```bash
+mtr -rwzbc 100 ${SERVER_IP}
 ```

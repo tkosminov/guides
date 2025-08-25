@@ -5,3 +5,5 @@ bi_analytics/superset/setup/pythonpath_dev/__pycache__
 
 tmp
 .obsidian
+
+rabbitmq/volume

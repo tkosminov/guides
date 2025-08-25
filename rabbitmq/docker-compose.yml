@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  rabbitmq:
+    # image: rabbitmq:4.1.3-management
+    image: rabbitmq:3.13-management
+    container_name: rabbitmq
+    hostname: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: password
+    volumes:
+      - ./volume:/var/lib/rabbitmq
+      - ./plugins:/plugins_custom
+      - ./scripts:/scripts_custom
+    command: sh -c "rabbitmq-server & sleep 5 && /scripts_custom/init.sh && wait"
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 10s
+      timeout: 5s
+      retries: 5

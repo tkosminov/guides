@@ -2,6 +2,16 @@
 
 ## Установка
 
+### lm_sensors
+
+```bash
+apt install lm-sensors
+```
+
+```bash
+sensors-detect
+```
+
 ### Установка с гита
 
 ```bash
@@ -45,4 +55,5 @@ systemctl start node_exporter
 
 ## Dashboard
 
-* [grafana](https://grafana.com/grafana/dashboards/11074)
+* [11074](https://grafana.com/grafana/dashboards/11074)
+* [1860](https://grafana.com/grafana/dashboards/1860-node-exporter-full/) (с поддержкой hwmon)
