@@ -19,31 +19,31 @@ apt-get install apt-transport-https \
 ### Ключ и репозиторий
 
 ```bash
-sudo mkdir -p /etc/apt/keyrings
+install -m 0755 -d /etc/apt/keyrings
 
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+
+chmod a+r /etc/apt/keyrings/docker.asc
 ```
 
 ```bash
-echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo tee /etc/apt/sources.list.d/docker.sources <<EOF
+Types: deb
+URIs: https://download.docker.com/linux/ubuntu
+Suites: $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}")
+Components: stable
+Signed-By: /etc/apt/keyrings/docker.asc
+EOF
+```
+
+```bash
+apt update
 ```
 
 ### Пакеты
 
 ```bash
-apt-get update
-```
-
-```bash
-apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
-
-curl -SL $(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep browser_download_url | grep linux-x86_64 | cut -d '"' -f 4 | head -n 1) -o /usr/local/bin/docker-compose
-
-ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
-
-chmod +x /usr/local/bin/docker-compose
+apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 ```
 
 ### Зеркала

@@ -19,3 +19,15 @@ helm install cert-manager jetstack/cert-manager --namespace kube-system \
 ```bash
 kubectl apply -f issuer.yaml
 ```
+
+## Если cert manager не хочет работать
+
+* Рестартим cert-manager
+  ```bash
+  kubectl rollout status deployment/cert-manager -n kube-system
+  kubectl rollout status deployment/cert-manager-webhook -n kube-system
+  kubectl rollout status deployment/cert-manager-cainjector -n kube-system
+  ```
+* Удаляем проблемные CertificateRequest
+  * Если не создаются новые CertificateRequest, то рестартим под ingress
+  * Как вариант удаляем Certificate, чтобы пересоздалась вся цепочка

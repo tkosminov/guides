@@ -117,3 +117,9 @@ db.revokeRolesFromUser(
 
    db.$collection_name.deleteOne({ _id: ObjectId("$object_id") })
    ```
+8. Добавление строки
+   ```bash
+   # db.$collection_name.insertOne($model)
+
+   db.$collection_name.insertOne({ $column_name: "$column_value" })
+   ```

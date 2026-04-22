@@ -133,16 +133,16 @@ helm install rabbitmq oci://registry-1.docker.io/bitnamicharts/rabbitmq --versio
 
 ### Host
 
-`rabbitmq.default.svc.cluster.local`
+`rabbitmq.rabbitmq.svc.cluster.local`
 
 Если нужно открыть дэшборд в браузере вне контейнера:
 
 ### Dashboard
 
 ```bash
-kubectl get pods -n default -l "app.kubernetes.io/name=rabbitmq,app.kubernetes.io/instance=rabbitmq" -o jsonpath="{.items[0].metadata.name}"
+kubectl get pods -n rabbitmq -l "app.kubernetes.io/name=rabbitmq,app.kubernetes.io/instance=rabbitmq" -o jsonpath="{.items[0].metadata.name}"
 
-kubectl -n default port-forward $POD_NAME 15672:15672
+kubectl -n rabbitmq port-forward $POD_NAME 15672:15672
 ```
 
 Dashboard будет доступен по ссылке:

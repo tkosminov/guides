@@ -50,19 +50,6 @@ kubectl label nodes --all node.kubernetes.io/exclude-from-external-load-balancer
    ```bash
    kubectl apply -f https://github.com/coreos/flannel/raw/master/Documentation/kube-flannel.yml
    ```
-* weave dns:
-   ```bash
-   kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
-   ```
-
-### Если необходимо заменить dns
-
-* Установить новый dns
-* Удалить старый dns
-* перезапустить `kubelet` на каждой node:
-  ```bash
-  systemctl restart kubelet
-  ```
 
 ### Создание сервисного аккаунта
 
