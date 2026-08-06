@@ -48,19 +48,22 @@ WHERE pg_stat_all_indexes.idx_scan = 0
 
 ```sql
 SELECT
-  DISTINCT constraint_column_usage.table_schema,
+  DISTINCT
+  constraint_column_usage.table_schema,
   constraint_column_usage.table_name,
   constraint_column_usage.column_name,
-  pg_constraint.conname AS constraint_name
+  pg_constraint.conname AS constraint_name,
+  pg_catalog.pg_get_constraintdef(pg_constraint.oid, true) AS definition
 FROM pg_catalog.pg_constraint AS pg_constraint
 INNER JOIN pg_catalog.pg_namespace AS pg_namespace
   ON pg_namespace.oid = pg_constraint.connamespace
 INNER JOIN information_schema.constraint_column_usage AS constraint_column_usage
   ON constraint_column_usage.constraint_name = pg_constraint.conname
   AND constraint_column_usage.constraint_schema = pg_namespace.nspname
-WHERE pg_constraint.contype = 'c'
+WHERE pg_constraint.contype IN ('c', 'u')
   AND pg_namespace.nspname != 'pg_catalog'
   AND pg_namespace.nspname != 'information_schema'
+  -- AND constraint_column_usage.table_name = 'table_name'
 ORDER BY constraint_column_usage.table_schema ASC,
   constraint_column_usage.table_name ASC,
   constraint_column_usage.column_name ASC,

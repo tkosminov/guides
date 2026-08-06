@@ -139,3 +139,84 @@ apt install mtr-tiny
 ```bash
 mtr -rwzbc 100 ${SERVER_IP}
 ```
+
+## Dump
+
+```bash
+apt install tcpdump tshark
+```
+
+### Снять дамп на клиенте
+
+```bash
+sudo tcpdump -i any -nn -s0 -w /tmp/client.pcap host ${server_ip} and tcp port ${server_port}
+```
+
+### Снять дамп на сервере
+
+```bash
+sudo tcpdump -i ens3 -nn -s0 -w /tmp/server.pcap host ${client_ip} and tcp port ${server_port}
+```
+
+### Проверки
+
+Использование http2:
+```bash
+tshark -r ${file}.pcap -Y http2
+```
+
+Проверка какие протоколы предлагает клиент (ALPN) и какой выбирает сервер:
+```bash
+tshark -r ${file}.pcap \
+-Y "tls.handshake.type==1 || tls.handshake.type==2" \
+-T fields \
+-e frame.number \
+-e ip.src \
+-e ip.dst \
+-e tls.handshake.type \
+-e tls.handshake.extensions_alpn_str
+```
+
+Проверка Retransmission (повторной передачи TCP-сегментов)
+```bash
+tshark -r ${file}.pcap -Y tcp.analysis.retransmission | wc -l
+```
+или с подробностями
+```bash
+tshark -r ${file}.pcap \
+-Y tcp.analysis.retransmission \
+-T fields \
+-e frame.number \
+-e ip.src \
+-e ip.dst
+```
+
+Проверка Duplicate ACK (Получатель отправляет Duplicate ACK, если обнаружил пропущенный TCP-сегмент):
+```bash
+tshark -r ${file}.pcap \
+-Y tcp.analysis.duplicate_ack \
+-T fields \
+-e ip.src \
+-e tcp.ack
+```
+
+Проверка TCP Reset (Принудительное закрытие TCP-соединения):
+```bash
+tshark -r ${file}.pcap -Y tcp.flags.reset==1
+```
+
+Проверка Zero Window (Не переставал ли получатель принимать данные из-за переполнения буфера):
+```bash
+tshark -r ${file}.pcap -Y tcp.analysis.zero_window
+```
+
+Проверка ACK RTT (Время подтверждения TCP-сегментов):
+```bash
+tshark -r ${file}.pcap \
+-Y "tcp.len>0 || tcp.analysis.ack_rtt" \
+-T fields \
+-e frame.number \
+-e tcp.seq \
+-e tcp.ack \
+-e tcp.analysis.ack_rtt
+```

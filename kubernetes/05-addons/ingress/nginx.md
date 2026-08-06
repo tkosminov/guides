@@ -81,3 +81,21 @@ ingress-nginx-sysctl-patch.json:
 ```bash
 cat /etc/alpine-release
 ```
+
+В ConfigMap для сервера в РФ можно добавить:
+
+```yaml
+...
+data:
+  ssl-protocols: "TLSv1.2"
+  ssl-session-tickets: "false"
+  ssl-prefer-server-ciphers: "true"
+  ssl-ciphers: >-
+    ECDHE-ECDSA-AES256-GCM-SHA384:
+    ECDHE-RSA-AES256-GCM-SHA384:
+    ECDHE-ECDSA-AES128-GCM-SHA256:
+    ECDHE-RSA-AES128-GCM-SHA256:
+    ECDHE-ECDSA-CHACHA20-POLY1305:
+    ECDHE-RSA-CHACHA20-POLY1305
+  enable-http3: "false"
+```
