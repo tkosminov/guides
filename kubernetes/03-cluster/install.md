@@ -63,7 +63,7 @@ kubectl apply -f ${ROLE_FILE}
 
 Если нужно получить токен для доступа через дэшборд или апи:
 
-```cubectl
+```bash
 kubectl get secrets
 
 kubectl describe secret ${ROLE_SERVICE_ACCOUNT}-token-${RANDOM_HASH}

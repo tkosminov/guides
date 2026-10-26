@@ -22,7 +22,6 @@ kubectl run -it --rm dns-test-slave --image=busybox:1.36 --restart=Never --overr
 }' -- sh
 ```
 
-
 Внутри пода
 
 1. содержимое конфигурационного файла системы разрешения DNS
