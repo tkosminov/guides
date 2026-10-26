@@ -112,33 +112,33 @@ systemctl start grafana-server
     ```
     "is above or equal to" 300
     ```
-* Inbound Network Traffic >= 100 MB/s
+* Inbound Network Traffic >= 100 M/s
   * query
     ```
     sum by (instance, device) (rate(node_network_receive_bytes_total{device!~"lo|veth.*|docker.*|br-.*"}[5m]))
     ```
   * message
     ```
-    High Network Traffic on server {{ $labels.instance }} ({{ $labels.device }}): Inbound exceeded threshold (100 Mb/s). Current: {{ humanize $value }}/s
+    High Network Traffic on server {{ $labels.instance }} ({{ $labels.device }}): Inbound exceeded threshold (100 M/s). Current: {{ humanize $value }}/s
     ```
   * condition
     ```
     "is above or equal to" 104857600
     ```
-* Outbound Network Traffic >= 100 MB/s
+* Outbound Network Traffic >= 100 M/s
   * query
     ```
     sum by (instance, device) (rate(node_network_transmit_bytes_total{device!~"lo|veth.*|docker.*|br-.*"}[5m]))
     ```
   * message
     ```
-    High Network Traffic on server {{ $labels.instance }} ({{ $labels.device }}): Outbound exceeded threshold (100 Mb/s). Current: {{ humanize $value }}/s
+    High Network Traffic on server {{ $labels.instance }} ({{ $labels.device }}): Outbound exceeded threshold (100 M/s). Current: {{ humanize $value }}/s
     ```
   * condition
     ```
     "is above or equal to" 104857600
     ```
-* DISK Read >= 100 Mb/c
+* DISK Read >= 100 M/c
   * query
     ```
     sum by (instance, device) (rate(node_disk_read_bytes_total{device!~"loop.*|ram.*"}[5m]))
@@ -151,7 +151,7 @@ systemctl start grafana-server
     ```
     "is above or equal to" 104857600
     ```
-* DISK Write >= 100 Mb/c
+* DISK Write >= 100 M/c
   * query
     ```
     sum by (instance, device) (rate(node_disk_written_bytes_total{device!~"loop.*|ram.*"}[5m]))
@@ -193,7 +193,7 @@ systemctl start grafana-server
     ```
     "is below" 1
     ```
-  * Для "Alert state if no data or all values are null" (No Data) выбрать в "Alert state if execution error or timeout" (Normal)
+  * Для "Alert state if no data or all values are null" (No Data)
     ```
     No Data -> Normal
     ```
